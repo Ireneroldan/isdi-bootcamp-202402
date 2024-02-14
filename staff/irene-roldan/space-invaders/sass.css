@@ -1,0 +1,28 @@
+body {
+  margin: 0;
+}
+
+#space {
+  background-color: black;
+  width: 100vw;
+  height: 100vh;
+}
+
+#ship {
+  height: 10vh;
+  position: absolute;
+  top: 90vh;
+  left: calc(50vw - 4.1666666667vh);
+}
+
+.aliens {
+  justify-content: space-around;
+  display: flex;
+}
+
+.alien {
+  height: 10vh;
+  width: 5vw;
+}
+
+/*# sourceMappingURL=sass.css.map */

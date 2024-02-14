@@ -1,0 +1,25 @@
+body {
+  margin: 0;
+  background-image: url(https://cdn.pixabay.com/photo/2019/11/07/17/07/universe-4609408_1280.jpg);
+}
+
+#space {
+  background-color: black;
+  width: 100vw;
+  height: 100vh;
+}
+
+#ship {
+  height: 10vh;
+  position: absolute;
+  top: 90vh;
+  left: calc(50vw - 4.1666666667vh);
+}
+
+.alien {
+  position: absolute;
+  height: 14vh;
+  width: 5vw;
+}
+
+/*# sourceMappingURL=style.css.map */

@@ -4,12 +4,8 @@ $ship-size-ratio: 1.2 // (h/w)
 $aliens-height: 10vh
 $aliens-size-ratio: 1.2
 
-body
-    margin: 0
-    background-image: url(https://cdn.pixabay.com/photo/2019/11/07/17/07/universe-4609408_1280.jpg)
-
 #space
-    background-color: black
+    background-image: url(https://cdn.pixabay.com/photo/2019/11/07/17/07/universe-4609408_1280.jpg)
     width: 100vw
     height: 100vh
 
@@ -21,5 +17,6 @@ body
 
 .alien
     position: absolute
-    height: 14vh
-    width: 5vw
+    height: $aliens-height
+    top: calc(50vh - $aliens-height)
+    left: calc(40vw - .5 * $aliens-height / $aliens-size-ratio)

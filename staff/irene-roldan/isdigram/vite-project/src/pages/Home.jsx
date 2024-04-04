@@ -2,7 +2,7 @@ import { Component } from "react";
 import { showFeedback } from "../utils/index.mjs";
 import logic from "../logic.mjs";
 import PostList from "../components/PostList";
-// import CreatePost from "../components/CreatePost";
+import CreatePost from "../components/CreatePost";
 
 class Home extends Component {
   constructor(props) {

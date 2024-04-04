@@ -1,4 +1,4 @@
-import db from '../data/index.mjs'
+import db from '../data/index.js'
 import logic from './logic.mjs'
 
 import { expect } from 'chai'

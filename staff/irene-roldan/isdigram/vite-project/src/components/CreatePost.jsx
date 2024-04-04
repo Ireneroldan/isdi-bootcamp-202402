@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import utils from '../utils.mjs'
+import {showFeedback} from '../utils/index.mjs'
 import logic from '../logic.mjs'
 
 class CreatePost extends Component {
@@ -27,7 +27,7 @@ class CreatePost extends Component {
                 this.onPostCreated()
 
             } catch (error) {
-                utils.showFeedback(error)
+                showFeedback(error)
             }
         }}> 
             <label htmlFor="image">Image</label>

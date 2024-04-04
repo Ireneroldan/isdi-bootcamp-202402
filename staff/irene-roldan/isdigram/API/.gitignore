@@ -1,18 +1,2 @@
-{
-  "name": "API",
-  "version": "1.0.0",
-  "type": "module",
-  "description": "",
-  "main": "logic.js",
-  "scripts": {
-    "test": "npx mocha data logic",
-    "test-inspect": "npx mocha --inspect-brk data logic"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "chai": "^5.1.0",
-    "mocha": "^10.4.0"
-  }
-}
+node_modules
+**/*.js

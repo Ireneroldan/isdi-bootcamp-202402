@@ -1,6 +1,7 @@
-import fs from 'fs'
+import {readFile, writeFile} from 'fs'
 
 class Collection {
+    name: string
     constructor(name) {
         this.name = name
     }
@@ -8,13 +9,14 @@ class Collection {
     // helpers
 
     _generateId() {
+        //@ts-ignore
         return (+((parseInt(Math.random() * 10 ** 17)).toString())).toString(36)
     }
 
     _loadDocuments(callback) {
         if (typeof callback !== 'function') throw new TypeError('callback is not a function')
 
-        fs.readFile(`./data/${this.name}.json`, 'utf8', (error, documentsJSON) => {
+        readFile(`./data/${this.name}.json`, 'utf8', (error, documentsJSON) => {
             if (error) {
                 callback(error)
 
@@ -39,7 +41,7 @@ class Collection {
 
         const documentsJSON = JSON.stringify(documents)
 
-        fs.writeFile(`./data/${this.name}.json`, documentsJSON, error => {
+        writeFile(`./data/${this.name}.json`, documentsJSON, error => {
             if (error) {
                 callback(error)
 

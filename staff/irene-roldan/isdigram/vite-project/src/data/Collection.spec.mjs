@@ -1,13 +1,11 @@
 import Collection from './Collection.mjs'
-import fs from 'fs'
-import{expect} from 'chai'
 
 describe('Collection', () => {
     describe('constructor', () => {
         it('creates a collection', () => {
             const cars = new Collection('cars')
 
-            expect(cars).to.be.instanceOf(Collection)
+            expect(cars).toBeInstanceOf(Collection)
         })
     })
 
@@ -18,97 +16,65 @@ describe('Collection', () => {
 
                 const id1 = cars._generateId()
 
-                expect(typeof id1).to.equal('string')
+                expect(typeof id1).toBe('string')
 
                 const id2 = cars._generateId()
 
-                expect(typeof id2).to.equal('string')
+                expect(typeof id2).toBe('string')
 
-                expect(id1 === id2).to.equal(false)
+                expect(id1 === id2).toBe(false)
             })
         })
 
         describe('_loadDocuments', () => {
-            it('loads empty array on new collection', function () {
-                fs.writeFile('./data/cars.json', '[]', error => {
-                    if(error){
-                        console.error(error)
-
-                        return
-                    }
-                })
+            it('loads empty array on new collection', () => {
+                delete localStorage.cars
 
                 const cars = new Collection('cars')
 
-                cars._loadDocuments((error, documents) => {
-                    if(error) {
-                        console.error(error)
+                const documents = cars._loadDocuments()
 
-                        return
-                    }
-                    
-                    expect(documents).to.be.instanceOf(Array)
-                    expect(documents.length).to.equal(0)
-
-                    done() //en Mocha se usa para indicar que una prueba asíncrona ha acabado. 
-                })
-                    
-                
+                expect(documents).toBeInstanceOf(Array)
+                expect(documents.length).toBe(0)
             })
 
             it('loads data on non-empty collection', () => {
-                fs.writeFile('./data/cars.json', '[{"brand":"porsche","model":"911"},{"brand":"fiat","model":"500"}]', error => {
-                    if(error){
-                        console.error(error)
+                localStorage.cars = '[{"brand":"porsche","model":"911"},{"brand":"fiat","model":"500"}]'
 
-                        return
-                    }
-                })
-                expect(error).to.be.null
-                
-                expect(documents).to.be.instanceOf(Array)
-                expect(documents.length).to.equal(2)
+                const cars = new Collection('cars')
+
+                const documents = cars._loadDocuments()
+
+                expect(documents).toBeInstanceOf(Array)
+                expect(documents.length).toBe(2)
 
                 let document = documents[0]
-                expect(document).to.be.instanceOf(Object)
-                expect(document.brand).to.equal('porsche')
-                expect(document.model).to.equal('911')
+                expect(document).toBeInstanceOf(Object)
+                expect(document.brand).toBe('porsche')
+                expect(document.model).toBe('911')
 
                 document = documents[1]
-                expect(document.brand).to.equal('fiat')
-                expect(document.model).to.equal('500')
-
-                done()
+                expect(document.brand).toBe('fiat')
+                expect(document.model).toBe('500')
             })
         })
 
         describe('_saveDocuments', () => {
-            it('saves a collection', ()=> {
-                fs.writeFile('./data(cars.json', '[]', error => {
-                    if(error){
-                        console.error(error)
-
-                        return
-                    }
-                })
+            it('saves a collection', () => {
+                delete localStorage.cars
 
                 const documents = [{ brand: 'porsche', model: '911' }, { brand: 'fiat', model: '500' }]
 
                 const cars = new Collection('cars')
 
-                cars._saveDocuments(documents, error => {
-                    if(error) {
-                        console.error(error)
+                cars._saveDocuments(documents)
 
-                        return
-                    }
-                })
+                //expect(!!localStorage.cars).toBe(true)
+                expect(typeof localStorage.cars).toBe('string')
 
-                expect(error).to.be.null
+                const documentsJSON = '[{"brand":"porsche","model":"911"},{"brand":"fiat","model":"500"}]'
 
-                expect(documentsJSON).to.equal(JSON.stringify(documents))
-
-                done()
+                expect(localStorage.cars).toBe(documentsJSON)
             })
 
             it('fails on non-array documents', () => {
@@ -119,13 +85,13 @@ describe('Collection', () => {
                 let errorThrown
 
                 try {
-                    cars._saveDocuments(documents, () => { })
+                    cars._saveDocuments(documents)
                 } catch (error) {
                     errorThrown = error
                 }
 
-                expect(errorThrown).to.be.instanceOf(TypeError)
-                expect(errorThrown.message).to.be('documents is not an array')
+                expect(errorThrown).toBeInstanceOf(TypeError)
+                expect(errorThrown.message).toBe('documents is not an array')
             })
 
             it('fails on array with non-object document in documents', () => {
@@ -141,8 +107,8 @@ describe('Collection', () => {
                     errorThrown = error
                 }
 
-                expect(errorThrown).to.be.instanceOf(TypeError)
-                expect(errorThrown.message).to.equal('a document in documents is not an object')
+                expect(errorThrown).toBeInstanceOf(TypeError)
+                expect(errorThrown.message).toBe('a document in documents is not an object')
             })
         })
 
@@ -177,30 +143,16 @@ describe('Collection', () => {
 
     describe('> CRUD', () => {
         describe('findOne', () => {
-            it('should find an existing document', done => {
-                fs.writeFile('./data/cars.json', '[{"brand":"porsche","model":"911"},{"brand":"fiat","model":"500"}]', error => {
-                    if(error){
-                        console.error(error)
-
-                        return
-                    }
-                })
+            it('should find an existing document', () => {
+                localStorage.cars = '[{"brand":"porsche","model":"911"},{"brand":"fiat","model":"500"}]'
 
                 const cars = new Collection('cars')
 
-                cars.findOne(car => car.brand === 'fiat', (error, car) => {
-                    if(error){
-                        console.error(error)
+                const car = cars.findOne(function (car) { return car.brand === 'fiat' })
 
-                        return
-                    }
-                })
-
-                expect(car).to.be.instanceOf(Object)
-                expect(car.brand).to.equal('fiat')
-                expect(car.model).to.equal('500')
-
-                done()
+                expect(car).toBeInstanceOf(Object)
+                expect(car.brand).toBe('fiat')
+                expect(car.model).toBe('500')
             })
 
             it('should fail on no callback', () => {
@@ -214,8 +166,8 @@ describe('Collection', () => {
                     errorThrown = error
                 }
 
-                expect(errorThrown).to.be.instanceOf(TypeError)
-                expect(errorThrown.message).to.equal('callback is not a function')
+                expect(errorThrown).toBeInstanceOf(TypeError)
+                expect(errorThrown.message).toBe('callback is not a function')
             })
 
             it('should fail on non-function callback', () => {
@@ -229,61 +181,11 @@ describe('Collection', () => {
                     errorThrown = error
                 }
 
-                expect(errorThrown).to.be.instanceOf(TypeError)
-                expect(errorThrown.message).to.equal('callback is not a function')
+                expect(errorThrown).toBeInstanceOf(TypeError)
+                expect(errorThrown.message).toBe('callback is not a function')
             })
         })
 
-        describe('insertOne', () => {
-            it('should insert an element with a generated ID', () => {
-                const cars = new Collection('cars')
-                const car = { brand: 'porsche', model: '911' }
-                cars.insertOne(car)
-5
-                expect(car).to.be.instanceOf(Object)
-                
-            })
-        })
-
-        describe('upDateOne', () => {
-            it('should update an existing document', () => {
-                fs.writeFile('./data/cars.json', [{ "id": "1", "brand": "porsche", "model": "911" }, { "id": "2", "brand": "fiat", "model": "500" }], error => {
-                    if(error){
-                        console.error(error)
-                        
-                        return
-                    }
-
-                })
-
-                const cars = new Collection('cars')
-
-                const updatedCar = ({ "id": "1", "brand": "porsche", "model": "911 Turbo" },  { "id": "2", "brand": "fiat", "model": "500" })
-                cars.updateOne(updatedCar)
-
-                const updatedDocuments = JSON.parse(localStorage.cars)
-
-                const updatedCarInStorage = updatedDocuments.find(doc => doc.id === updatedCar.id)
-
-                expect(updatedCarInStorage).toBe(updatedCar)
-        
-            })
-        })
-
-        describe('deleteOne', () => {
-            it('should delete an existing document', () =>{
-                localStorage.cars = JSON.stringify([{ "id": "1", "brand": "porsche", "model": "911" }, { "id": "2", "brand": "fiat", "model": "500" }])
-
-                const cars = new Collection('cars')
-
-                const updatedCar = { "id": "1", "brand": "porsche", "model": "911 Turbo" }
-                cars.deleteOne(updatedCar)
-
-                const updatedDocuments = JSON.parse(localStorage.cars)
-            })
-        })
-
+        // TODO test all methods
     })
-
-    describe()
 })

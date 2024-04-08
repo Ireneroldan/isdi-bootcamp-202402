@@ -1,5 +1,3 @@
-// import { fs } from "fs";
-
 class Collection {
   constructor(name) {
     this.name = name;
@@ -65,7 +63,7 @@ class Collection {
     const documents = this._loadDocuments();
 
     const index = documents.findIndex(
-      (document2) => document2.id === document.id
+      document2 => document2.id === document.id
     );
 
     if (index > -1) {

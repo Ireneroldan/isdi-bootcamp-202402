@@ -1,34 +1,30 @@
-/*
-import React from 'react'
-const Component = React.Component
-*/
+import {logger} from '../utils'
 
-import { Component } from "react"
-import './Index.css'
+function Landing(props) {
+    const handleLoginClick = event => {
+        event.preventDefault()
 
-
-class Landing extends Component  {
-    constructor(){
-        super()
+        props.onLoginClick()
     }
 
-    render() {
+    const handleRegisterClick = event => {
+        event.preventDefault()
+
+        props.onRegisterClick()
+    }
+
+    logger.debug('Landinf -> render')
+
+    
         return <main>
             <h1>Welcome to Isdigram!</h1>
             <p>Where do you want to go?</p>
             
-            <a onClick ={event => {
-                event.preventDefault()
-
-                this.props.onLoginClick()
-            }}>Login</a> or <a href="" onClick = {event =>{
-                event.preventDefault()
-
-                this.props.onRegisterClick()
-            }}>Register</a>
+            <a onClick = {handleLoginClick}
+            >Login</a> or <a href="" onClick = {handleRegisterClick}>Register</a>
             
         </main>
         
-    }
+    
 }
 export default Landing

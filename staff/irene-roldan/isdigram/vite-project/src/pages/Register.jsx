@@ -1,71 +1,67 @@
-import { Component } from "react";
-import { showFeedback } from "../utils/index.mjs";
-import logic from "../logic.mjs";
+import { logger, showFeedback } from "../utils";
+import logic from "../logic";
 
-class Register extends Component {
-  constructor() {
-    super();
+function Register(props) {
+  const handleSubmit = event => {
+    event.preventDefault()
+
+        const form = event.target
+
+        const name = form.name.value
+        const birthdate = form.birthdate.value
+        const email = form.email.value
+        const username = form.username.value
+        const password = form.password.value
+
+        try {
+            logic.registerUser(name, birthdate, email, username, password, error => {
+                if (error) {
+                    showFeedback(error)
+
+                    return
+                }
+
+                form.reset()
+
+                props.onUserRegistered()
+            })
+        } catch (error) {
+            showFeedback(error)
+        }
   }
 
-  render() {
-    return (
-      <main>
-        <h1>Register</h1>
-        <form
-          onSubmit={(event) => {
-            event.preventDefault();
+  const handleLoginClick = event => {
+    event.preventDefault()
 
-            const form = event.target;
+    props.onLoginClick()
+}
 
-            const name = form.name.value;
-            const birthdate = form.birthdate.value;
-            const email = form.email.value;
-            const username = form.username.value;
-            const password = form.password.value;
+logger.debug('Register -> render')
 
-            try {
-              logic.registerUser(name, birthdate, email, username, password);
+return <main>
+    <h1>Register</h1>
 
-              form.reset();
+    <form onSubmit={handleSubmit}>
+        <label htmlFor="name">Name</label>
+        <input type="text" id="name" />
 
-              this.props.onUserRegistered();
-            } catch (error) {
-              showFeedback(error);
-            }
-          }}
-        >
-          <label htmlFor="name">Name</label>
-          <input type="text" id="name" />
+        <label htmlFor="birthdate">Age</label>
+        <input type="date" id="birthdate" />
 
-          <label htmlFor="birthdate">Birthdate</label>
-          <input type="date" id="birthdate" />
+        <label htmlFor="email">E-mail</label>
+        <input type="email" id="email" />
 
-          <label htmlFor="email">E-mail</label>
-          <input type="email" id="email" />
+        <label htmlFor="username">Username</label>
+        <input id="username" />
 
-          <label htmlFor="username">Username</label>
-          <input type="text" id="username" />
+        <label htmlFor="password">Password</label>
+        <input type="password" id="password" />
 
-          <label htmlFor="password">Password</label>
-          <input type="password" id="password" />
+        <button className="round-button" type="submit">Register</button>
+    </form>
 
-          <button type="submit" className="submit-button">
-            Send register
-          </button>
-        </form>
-
-        <a
-          href=""
-          onClick={(event) => {
-            event.preventDefault();
-
-            this.props.onLoginClick();
-          }}
-        >
-          Login
-        </a>
-      </main>
-    );
-  }
+    <a href="" onClick={handleLoginClick}>Login</a>
+</main>
+  
 }
 export default Register;

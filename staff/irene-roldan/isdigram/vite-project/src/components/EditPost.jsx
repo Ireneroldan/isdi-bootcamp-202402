@@ -1,25 +1,16 @@
 import {logger, showFeedback} from '../utils'
 
-import logic from '../logic.mjs'
+import CancelButton from '../library/CancelButton'
+
+import logic from '../logic'
+import SubmitButton from '../library/SubmitButton'
+
+import './EditPost.sass'
 
 import {Component} from 'react'
 
-class EditPost extends Component {
-    constructor(){
-        logger.debug('EditPost')
-
-        super()
-    }
-
-    componentDidMount(){
-        logger.debug('EditPost -> componentDidMount')
-    }
-
-    componentWillUnmount(){
-        logger.debug('EditPost -> componentWillUnmount')
-    }
-
-    handleSubmit = event => {
+function EditPost(props) {
+    const handleSubmit = event => {
         event.preventDefault()
 
         const form = event.target
@@ -40,23 +31,22 @@ class EditPost extends Component {
 
     }
 
-    handleCancelClick = () => this.props.onCancelClick()
+    const handleCancelClick = () => props.onCancelClick()
 
-    render(){
         logger.debug('EditPost -> render')
 
         return <section className='edit-post'>
-            <form onSubmit = {this.handleSubmit}>
+            <form onSubmit = {handleSubmit}>
                 <label>Text</label>
-                <input id='text' type='text' defaultValue={this.props.post.text} />
+                <input id='text' type='text' defaultValue={props.post.text} />
 
-                <button type='submit'>Edit</button>
+                <SubmitButton>Save</SubmitButton>
 
             </form>
 
-            <button onClick={this.handleCancelClick}>Cancel</button>
+            <CancelButt onClick={handleCancelClick}>Cancel</CancelButt>
         </section>
-    }
+    
 }
 
 export default EditPost

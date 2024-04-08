@@ -5,7 +5,15 @@ const api = express();
 
 const jsonBodyParser = express.json();
 
-//register
+api.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', '*')
+  res.setHeader('Access-Control-Allow-Headers', '*')
+
+  next()
+})
+
+
 api.post("/users", jsonBodyParser, (req, res) => {
   try {
     const { name, birthdate, email, username, password } = req.body;
@@ -28,95 +36,66 @@ api.post("/users", jsonBodyParser, (req, res) => {
   }
 });
 
-api.get("/", (req, res) => {
+api.post('/users/auth', jsonBodyParser, (req, res) => {
   try {
-    res.send(`<!DOCTYPE html>
-  <html lang="en">
-  
-  <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>API</title>
-  </head>
-  
-  <body>
-      <h1>Hello! from API</h1>
-  </body>
-  
-  </html>`);
-  } catch (error) {
-    res
-      .status(400)
-      .json({ error: error.constructor.name, message: error.message });
-  }
-});
+    const { username, password} = req.body
 
-//login
+    logic.loginUser(username, password, (error, userId) => {
+      
+      if(error){
+        res.status(400).json({error: error.constructor.name, message: error.message})
 
-api.post("/login", jsonBodyParser, (req, res) => {
-  try {
-    const { username, password } = req.body;
-
-    logic.loginUser(username, password, (error) => {
-      if (error) {
-        res
-          .status(400)
-          .json({ error: error.constructor.name, message: error.message });
-
-        return;
+        return
       }
-
-      res.status(200).send();
-    });
+      
+      res.json(userId)
+      
+    })
   } catch (error) {
-    res
-      .status(400)
-      .json({ error: error.constructor.name, message: error.message });
+      res.status(400).json({error: error.constructor.name, message: error.message})
   }
-});
+})
 
-api.post("/retrieveUser", jsonBodyParser, (req, res) => {
+api.get('/users/:userId', (req, res) => {
   try {
-    const { userId } = req.body;
+    const {userId} = req.params
 
+    //@ts-ignore
     logic.registerUser(userId, (error, user) => {
-      if (error) {
-        res
-          .status(400)
-          .json({ error: error.constructor.name, message: error.message });
+      if(error){
+        res.status(400).json({error: error.constructor.name, message: error.message})
 
-        return;
+        return
       }
 
-      res.status(200).send(user);
-    });
-  } catch (error) {
-    res
-      .status(400)
-      .json({ error: error.constructor.name, message: error.message });
-  }
-});
+      res.json(user)
 
-api.post("/logoutUser", jsonBodyParser, (req, res) => {
+    })
+  } catch (error) {
+    res.status(400).json({error: error.constructor.name, message: error.message})
+  }
+})
+
+api.get('/posts', (req, res) => {
   try {
-    const { userId } = req.body;
+    const {authorization: userId} = req.Headers
 
-    logic.logoutUser(userId);
+    //@ts-ignore
+    logic.registerUser(userId, (error, posts) => {
+      if(error){
+        res.status(400).json({error: error.constructor.name, message: error.message}
 
-    return res.status(200).json({ message: "User logged out successfully" });
+        )
+
+        return 
+      }
+
+      res.json(posts)
+    })
   } catch (error) {
-    res
-      .status(400)
-      .json({ error: error.constructor.name, message: error.message });
+    res.status(400).json({error: error.constructor.name, message: error.message})
+
   }
-});
+})
 
-api.listen(8080, () => console.log("API listening on port 8080"));
-
-//curl -X POST -H "Content-Type: application/json" -d '{"name":"Pepito Grillo","birthdate":"2000-01-01","email":"pepito@grillo.com","username":"pepitogrillo","password":"123qwe123"}' http://localhost:8080/users -v
-
-//curl -X POST -H "Content-Type: application/json" -d '{"username":"pepitogrillo","password":"123qwe123"}' http://localhost:8080/login -v
-
-//curl -X POST -H "Content-Type: application/json" -d '{"userId":"8x8juiqi52g"}' http://localhost:8080/retrieveUser
-
-//curl -X POST -H "Content-Type: application/json" -d '{"userId":"n2bowh28pio"}' http://localhost:8080/logoutUser
+api.listen(8080, () => console.log('API listening on port 8080∫'))

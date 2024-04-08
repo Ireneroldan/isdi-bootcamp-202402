@@ -1,4 +1,6 @@
-import db from '../data/index.js'
+//@ts-nocheck
+
+import db from '../data/index.ts'
 
 // constants
 
@@ -9,7 +11,7 @@ const URL_REGEX = /^(http|https):\/\//
 
 // helpers
 
-function validateText(text, explain, checkEmptySpaceInside) {
+function validateText(text, explain, checkEmptySpaceInside?) {
     if (typeof text !== 'string') throw new TypeError(explain + ' ' + text + ' is not a string')
     if (!text.trim().length) throw new Error(explain + ' >' + text + '< is empty or blank')
 
@@ -153,20 +155,6 @@ function logoutUser() {
     user.status = 'offline'
 
     db.users.updateOne(user)
-
-    delete sessionStorage.userId
-}
-
-function getLoggedInUserId() {
-    return sessionStorage.userId
-}
-
-function isUserLoggedIn() {
-    return !!sessionStorage.userId
-}
-
-function cleanUpLoggedInUserId() {
-    delete sessionStorage.userId
 }
 
 function retrieveUsersWithStatus() {
@@ -196,14 +184,6 @@ function retrieveUsersWithStatus() {
 function sendMessageToUser(userId, text) {
     validateText(userId, 'userId', true)
     validateText(text, 'text')
-
-    // { id, users: [id, id], messages: [{ from: id, text, date }, { from: id, text, date }, ...] }
-
-    // find chat in chats (by user ids)
-    // if no chat yet, then create it
-    // add message in chat
-    // update or insert chat in chats
-    // save chats
 
     let chat = db.chats.findOne(chat => chat.users.includes(userId) && chat.users.includes(sessionStorage.userId))
 
@@ -247,16 +227,53 @@ function createPost(image, text) {
     db.posts.insertOne(post)
 }
 
-function retrievePosts() {
-    const posts = db.posts.getAll()
+function retrievePosts(userId, callback) {
+    validateText(userId, 'userId', true)
+    validateCallback(callback)
 
-    posts.forEach(function (post) {
-        const user = db.users.findOne(user => user.id === post.author)
+    db.users.findOne(user => user.id === userId, (error, user) => {
+        if(error){
+            callback(error)
 
-        post.author = { id: user.id, username: user.username }
+            return
+        }
+
+        if(!user) {
+            callback(new Error ('user not found'))
+
+            return
+        }
+
+        db.posts.getAll((error, posts) => {
+            if(error){
+                callback(error)
+
+                return
+            }
+
+            let count = 0
+
+            posts.forEach(post => {
+                db.users.findOne(user => user.id === post.author, (error, user) => {
+                    if(error) {
+                        callback(error)
+
+                        return
+                    }
+
+                    post.author = {
+                        id:user.id,
+                        username: user.username
+                    }
+
+                    count++
+
+                    if(count === posts.length)
+                        callback(null, posts.reverse())
+                })
+            })
+        })
     })
-
-    return posts.reverse()
 }
 
 function removePost(postId) {
@@ -291,9 +308,6 @@ const logic = {
     loginUser,
     retrieveUser,
     logoutUser,
-    getLoggedInUserId,
-    isUserLoggedIn,
-    cleanUpLoggedInUserId,
 
     retrieveUsersWithStatus,
     sendMessageToUser,

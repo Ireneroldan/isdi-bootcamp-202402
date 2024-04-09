@@ -26,10 +26,6 @@ class Logger {
 
     error(...messages) {
         this.level < Logger.FATAL && console.error(`%c${this.#buildMessage(messages)}`, 'color: tomato')
-        
-        if (this.level < Logger.FATAL) {
-            console.error(`%c${this.#buildMessage(messages)}`, 'color: tomato');
-        }
     }
 
     fatal(...messages){

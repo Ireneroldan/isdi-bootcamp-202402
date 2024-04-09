@@ -1,7 +1,5 @@
 //@ts-nocheck
 
-import db from '../data/index.ts'
-
 // constants
 
 const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/
@@ -50,38 +48,28 @@ function registerUser(name, birthdate, email, username, password, callback) {
     validatePassword(password)
     validateCallback(callback)
 
-    db.users.findOne(user => user.email === email || user.username === username, (error, user) => {
-        if (error) {
-            callback(error)
-
-            return
-        }
-
-        if (user) {
-            callback(new Error('user already exists'))
-
-            return
-        }
-
-        user = {
-            name: name.trim(),
-            birthdate: birthdate,
-            email: email,
-            username: username,
-            password: password,
-            status: 'offline',
-        }
-
-        db.users.insertOne(user, error => {
-            if (error) {
-                callback(error)
+    this.users.findOne({ $or: [{ email }, { username }] })
+        .then(user => {
+            if (user) {
+                callback(new Error('user already exists'))
 
                 return
             }
 
-            callback(null)
+            user = {
+                name: name.trim(),
+                birthdate: birthdate,
+                email: email,
+                username: username,
+                password: password,
+                status: 'offline',
+            }
+
+            this.users.insertOne(user)
+                .then(() => callback(null))
+                .catch(error => callback(error))
         })
-    })
+        .catch(error => callback(error))
 }
 
 function loginUser(username, password, callback) {
@@ -89,7 +77,7 @@ function loginUser(username, password, callback) {
     validatePassword(password)
     validateCallback(callback)
 
-    db.users.findOne(user => user.username === username, (error, user) => {
+    this.users.findOne(user => user.username === username, (error, user) => {
         if (error) {
             callback(error)
 
@@ -110,7 +98,7 @@ function loginUser(username, password, callback) {
 
         user.status = 'online'
 
-        db.users.updateOne(user2 => user2.id === user.id, user, error => {
+        users.updateOne(user2 => user2.id === user.id, user, error => {
             if (error) {
                 callback(error)
 
@@ -146,6 +134,8 @@ function retrieveUser(userId, callback) {
         callback(null, user)
     })
 }
+
+// TODO next ...
 
 function logoutUser() {
     const user = db.users.findOne(user => user.id === sessionStorage.userId)
@@ -185,6 +175,14 @@ function sendMessageToUser(userId, text) {
     validateText(userId, 'userId', true)
     validateText(text, 'text')
 
+    // { id, users: [id, id], messages: [{ from: id, text, date }, { from: id, text, date }, ...] }
+
+    // find chat in chats (by user ids)
+    // if no chat yet, then create it
+    // add message in chat
+    // update or insert chat in chats
+    // save chats
+
     let chat = db.chats.findOne(chat => chat.users.includes(userId) && chat.users.includes(sessionStorage.userId))
 
     if (!chat)
@@ -211,20 +209,29 @@ function retrieveMessagesWithUser(userId) {
     return []
 }
 
-function createPost(image, text) {
+function createPost(userId, image, text, callback) {
+    validateText(userId, 'userId', true)
     validateUrl(image, 'image')
-
     if (text)
         validateText(text, 'text')
+    validateCallback(callback)
 
     const post = {
-        author: sessionStorage.userId,
+        author: userId,
         image: image,
         text: text,
         date: new Date().toLocaleDateString('en-CA')
     }
 
-    db.posts.insertOne(post)
+    db.posts.insertOne(post, error => {
+        if (error) {
+            callback(error)
+
+            return
+        }
+
+        callback(null)
+    })
 }
 
 function retrievePosts(userId, callback) {
@@ -232,43 +239,52 @@ function retrievePosts(userId, callback) {
     validateCallback(callback)
 
     db.users.findOne(user => user.id === userId, (error, user) => {
-        if(error){
+        if (error) {
             callback(error)
 
             return
         }
 
-        if(!user) {
-            callback(new Error ('user not found'))
+        if (!user) {
+            callback(new Error('user not found'))
 
             return
         }
 
         db.posts.getAll((error, posts) => {
-            if(error){
+            if (error) {
                 callback(error)
 
                 return
             }
 
             let count = 0
+            let errorDetected = false
 
             posts.forEach(post => {
                 db.users.findOne(user => user.id === post.author, (error, user) => {
-                    if(error) {
+                    if (error) {
                         callback(error)
 
                         return
                     }
 
+                    if (!user) {
+                        callback(new Error('post owner not found'))
+
+                        errorDetected = true
+
+                        return
+                    }
+
                     post.author = {
-                        id:user.id,
+                        id: user.id,
                         username: user.username
                     }
 
                     count++
 
-                    if(count === posts.length)
+                    if (!errorDetected && count === posts.length)
                         callback(null, posts.reverse())
                 })
             })
@@ -304,6 +320,8 @@ function modifyPost(postId, text) {
 }
 
 const logic = {
+    users: null,
+
     registerUser,
     loginUser,
     retrieveUser,

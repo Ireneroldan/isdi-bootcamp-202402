@@ -23,19 +23,19 @@ function validateDate(date, explain = 'date') {
 }
 
 function validateEmail(email, explain = 'email') {
-    if (!EMAIL_REGEX.test(email)) throw new Error(`${explain }is not an email`)
+    if (!EMAIL_REGEX.test(email)) throw new Error(`${explain} is not an email`)
 }
 
 function validatePassword(password, explain = 'password') {
-    if (!PASSWORD_REGEX.test(password)) throw new Error(`${explain} is not acceptable`)
+    if (!PASSWORD_REGEX.test(password)) throw new Error(`${explain} is not valid`)
 }
 
 function validateUrl(url, explain = 'url') {
-    if (!URL_REGEX.test(url)) throw new Error(`${explain} is not an url`)
+    if (!URL_REGEX.test(url)) throw new Error(`${explain} is not a url`)
 }
 
-function validateCallback(callback, explain = 'callback'){
-    if(typeof callback !== 'function') throw new TypeError(`${explain} is not a function`)
+function validateCallback(callback, explain = 'callback') {
+    if (typeof callback !== 'function') throw new TypeError(`${explain} is not a function`)
 }
 
 // logic
@@ -239,20 +239,34 @@ function retrieveMessagesWithUser(userId) {
     return []
 }
 
-function createPost(image, text) {
+function createPost(image, text, callback) {
     validateUrl(image, 'image')
 
     if (text)
         validateText(text, 'text')
+    validateCallback(callback)
 
-    const post = {
-        author: sessionStorage.userId,
-        image: image,
-        text: text,
-        date: new Date().toLocaleDateString('en-CA')
+    xhr.onload = () => {
+        const {status, responseText: json} = xhr
+
+        if (status >= 500) {
+            callback(new Error('system error'))
+
+            return
+        } else if (status >= 400) { // 400 - 499
+            const { error, message } = JSON.parse(json)
+
+            const constructor = window[error]
+
+            callback(new constructor(message))
+        } else if (status >= 300) {
+            callback(new Error('system error'))
+
+            return
+        } else {
+            callback(null)
+        }
     }
-
-    db.posts.insertOne(post)
 }
 
 function retrievePosts(callback) {

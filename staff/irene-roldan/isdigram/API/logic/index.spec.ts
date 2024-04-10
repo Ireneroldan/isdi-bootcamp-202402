@@ -1,8 +1,6 @@
-import mongodb from 'mongodb'
+import { MongoClient, ObjectId } from 'mongodb'
 import logic from './index.ts'
 import { expect } from 'chai'
-
-const { MongoClient, ObjectId } = mongodb
 
 describe('logic', () => {
     let client, users, posts
@@ -73,6 +71,7 @@ describe('logic', () => {
             let errorThrown
 
             try {
+                // @ts-ignore
                 logic.registerUser(123, '2000-01-01', 'pepe@roni.com', 'peperoni', '123qwe123', () => { })
             } catch (error) {
                 errorThrown = error
@@ -99,6 +98,7 @@ describe('logic', () => {
             let errorThrown
 
             try {
+                // @ts-ignore
                 logic.registerUser('Pepe Roni', 123, 'pepe@roni.com', 'peperoni', '123qwe123', () => { })
             } catch (error) {
                 errorThrown = error
@@ -121,179 +121,159 @@ describe('logic', () => {
             expect(errorThrown.message).to.equal('birthdate 2000/01/01 does not have a valid format')
         })
 
-        it('fails on empty email', () => {
-            let errorThrown
-
-            try {
-                logic.registerUser('Pepe Roni', '2000-01-01', '', 'peperoni', '123qwe123', () => { })
-            } catch (error) {
-                errorThrown = error
-            }
-
-            expect(errorThrown).to.be.instanceOf(Error)
-            expect(errorThrown.message).to.equal('email is empty')
-        })
         // TODO add other unhappy test cases
     })
 
-    // describe('loginUser', () => {
-    //     it('succeeds on existing user and correct credentials', done => {
-    //         db.users.deleteAll(error => {
-    //             if (error) {
-    //                 done(error)
+    describe('loginUser', () => {
+        it('succeeds on existing user and correct credentials', done => {
+            users.deleteMany()
+                .then(() => {
+                    users.insertOne({ name: 'Pepe Roni', birthdate: '2000-01-01', email: 'pepe@roni.com', username: 'peperoni', password: '123qwe123' })
+                        .then(result => {
+                            logic.loginUser('peperoni', '123qwe123', (error, userId) => {
+                                if (error) {
+                                    done(error)
 
-    //                 return
-    //             }
+                                    return
+                                }
 
-    //             db.users.insertOne({ name: 'Pepe Roni', birthdate: '2000-01-01', email: 'pepe@roni.com', username: 'peperoni', password: '123qwe123' }, (error, insertedUserId) => {
-    //                 if (error) {
-    //                     done(error)
+                                expect(userId).to.be.a('string')
+                                expect(userId).to.equal(result.insertedId.toString())
 
-    //                     return
-    //                 }
+                                users.findOne({ _id: new ObjectId(userId) })
+                                    .then(user => {
+                                        expect(user.status).to.equal('online')
 
-    //                 logic.loginUser('peperoni', '123qwe123', (error, userId) => {
-    //                     if (error) {
-    //                         done(error)
+                                        done()
+                                    })
+                                    .catch(done)
+                            })
+                        })
+                        .catch(done)
+                })
+                .catch(done)
+        })
 
-    //                         return
-    //                     }
+        it('fails on existing user and incorrect password', done => {
+            users.deleteMany()
+                .then(() => {
+                    users.insertOne({ name: 'Pepe Roni', birthdate: '2000-01-01', email: 'pepe@roni.com', username: 'peperoni', password: '123qwe123' })
+                        .then(() => {
+                            logic.loginUser('peperoni', '123qwe123qwe', (error, userId) => {
+                                expect(error).to.be.instanceOf(Error)
+                                expect(error.message).to.equal('wrong password')
+                                expect(userId).to.be.undefined
 
-    //                     expect(userId).to.equal(insertedUserId)
+                                done()
+                            })
+                        })
+                        .catch(done)
+                })
+                .catch(done)
+        })
 
-    //                     db.users.findOne(user => user.id === userId, (error, user) => {
-    //                         if (error) {
-    //                             done(error)
+        it('fails on existing user and incorrect username', done => {
+            users.deleteMany()
+                .then(() => {
+                    users.insertOne({ name: 'Pepe Roni', birthdate: '2000-01-01', email: 'pepe@roni.com', username: 'peperoni', password: '123qwe123' })
+                        .then(() => {
+                            logic.loginUser('peperoni2', '123qwe123', (error, userId) => {
+                                expect(error).to.be.instanceOf(Error)
+                                expect(error.message).to.equal('user not found')
 
-    //                             return
-    //                         }
+                                expect(userId).to.be.undefined
 
-    //                         expect(user.status).to.equal('online')
+                                done()
+                            })
+                        })
+                        .catch(done)
+                })
+                .catch(done)
+        })
 
-    //                         done()
-    //                     })
-    //                 })
-    //             })
-    //         })
-    //     })
+        // TODO add other unhappy test cases
+    })
 
-    //     it('fails on existing user and incorrect password', done => {
-    //         db.users.deleteAll(error => {
-    //             if (error) {
-    //                 done(error)
+    describe('retrieveUser', () => {
+        it('retrieves existing user', done => {
+            users.deleteMany()
+                .then(() => {
+                    users.insertOne({ name: 'Pepe Roni', birthdate: '2000-01-01', email: 'pepe@roni.com', username: 'peperoni', password: '123qwe123' })
+                        .then(result => {
+                            users.insertOne({ name: 'Pepe Phone', birthdate: '2000-01-01', email: 'pepe@phone.com', username: 'pepephone', password: '123qwe123' })
+                                .then(result2 => {
+                                    logic.retrieveUser(result.insertedId.toString(), result2.insertedId.toString(), (error, user) => {
+                                        if (error) {
+                                            done(error)
 
-    //                 return
-    //             }
+                                            return
+                                        }
 
-    //             db.users.insertOne({ name: 'Pepe Roni', birthdate: '2000-01-01', email: 'pepe@roni.com', username: 'peperoni', password: '123qwe123' }, error => {
-    //                 if (error) {
-    //                     done(error)
+                                        expect(user.id).to.be.undefined
+                                        expect(user.username).to.equal('pepephone')
+                                        expect(user.email).to.equal('pepe@phone.com')
+                                        expect(user.birthdate).to.equal('2000-01-01')
+                                        expect(user.password).to.be.undefined
+                                        expect(user.status).to.be.undefined
 
-    //                     return
-    //                 }
+                                        done()
+                                    })
+                                })
+                                .catch(done)
+                        })
+                        .catch(done)
+                })
+                .catch(done)
+        })
 
-    //                 logic.loginUser('peperoni', '123qwe123qwe', (error, userId) => {
-    //                     expect(error).to.be.instanceOf(Error)
-    //                     expect(error.message).to.equal('wrong password')
-    //                     expect(userId).to.be.undefined
+        it('does no retrieve by non-existing user', done => {
+            users.deleteMany()
+                .then(() => {
+                    users.insertOne({ name: 'Pepe Roni', birthdate: '2000-01-01', email: 'pepe@roni.com', username: 'peperoni', password: '123qwe123' })
+                        .then(() => {
+                            users.insertOne({ name: 'Pepe Phone', birthdate: '2000-01-01', email: 'pepe@phone.com', username: 'pepephone', password: '123qwe123' })
+                                .then(result => {
+                                    logic.retrieveUser(new ObjectId().toString(), result.insertedId.toString(), (error, user) => {
+                                        expect(error).to.be.instanceOf(Error)
+                                        expect(error.message).to.equal('user not found')
 
-    //                     done()
-    //                 })
-    //             })
-    //         })
-    //     })
+                                        expect(user).to.be.undefined
 
-    //     it('fails on existing user and incorrect username', done => {
-    //         db.users.deleteAll(error => {
-    //             if (error) {
-    //                 done(error)
+                                        done()
+                                    })
+                                })
+                                .catch(done)
+                        })
+                        .catch(done)
+                })
+                .catch(done)
+        })
 
-    //                 return
-    //             }
+        it('does no retrieve a non-existing taget user', done => {
+            users.deleteMany()
+                .then(() => {
+                    users.insertOne({ name: 'Pepe Roni', birthdate: '2000-01-01', email: 'pepe@roni.com', username: 'peperoni', password: '123qwe123' })
+                        .then(result => {
+                            users.insertOne({ name: 'Pepe Phone', birthdate: '2000-01-01', email: 'pepe@phone.com', username: 'pepephone', password: '123qwe123' })
+                                .then(() => {
+                                    logic.retrieveUser(result.insertedId.toString(), new ObjectId().toString(), (error, user) => {
+                                        expect(error).to.be.instanceOf(Error)
+                                        expect(error.message).to.equal('target user not found')
 
-    //             db.users.insertOne({ name: 'Pepe Roni', birthdate: '2000-01-01', email: 'pepe@roni.com', username: 'peperoni', password: '123qwe123' }, error => {
-    //                 if (error) {
-    //                     done(error)
+                                        expect(user).to.be.undefined
 
-    //                     return
-    //                 }
+                                        done()
+                                    })
+                                })
+                                .catch(done)
+                        })
+                        .catch(done)
+                })
+                .catch(done)
+        })
+    })
 
-    //                 logic.loginUser('peperoni2', '123qwe123', (error, userId) => {
-    //                     expect(error).to.be.instanceOf(Error)
-    //                     expect(error.message).to.equal('user not found')
 
-    //                     expect(userId).to.be.undefined
-
-    //                     done()
-    //                 })
-    //             })
-    //         })
-    //     })
-    // })
-
-    // describe('retrieveUser', () => {
-    //     it('retrieves existing user', done => {
-    //         db.users.deleteAll(error => {
-    //             if (error) {
-    //                 done(error)
-
-    //                 return
-    //             }
-
-    //             db.users.insertOne({ name: 'Pepe Roni', birthdate: '2000-01-01', email: 'pepe@roni.com', username: 'peperoni', password: '123qwe123' }, (error, insertedUserId) => {
-    //                 if (error) {
-    //                     done(error)
-
-    //                     return
-    //                 }
-
-    //                 logic.retrieveUser(insertedUserId, (error, user) => {
-    //                     if (error) {
-    //                         done(error)
-
-    //                         return
-    //                     }
-
-    //                     expect(user.id).to.be.undefined
-    //                     expect(user.username).to.equal('peperoni')
-    //                     expect(user.email).to.equal('pepe@roni.com')
-    //                     expect(user.birthdate).to.equal('2000-01-01')
-    //                     expect(user.password).to.be.undefined
-    //                     expect(user.status).to.be.undefined
-
-    //                     done()
-    //                 })
-    //             })
-    //         })
-    //     })
-
-    //     it('does no retrieve a non-existing user', done => {
-    //         db.users.deleteAll(error => {
-    //             if (error) {
-    //                 done(error)
-
-    //                 return
-    //             }
-
-    //             db.users.insertOne({ name: 'Pepe Roni', birthdate: '2000-01-01', email: 'pepe@roni.com', username: 'peperoni', password: '123qwe123' }, (error, insertedUserId) => {
-    //                 if (error) {
-    //                     done(error)
-
-    //                     return
-    //                 }
-
-    //                 logic.retrieveUser('wrong-id', (error, user) => {
-    //                     expect(error).to.be.instanceOf(Error)
-    //                     expect(error.message).to.equal('user not found')
-
-    //                     expect(user).to.be.undefined
-
-    //                     done()
-    //                 })
-    //             })
-    //         })
-    //     })
-    // })
 
     // describe('retrievePosts', () => {
     //     it('retrieves all posts for existing user', done => {

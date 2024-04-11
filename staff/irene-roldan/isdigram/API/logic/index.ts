@@ -108,68 +108,6 @@ function logoutUser() {
     db.users.updateOne(user)
 }
 
-function retrieveUsersWithStatus() {
-    const users = db.users.getAll()
-
-    const index = users.findIndex(user => user.id === sessionStorage.userId)
-
-    users.splice(index, 1)
-
-    users.forEach(function (user) {
-        delete user.name
-        delete user.email
-        delete user.password
-        delete user.birthdate
-    })
-
-    users.sort(function (a, b) {
-        return a.username < b.username ? -1 : 1
-    }).sort(function (a, b) {
-        return a.status > b.status ? -1 : 1
-    })
-
-
-    return users
-}
-
-function sendMessageToUser(userId, text) {
-    validateText(userId, 'userId', true)
-    validateText(text, 'text')
-
-    // { id, users: [id, id], messages: [{ from: id, text, date }, { from: id, text, date }, ...] }
-
-    // find chat in chats (by user ids)
-    // if no chat yet, then create it
-    // add message in chat
-    // update or insert chat in chats
-    // save chats
-
-    let chat = db.chats.findOne(chat => chat.users.includes(userId) && chat.users.includes(sessionStorage.userId))
-
-    if (!chat)
-        chat = { users: [userId, sessionStorage.userId], messages: [] }
-
-    const message = { from: sessionStorage.userId, text: text, date: new Date().toISOString() }
-
-    chat.messages.push(message)
-
-    if (!chat.id)
-        db.chats.insertOne(chat)
-    else
-        db.chats.updateOne(chat)
-}
-
-function retrieveMessagesWithUser(userId) {
-    validateText(userId, 'userId', true)
-
-    const chat = db.chats.findOne(chat => chat.users.includes(userId) && chat.users.includes(sessionStorage.userId))
-
-    if (chat)
-        return chat.messages
-
-    return []
-}
-
 function createPost(userId, image, text, callback) {
     validateText(userId, 'userId', true)
     validateUrl(image, 'image')
@@ -195,63 +133,7 @@ function createPost(userId, image, text, callback) {
     })
 }
 
-function retrievePosts(userId, callback) {
-    validateText(userId, 'userId', true)
-    validateCallback(callback)
 
-    db.users.findOne(user => user.id === userId, (error, user) => {
-        if (error) {
-            callback(error)
-
-            return
-        }
-
-        if (!user) {
-            callback(new Error('user not found'))
-
-            return
-        }
-
-        db.posts.getAll((error, posts) => {
-            if (error) {
-                callback(error)
-
-                return
-            }
-
-            let count = 0
-            let errorDetected = false
-
-            posts.forEach(post => {
-                db.users.findOne(user => user.id === post.author, (error, user) => {
-                    if (error) {
-                        callback(error)
-
-                        return
-                    }
-
-                    if (!user) {
-                        callback(new Error('post owner not found'))
-
-                        errorDetected = true
-
-                        return
-                    }
-
-                    post.author = {
-                        id: user.id,
-                        username: user.username
-                    }
-
-                    count++
-
-                    if (!errorDetected && count === posts.length)
-                        callback(null, posts.reverse())
-                })
-            })
-        })
-    })
-}
 
 function removePost(postId) {
     validateText(postId, 'postId', true)

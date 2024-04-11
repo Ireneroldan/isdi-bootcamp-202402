@@ -22,16 +22,37 @@ class DuplicityError extends Error {
     }
 }
 
+class NotFoundError extends Error {
+    constructor(message){
+        super(message)
+
+        this.name = this.constructor.name
+    }
+}
+
+class CredentialsError extends Error {
+    constructor(message) {
+        super(message)
+
+        this.name = this.constructor.name
+    }
+}
+
 const errors = {
     ContentError,
     SystemError,
-    DuplicityError
+    DuplicityError,
+    NotFoundError,
+    CredentialsError
+
 }
 
 export {
     ContentError,
     SystemError,
-    DuplicityError
+    DuplicityError,
+    NotFoundError,
+    CredentialsError
 }
 
 export default errors

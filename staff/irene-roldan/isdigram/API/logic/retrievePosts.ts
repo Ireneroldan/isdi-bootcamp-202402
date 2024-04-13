@@ -1,61 +1,58 @@
+import {validate, errors} from 'com'
+import { ObjectId } from 'mongodb'
+
+const {SystemError, NotFoundError} = errors
+
+
 function retrievePosts(userId, callback) {
-    /*
-    validateText(userId, 'userId', true)
-    validateCallback(callback)
+    validate.text(userId, 'userId', true)
+    validate.callback(callback)
 
-    db.users.findOne(user => user.id === userId, (error, user) => {
-        if (error) {
-            callback(error)
-
-            return
-        }
-
-        if (!user) {
-            callback(new Error('user not found'))
-
-            return
-        }
-
-        db.posts.getAll((error, posts) => {
-            if (error) {
-                callback(error)
-
+    this.users.findOne({_id: new ObjectId(userId)})
+        .then(user => {
+            if (!user) {
+                callback(new NotFoundError('user not found'))
+    
                 return
             }
+        })
 
-            let count = 0
-            let errorDetected = false
+        this.posts.find({}).toArray()
+            .then(posts => {
+                let count = 0
+                let errorDetected = false
 
-            posts.forEach(post => {
-                db.users.findOne(user => user.id === post.author, (error, user) => {
-                    if (error) {
-                        callback(error)
+                posts.forEach(post => {
+                    this.users.findOne({_id: post.author})
+                        .then(user => {
+                            if(errorDetected) return
+                            
+                            if (!user) {
+                                callback(new NotFoundError('post owner not found'))
+        
+                                errorDetected = true
+        
+                                return
+                            }
 
-                        return
-                    }
+                            post.id = post._id.toString()
+                            delete post._id
 
-                    if (!user) {
-                        callback(new Error('post owner not found'))
+                            post.author = {
+                                id: user._id.toString(),
+                                username: user.username
+                            }
 
-                        errorDetected = true
+                            count++
 
-                        return
-                    }
+                            if (count === posts.length)
+                                callback(null, posts.reverse())
 
-                    post.author = {
-                        id: user.id,
-                        username: user.username
-                    }
-
-                    count++
-
-                    if (!errorDetected && count === posts.length)
-                        callback(null, posts.reverse())
+                        })
+                        .catch(error => callback(new SystemError(error.message)))
                 })
             })
-        })
-    })
-    */
+            .catch(error => callback(new SystemError(error.message)))
 }
 
 export default retrievePosts

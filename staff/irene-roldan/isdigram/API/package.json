@@ -6,8 +6,10 @@
   "main": "index.js",
   "scripts": {
     "start": "npx tsx index.ts",
-    "test": "tsx mocha",
-    "test-inspect": "npx mocha --inspect-brk"
+    "inspect": "npx tsx --inspect-brk index.ts",
+    "test": "npx mocha --timeout 10000",
+    "test-inspect": "npx mocha --inspect-brk",
+    "populate": "tsx data/populate.ts"
   },
   "keywords": [],
   "author": "",

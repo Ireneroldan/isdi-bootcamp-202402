@@ -9,27 +9,27 @@ const validate = {
 
     text(text, explain, checkEmptySpaceInside?) {
         if (typeof text !== 'string') throw new TypeError(explain + ' ' + text + ' is not a string')
-        if (!text.trim().length) throw new Error(explain + ' >' + text + '< is empty or blank')
+        if (!text.trim().length) throw new ContentError(explain + ' >' + text + '< is empty or blank')
 
         if (checkEmptySpaceInside)
-            if (text.includes(' ')) throw new Error(explain + ' ' + text + ' has empty spaces')
+            if (text.includes(' ')) throw new ContentError(explain + ' ' + text + ' has empty spaces')
     },
 
     date(date, explain) {
         if (typeof date !== 'string') throw new TypeError(explain + ' ' + date + ' is not a string')
-        if (!DATE_REGEX.test(date)) throw new Error(explain + ' ' + date + ' does not have a valid format')
+        if (!DATE_REGEX.test(date)) throw new ContentError(explain + ' ' + date + ' does not have a valid format')
     },
 
     email(email, explain = 'email') {
-        if (!EMAIL_REGEX.test(email)) throw new Error(`${explain} ${email} is not an email`)
+        if (!EMAIL_REGEX.test(email)) throw new ContentError(`${explain} ${email} is not an email`)
     },
 
     password(password, explain = 'password') {
-        if (!PASSWORD_REGEX.test(password)) throw new Error(`${explain} password is not acceptable`)
+        if (!PASSWORD_REGEX.test(password)) throw new ContentError(`${explain} password is not acceptable`)
     },
 
     url(url, explain) {
-        if (!URL_REGEX.test(url)) throw new Error(explain + ' ' + url + ' is not an url')
+        if (!URL_REGEX.test(url)) throw new ContentError(explain + ' ' + url + ' is not an url')
     },
 
     callback(callback, explain = 'callback') {

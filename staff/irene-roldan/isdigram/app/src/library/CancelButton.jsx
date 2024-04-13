@@ -1,5 +1,4 @@
 import RoundButton from "./RoundButton";
-import "./CancelButton.sass";
 
 function CancelButton(props) {
   return (

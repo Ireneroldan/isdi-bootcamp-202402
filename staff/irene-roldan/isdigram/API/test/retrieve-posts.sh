@@ -1,1 +1,1 @@
-curl -H "Authorization: 66190cca16c7374bb2334ff5" http://localhost:8080/posts -v
+curl -H "Authorization: 661ce8603f342d494d61631b" http://localhost:8080/posts -v

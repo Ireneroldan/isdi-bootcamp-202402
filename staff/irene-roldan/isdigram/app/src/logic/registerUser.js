@@ -1,6 +1,5 @@
 import { validate, errors } from 'com'
 
-
 function registerUser(name, birthdate, email, username, password, callback) {
     validate.text(name, 'name')
     validate.date(birthdate, 'birthdate')
@@ -11,20 +10,20 @@ function registerUser(name, birthdate, email, username, password, callback) {
 
     var xhr = new XMLHttpRequest
 
-    xhr.onload = function () {
+    xhr.onload = () => {
         const { status, responseText: json } = xhr
 
-        if (status !== 201) {
-            const { error, message } = JSON.parse(json)
-
-            const constructor = errors[error]
-
-            callback(new constructor(message))
+        if (status == 201) {
+            callback(null)
 
             return
         }
 
-        callback(null)
+        const { error, message } = JSON.parse(json)
+
+        const constructor = errors[error]
+
+        callback(new constructor(message))
     }
 
     xhr.open('POST', 'http://localhost:8080/users')

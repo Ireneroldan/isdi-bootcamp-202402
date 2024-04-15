@@ -1,4 +1,4 @@
-import {validate, error} from 'com'
+import {validate, errors} from 'com'
 
 function logoutUser() {
     const user = db.users.findOne(user => user.id === sessionStorage.userId)

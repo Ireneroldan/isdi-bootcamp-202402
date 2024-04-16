@@ -1,39 +1,25 @@
-import {validate, errors} from 'com'
+import { errors } from 'com'
 
-function retrievePosts(callback) {
-    validate.callback(callback)
 
-    var xhr = new XMLHttpRequest
-
-    xhr.onload = function () {
-        const { status, responseText: json } = xhr
-
-        if (status >= 500) {
-            callback(new Error('system error'))
-
-            return
-        } else if (status >= 400) { // 400 - 499
-            const { error, message } = JSON.parse(json)
-
-            const constructor = window[error]
-
-            callback(new constructor(message))
-        } else if (status >= 300) {
-            callback(new Error('system error'))
-
-            return
-        } else {
-            const posts = JSON.parse(json)
-
-            callback(null, posts)
+function retrievePosts() {
+    return fetch('http://localhost:8080/posts', {
+        headers: {
+            'Authorization': `Bearer ${sessionStorage.token}`
         }
-    }
+    })
+        .then(res => {
+            if (res.status === 200)
+                return res.json()
 
-    xhr.open('GET', `http://localhost:8080/posts`)
+            return res.json()
+                .then(body => {
+                    const { error, message } = body
 
-    xhr.setRequestHeader('Authorization', sessionStorage.userId)
+                    const constructor = errors[error]
 
-    xhr.send()
+                    throw new constructor(message)
+                })
+        })
 }
 
 export default retrievePosts

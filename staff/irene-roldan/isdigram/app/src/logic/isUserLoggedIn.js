@@ -1,4 +1,4 @@
 function isUserLoggedIn() {
-    return !!sessionStorage.userId
+    return !!sessionStorage.token
 }
 export default isUserLoggedIn

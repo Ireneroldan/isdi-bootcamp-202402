@@ -1,6 +1,6 @@
 import {Schema} from 'mongoose'
 const {Types: {ObjectId}} = Schema
-import { UserType, User } from '../data/index.ts'
+import { UserType, User } from '../data'
 import {validate, errors} from 'com'
 
 const {NotFoundError, SystemError} = errors

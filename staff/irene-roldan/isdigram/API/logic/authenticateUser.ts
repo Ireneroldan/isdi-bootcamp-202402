@@ -1,5 +1,5 @@
 import { validate, errors } from 'com'
-import {User} from '../data/index.ts'
+import {User} from '../data'
 
 const { SystemError, CredentialsError, NotFoundError } = errors
 

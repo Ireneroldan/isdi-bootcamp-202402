@@ -1,4 +1,5 @@
 import {logger, showFeedback} from '../utils'
+import {Link} from 'react-router-dom'
 
 import logic from '../logic'
 
@@ -22,13 +23,13 @@ function Post(props) {
     const { item: post } = props
 
     return <article key={post.id}>
-    <h3>{post.author.username}</h3>
+    <h3><Link to={'/profile/${post.author.username}'}>{post.author.username}</Link></h3>
 
     <img src={post.image} />
 
     <p>{post.text}</p>
 
-    <time>{post.date}</time>
+    <time>{new Date (post.date).toLocaleString('en-CA')}</time>
 
     {logic.getLoggedInUserId() === post.author.id && <>
         <button onClick={() => handleDeleteClick(post.id)}>🗑️</button>

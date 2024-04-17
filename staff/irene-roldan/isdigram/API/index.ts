@@ -4,6 +4,7 @@ import logic from './logic/index.ts'
 import { errors } from 'com'
 import tracer from 'tracer'
 import colors from 'colors'
+import jwt from 'jsonwebtoken'
 
 const logger = tracer.colorConsole({
     filters: {
@@ -19,14 +20,6 @@ const { ContentError, SystemError, DuplicityError, NotFoundError, CredentialsErr
 
 mongoose.connect('mongodb://localhost:27017/isdigram')
     .then(() => {
-        const db = mongoose.connection.db
-
-        const users = db.collection('users')
-        const posts = db.collection('posts')
-
-        logic.users = users
-        logic.posts = posts
-
         const api = express()
 
         const jsonBodyParser = express.json()
@@ -74,7 +67,11 @@ mongoose.connect('mongodb://localhost:27017/isdigram')
                 const { username, password } = req.body
 
                 logic.authenticateUser(username, password)
-                    .then(userId => res.json(userId))
+                    .then(userId => {
+                        const token = jwt.sign({ sub: userId }, 'i killed kenny')
+
+                        res.json(token)
+                    })
                     .catch(error => {
                         if (error instanceof SystemError) {
                             logger.error(error.message)
@@ -105,11 +102,15 @@ mongoose.connect('mongodb://localhost:27017/isdigram')
 
         api.get('/users/:targetUserId', (req, res) => {
             try {
-                const { authorization: userId } = req.headers
+                const { authorization } = req.headers
+
+                const token = authorization.slice(7)
+
+                const { sub: userId } = jwt.verify(token, 'i killed kenny')
 
                 const { targetUserId } = req.params
 
-                logic.retrieveUser(userId, targetUserId)
+                logic.retrieveUser(userId as string, targetUserId)
                     .then(user => res.json(user))
                     .catch(error => {
                         if (error instanceof SystemError) {
@@ -137,41 +138,71 @@ mongoose.connect('mongodb://localhost:27017/isdigram')
 
         api.get('/posts', (req, res) => {
             try {
-                const { authorization: userId } = req.headers
+                const { authorization } = req.headers
 
-                logic.retrievePosts(userId, (error, posts) => {
-                    if (error) {
-                        res.status(400).json({ error: error.constructor.name, message: error.message })
+                const token = authorization.slice(7)
 
-                        return
-                    }
+                const { sub: userId } = jwt.verify(token, 'i killed kenny')
 
-                    res.json(posts)
-                })
+                logic.retrievePosts(userId as string)
+                    .then(posts => res.json(posts))
+                    .catch(error => {
+                        if (error instanceof SystemError) {
+                            logger.error(error.message)
 
+                            res.status(500).json({ error: error.constructor.name, message: error.message })
+                        } else if (error instanceof NotFoundError) {
+                            logger.warn(error.message)
+
+                            res.status(404).json({ error: error.constructor.name, message: error.message })
+                        }
+                    })
             } catch (error) {
-                res.status(400).json({ error: error.constructor.name, message: error.message })
+                if (error instanceof TypeError || error instanceof ContentError) {
+                    logger.warn(error.message)
+
+                    res.status(406).json({ error: error.constructor.name, message: error.message })
+                } else {
+                    logger.warn(error.message)
+
+                    res.status(500).json({ error: error.constructor.name, message: error.message })
+                }
             }
         })
 
         api.post('/posts', jsonBodyParser, (req, res) => {
             try {
-                const { authorization: userId } = req.headers
+                const { authorization } = req.headers
+
+                const token = authorization.slice(7)
+
+                const { sub: userId } = jwt.verify(token, 'i killed kenny')
 
                 const { image, text } = req.body
 
-                logic.createPost(userId, image, text, error => {
-                    if (error) {
-                        res.status(400).json({ error: error.constructor.name, message: error.message })
+                logic.createPost(userId as string, image, text)
+                    .then(() => res.status(201).send())
+                    .catch(error => {
+                        if (error instanceof SystemError) {
+                            logger.error(error.message)
 
-                        return
-                    }
+                            res.status(500).json({ error: error.constructor.name, message: error.message })
+                        } else if (error instanceof NotFoundError) {
+                            logger.warn(error.message)
 
-                    res.status(201).send()
-                })
-
+                            res.status(404).json({ error: error.constructor.name, message: error.message })
+                        }
+                    })
             } catch (error) {
-                res.status(400).json({ error: error.constructor.name, message: error.message })
+                if (error instanceof TypeError || error instanceof ContentError) {
+                    logger.warn(error.message)
+
+                    res.status(406).json({ error: error.constructor.name, message: error.message })
+                } else {
+                    logger.warn(error.message)
+
+                    res.status(500).json({ error: error.constructor.name, message: error.message })
+                }
             }
         })
 

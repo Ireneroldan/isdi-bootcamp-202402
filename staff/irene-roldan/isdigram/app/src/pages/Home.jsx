@@ -1,4 +1,4 @@
-import { logger, showFeedback } from '../utils'
+import { logger } from '../utils'
 
 import logic from '../logic'
 
@@ -10,20 +10,23 @@ import EditPost from '../components/EditPost'
 import { Routes, Route } from 'react-router-dom'
 import Profile from '../components/Profile'
 
-function Home(props) {
+import { useContext } from '../context'
+
+function Home({ onUserLoggedOut }) {
     const [user, setUser] = useState(null)
     const [view, setView] = useState(null)
     const [stamp, setStamp] = useState(null)
     const [post, setPost] = useState(null)
 
+    const { showFeedback } = useContext()
+
     useEffect(() => {
         try {
             logic.retrieveUser()
-                //.then(user => setUser(user))
                 .then(setUser)
-                .catch(showFeedback)
+                .catch(error => showFeedback(error.message, 'error'))
         } catch (error) {
-            showFeedback(error)
+            showFeedback(error.message)
         }
     }, [])
 
@@ -44,7 +47,7 @@ function Home(props) {
         } catch (error) {
             logic.cleanUpLoggedInUserId()
         } finally {
-            props.onUserLoggedOut()
+            onUserLoggedOut()
         }
     }
 

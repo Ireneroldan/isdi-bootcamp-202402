@@ -1,4 +1,4 @@
-import {logger, showFeedback} from '../utils'
+import {logger} from '../utils'
 
 import CancelButton from '../library/CancelButton'
 
@@ -7,9 +7,11 @@ import SubmitButton from '../library/SubmitButton'
 
 import './EditPost.sass'
 
-import {Component} from 'react'
+import { useContext } from '../context'
 
 function EditPost(props) {
+    const {showFeedback} = useContext()
+    
     const handleSubmit = event => {
         event.preventDefault()
 
@@ -20,13 +22,16 @@ function EditPost(props) {
         logger.debug('EditPost -> handleSubmit', text)
 
         try {
-            logic.modifyPost(this.props.post.id, text)
+            logic.modifyPost(props.post.id, text)
 
-            form.reset()
+            .then(()=>{
+                form.reset()
 
-            this.props.onPostEdited()
+                props.onPostEdited()
+            })
+            .catch(error => showFeedback(error.message, 'error'))
         } catch (error) {
-            showFeedback(error)
+            showFeedback(error.message)
         }
 
     }
@@ -44,7 +49,7 @@ function EditPost(props) {
 
             </form>
 
-            <CancelButt onClick={handleCancelClick}>Cancel</CancelButt>
+            <CancelButton onClick={handleCancelClick}/>
         </section>
     
 }

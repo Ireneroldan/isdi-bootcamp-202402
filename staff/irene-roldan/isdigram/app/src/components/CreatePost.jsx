@@ -1,10 +1,12 @@
 import CancelButton from '../library/CancelButton'
-import {logger, showFeedback} from '../utils'
+import {logger} from '../utils'
 import logic from '../logic'
 import SubmitButton from '../library/SubmitButton'
-import './CreatePost.sass'
+import { useContext } from '../context'
 
 function CreatePost(props) {
+    const {showFeedback} = useContext()
+    
     const handleSubmit = event => {
         event.preventDefault()
 
@@ -16,11 +18,14 @@ function CreatePost(props) {
         try {
             logic.CreatePost(image, text)
 
-            form.reset()
+            .then(()=> {
+                form.reset()
 
-            props.onPostCreated()
+                props.onPostCreated()
+            })
+            .catch(error => showFeedback(error.message, 'error'))
         } catch (error) {
-            showFeedback(error)
+            showFeedback(error.message)
         }
     }
 
@@ -28,8 +33,8 @@ function CreatePost(props) {
     const handleCancelClick = () => props.onCancelClick()
     logger.debug('CreatePost -> render')
 
-    return <section className="create-post">
-        <form onSubmit={handleSubmit}>
+    return <section className="mb-[50px] fixed bottom-0 left-0 bg-white w-full box-border p-[5vw]">
+        <form onSubmit={handleSubmit} className="flex flex-col">
             <label>Image</label>
             <input id="image" type="text" />
 

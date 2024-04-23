@@ -11,12 +11,15 @@ function createBoard(props) {
 
         const form = event.target
 
-        const text = form.text.value
+        const name = form.name.value
         
         try {
-            logic.CreateBoard(text)
+            logic.CreateBoard(name)
+                .then(() => {
+                    form.reset()
 
-            props.onBoardCreated()
+                    props.onBoardCreated()
+                })
             .catch(error => showFeedback(error, 'error'))
         } catch (error) {
             showFeedback(error)
@@ -27,10 +30,10 @@ function createBoard(props) {
 
     return <section>
         <form action="" onSubmit={handleSubmit}>
-            <label for="text">Project name</label>
-            <input type="text" id='text'/>
+            <label htmlFor="text">Project name</label>
+            <input type="text" id="name"/>
 
-            <button>Ok</button>
+            <button type="submit">Ok</button>
         </form>
 
         <button onClick={handleCancelClick}>Cancel</button>

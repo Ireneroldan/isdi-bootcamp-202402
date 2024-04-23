@@ -14,13 +14,12 @@ Tasking is a project management tool that uses virtual boards to organize tasks 
 [Figma](https://www.figma.com/file/eu5ckftACDFTGujr1UL9lF/Proyecto-isdi?type=design&mode=design&t=wiiC8brQOOJODEYf-0)
 
 ## Technical description
-- Create task lists
-- Create new boards
+- Create new boards and the possibity to delete them (only if no asigned users)
 - Share the boards with other users
-- Assign team members to tasks
-- Track task progress with percentage
-- Change the states of tasks to to-do, doing, review and done
-
+- Create tasks and the possibility to delete them 
+- Assign team members to tasks(via email)
+- Change the states of tasks to columns named to-do, doing, review and done
+- The tasks of the done column can be archived
 
 v0.1
 - Chat with team users 
@@ -31,6 +30,8 @@ v0.1
 - Add comments 
 - Register a task worktime 
 - Custom the avatar 
+- Track task progress with percentage
+
 
 ### Modules
 - api (server logic)
@@ -54,16 +55,18 @@ User
 - avatar (string, required)
 
 Board
-- id(required)
-- name(string, required)
-- assigned task id()
-- assigned user id()
+- id (required)
+- name (string, required)
+- author(objectId, required)
+- assigned task id (ObjectId, optional)
+- assigned user id (ObjectId, optional)
+- creation date (Date, required)
 
 Task
-- id(required)
-- name(string, required)
-- description(string, required)
+- id (required)
+- name (string, required)
+- description (string, required)
 - state (string, required)
-- assigned user id
-- id board 
+- assigned user id (optional)
+- id board (required)
 

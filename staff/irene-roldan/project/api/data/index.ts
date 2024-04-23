@@ -32,11 +32,35 @@ const user = new Schema({
     }
 })
 
+type BoardType = {
+    author: ObjectId
+    text: string
+    date: Date
+}
+
+const board = new Schema ({ 
+    author: {
+        type: ObjectId,
+        ref: 'Board',
+        required: true
+    },
+    text: {
+        type: String,
+    },
+    date: {
+        type: Date,
+        required: true
+    }
+})
+
+
 const User = model<UserType>('User', user)
-
-
+const Board = model<BoardType>('Board', board)
 
 export {
     UserType,
-    User
+    User,
+
+    BoardType,
+    Board
 }

@@ -4,7 +4,7 @@ import { validate, errors } from 'com'
 function retrieveBoards() {
     validate.token(sessionStorage.token)
 
-    return fetch(`${import.meta.env.VITE_API_URL}/board`, {
+    return fetch(`${import.meta.env.VITE_API_URL}/boards`, {
         headers: {
             'Authorization': `Bearer ${sessionStorage.token}`
         }

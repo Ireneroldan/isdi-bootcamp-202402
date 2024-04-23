@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import express from 'express'
-import logic from './logic/index.ts'
+import logic from './logic/index.ts' 
 import { errors } from 'com'
 import jwt  from 'jsonwebtoken'
 import cors from 'cors'
@@ -149,7 +149,7 @@ mongoose.connect(MONGODB_URL)
         })
 
 
-        api.get('/board', (req, res) => {
+        api.get('/boards', (req, res) => {
             try {
                 const { authorization } = req.headers
 
@@ -158,7 +158,7 @@ mongoose.connect(MONGODB_URL)
                 const { sub: userId } = jwt.verify(token, JWT_SECRET)
 
                 logic.retrieveBoard(userId as string)
-                    .then(posts => res.json(posts))
+                    .then(boards => res.json(boards))
                     .catch(error => {
                         if (error instanceof SystemError) {
                             logger.error(error.message)
@@ -187,7 +187,7 @@ mongoose.connect(MONGODB_URL)
             }
         })
 
-        api.post('/posts', jsonBodyParser, (req, res) => {
+        api.post('/boards', jsonBodyParser, (req, res) => {
             try {
                 const { authorization } = req.headers
 
@@ -195,9 +195,9 @@ mongoose.connect(MONGODB_URL)
 
                 const { sub: userId } = jwt.verify(token, JWT_SECRET)
 
-                const { image, text } = req.body
+                const { text } = req.body
 
-                logic.createPost(userId as string, image, text)
+                logic.createBoard(userId as string, text)
                     .then(() => res.status(201).send())
                     .catch(error => {
                         if (error instanceof SystemError) {

@@ -9,11 +9,13 @@ import Profile from '../components/Profile'
 
 import { useContext } from '../context'
 import CreateBoard from '../components/createBoard'
+import BoardList from '../components/BoardList'
 
 function Home({ onUserLoggedOut }) {
     const [user, setUser] = useState(null)
     const [view, setView] = useState(null)
     const [stamp, setStamp] = useState(null)
+    const [board, setBoard] = useState(null)
 
     const { showFeedback } = useContext()
 
@@ -48,7 +50,18 @@ function Home({ onUserLoggedOut }) {
 
     const handleCreateBoardClick = () => setView('create-board')
         
-    
+    const handleEditBoardCancelClick = () => clearView()
+
+    const handleEditBoardClick = board => {
+        setView('edit-board')
+        setBoard(board)
+    }
+
+    const handleBoardEdited = () => {
+        clearView()
+        setStamp(Date.now())
+        setBoard(null)
+    }
 
     return <>
         <header>
@@ -61,6 +74,7 @@ function Home({ onUserLoggedOut }) {
 
         <main>
             <Routes>
+                <Route path="/" element={<BoardList stamp={stamp} onEditBoardClick={handleEditBoardClick} />} />
                 <Route path="/profile/:username" element={<Profile />} />
             </Routes>
 

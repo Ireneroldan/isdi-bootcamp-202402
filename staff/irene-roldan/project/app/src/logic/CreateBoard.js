@@ -9,7 +9,7 @@ function CreateBoard(text){
 
     const json = JSON.stringify(board)
 
-    return fetch(`${import.meta.env.VITE_API_URL}/board`, {
+    return fetch(`${import.meta.env.VITE_API_URL}/boards`, {
         method: 'POST',
         headers: {
             Authorization: `Bearer ${sessionStorage.token}`,

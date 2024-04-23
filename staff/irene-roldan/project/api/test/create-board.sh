@@ -1,0 +1,1 @@
+curl -X POST -H "Authorization: Bearer <token>" -H "Content-Type: application/json" -d '{"text":"isdi"}' http://localhost:9000/board -v

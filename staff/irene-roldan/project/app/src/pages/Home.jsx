@@ -63,6 +63,8 @@ function Home({ onUserLoggedOut }) {
         setBoard(null)
     }
 
+    logger.debug('Home -> render')
+
     return <>
         <header>
             {user && <h1>Welcome, {user.name}</h1>}
@@ -73,6 +75,7 @@ function Home({ onUserLoggedOut }) {
         </header>
 
         <main>
+        
             <Routes>
                 <Route path="/" element={<BoardList stamp={stamp} onEditBoardClick={handleEditBoardClick} />} />
                 <Route path="/profile/:username" element={<Profile />} />

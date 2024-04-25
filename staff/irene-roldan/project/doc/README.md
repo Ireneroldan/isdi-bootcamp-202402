@@ -13,15 +13,18 @@ Tasking is a project management tool that uses virtual boards to organize tasks 
 ### UI Design
 [Figma](https://www.figma.com/file/eu5ckftACDFTGujr1UL9lF/Proyecto-isdi?type=design&mode=design&t=wiiC8brQOOJODEYf-0)
 
-## Technical description
-- Create new boards and the possibity to delete them (only if no asigned users)
-- Share the boards with other users
-- Create tasks and the possibility to delete them 
-- Assign team members to tasks(via email)
-- Change the states of tasks to columns named to-do, doing, review and done
-- The tasks of the done column can be archived
+## Use Cases
+- List boards (created by, or assigned to)
+- Create new board a
+- Delete a board (only if no asigned users)
+- Share a board with other user
+- Create a task (in board) 
+- Delete a task (from board)
+- Change task status (todo, doing, review, done)
+- Archive task (only if in status done)
 
 v0.1
+- Assign team members to tasks(via email)
 - Chat with team users 
 - Design in Dark mode and Light mode
 - Search and filtering tasks
@@ -31,13 +34,18 @@ v0.1
 - Register a task worktime 
 - Custom the avatar 
 - Track task progress with percentage
+- Choose dark mode
 
+## Technical Description
 
 ### Modules
+
 - api (server logic)
 - app (client interface)
 - com
+
 ### Technologies
+
 - Typescript
 - Vite
 - React
@@ -45,28 +53,30 @@ v0.1
 - Node
 - Tailwindcss
 - Mongoose
+
 ### Data model
+
 User
-- id (required)
+- id (auto, required)
 - name (string, required)
-- last Name(string, required)
+- surname (string, required)
 - email (string, required)
 - password (string, required)
 - avatar (string, required)
 
 Board
-- id (required)
+- id (auto, required)
+- owner (User.id, required)
 - name (string, required)
-- author(objectId, required)
-- assigned task id (ObjectId, optional)
-- assigned user id (ObjectId, optional)
-- creation date (Date, required)
+- assignees ([User.id], optional)
+- creationDate (Date, required)
 
 Task
-- id (required)
+- id (auto, required)
+- board (Board.id, required)
+- author (User.id, required)
+- status (string, required, enum: todo|doing|review|done, default todo)
 - name (string, required)
 - description (string, required)
-- state (string, required)
-- assigned user id (optional)
-- id board (required)
-
+- assignees ([User.id], optional)
+- creationDate (Date, required)

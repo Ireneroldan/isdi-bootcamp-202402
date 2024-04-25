@@ -23,14 +23,14 @@ function Board({ item: board, onEditClick, onDeleted }) {
 
     const handleEditClick = board => onEditClick(board)
 
+    logger.debug('Board -> render')
+
     return <article>
-        <h3><Link to={`/profile/${board.author.name}`}>{board.author.name}</Link></h3>
+        <h3><Link to={`/profile/${board.author}`}>{board.author}</Link></h3>
 
         <p>{board.text}</p>
 
-        <time>{new Date(board.date).toLocaleString('en-CA')}</time>
-
-        {logic.getLoggedInUserId() === board.author.id && <>
+        {logic.getLoggedInUserId() === board.author && <>
             <button onClick={() => handleDeleteClick(board.id)}>❌</button>
             <button onClick={() => handleEditClick(board)}>📝</button>
         </>}

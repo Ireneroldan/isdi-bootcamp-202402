@@ -1,7 +1,9 @@
 import { logger } from '../utils'
-
+import SubmitButton from './library/SubmitButton'
 import logic from '../logic'
 import { useContext } from '../context'
+import CancelButton from './library/CancelButton'
+
 
 function createBoard(props) {
     const { showFeedback } = useContext()
@@ -11,10 +13,10 @@ function createBoard(props) {
 
         const form = event.target
 
-        const name = form.name.value
+        const text = form.name.value
         
         try {
-            logic.CreateBoard(name)
+            logic.CreateBoard(text)
                 .then(() => {
                     form.reset()
 
@@ -28,15 +30,17 @@ function createBoard(props) {
 
     const handleCancelClick = () => props.onCancelClick()
 
+    logger.debug('CreatePost -> render')
+
     return <section>
         <form action="" onSubmit={handleSubmit}>
             <label htmlFor="text">Project name</label>
             <input type="text" id="name"/>
 
-            <button type="submit">Ok</button>
+            <SubmitButton type="submit">Ok</SubmitButton>
         </form>
 
-        <button onClick={handleCancelClick}>Cancel</button>
+        <CancelButton onClick={handleCancelClick}>Cancel</CancelButton>
     </section>
 
 }

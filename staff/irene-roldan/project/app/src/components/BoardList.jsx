@@ -11,11 +11,13 @@ function BoardList({ stamp, onEditBoardClick }) {
     const { showFeedback } = useContext()
 
     const loadBoard = () => {
+        logger.debug('PostList -> loadPosts')
+
         try{
-            logic.retrieveBoard()
-                .then(setBoards)
+            logic.retrieveBoards()
+                .then((data) => setBoards(data))
                 .catch(error => showFeedback(error, 'error'))
-        }catch(error){
+        }catch (error){
             showFeedback(error)
         }
     }
@@ -26,6 +28,8 @@ function BoardList({ stamp, onEditBoardClick }) {
 
     const handleBoardDeleted = () => loadBoard()
     const handleEditClick = board => onEditBoardClick(board)
+
+    logger.debug('PostList -> render')
 
     return <section>
         {boards.map(board => <Board key={board.id} item={board} onEditClick={handleEditClick} onDeleted={handleBoardDeleted} />)}

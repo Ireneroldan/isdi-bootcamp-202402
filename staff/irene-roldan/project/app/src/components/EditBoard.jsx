@@ -11,6 +11,8 @@ function EditBoard(props) {
         const form = event.target
 
         const text = form.text.value
+        
+        logger.debug('EditPost -> handleSubmit', text)
 
         try {
             logic.modifyBoard(props.board.id, text)
@@ -26,6 +28,8 @@ function EditBoard(props) {
     }
 
     const handleCancelClick = () => props.onCancelClick()
+
+    logger.debug('EditPost -> render')
 
     return <section className="edit-board">
     <form onSubmit={handleSubmit}>

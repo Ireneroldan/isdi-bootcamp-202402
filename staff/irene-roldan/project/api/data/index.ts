@@ -36,6 +36,7 @@ type BoardType = {
     author: ObjectId
     text: string
     date: Date
+    assignedUsers: ObjectId[]
 }
 
 const board = new Schema ({ 
@@ -50,7 +51,12 @@ const board = new Schema ({ 
     date: {
         type: Date,
         required: true
-    }
+    },
+    assignedUsers: [{
+        type: ObjectId,
+        ref: 'User',
+        required: false
+    }]
 })
 
 

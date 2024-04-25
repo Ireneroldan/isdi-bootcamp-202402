@@ -60,6 +60,8 @@ function App() {
     setConfirm(null)
   }
 
+  logger.debug('App -> render')
+
   return <>
     <Context.Provider value={{ showFeedback: handleFeedback, showConfirm: handleConfirm }}>
       <Routes>

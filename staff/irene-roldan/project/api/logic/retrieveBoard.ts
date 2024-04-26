@@ -8,7 +8,7 @@ const { SystemError, NotFoundError } = errors
 
 function retrieveBoards(userId): Promise<[{ id: string, author: { id: string, email: string }, text: string}] | { id: string; author: { id: string; email: string; }; text: string; }[]> {
     validate.text(userId, 'userId', true)
-
+    
     return User.findById(userId)
         .catch(error => { throw new SystemError(error.message) })
         .then(user => {
@@ -20,8 +20,9 @@ function retrieveBoards(userId): Promise<[{ id: string, author: { id: string, em
       .lean()
       .catch(error => { throw new SystemError(error.message) })
       .then(boards =>
-        boards.map<{ text: string }>(({ text }) => ({
-        text
+        boards.map<{ text: string, _id}>(({ text, _id }) => ({
+        text,
+        _id
         })).reverse()
       )  
     })

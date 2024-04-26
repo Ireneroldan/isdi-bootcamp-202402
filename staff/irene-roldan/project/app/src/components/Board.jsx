@@ -28,9 +28,7 @@ function Board({ item: board, onEditClick, onDeleted }) {
     return <article>
         <h3><Link to={`/profile/${board.author}`}>{board.author}</Link></h3>
 
-        <p>{board.text}</p>
-
-        {logic.getLoggedInUserId() === board.author && <>
+        <Link to={`/BoardPage/${board._id}`}>{board.text}</Link>        {logic.getLoggedInUserId() === board.author && <>
             <button onClick={() => handleDeleteClick(board.id)}>❌</button>
             <button onClick={() => handleEditClick(board)}>📝</button>
         </>}

@@ -10,6 +10,7 @@ import Profile from '../components/Profile'
 import { useContext } from '../context'
 import CreateBoard from '../components/createBoard'
 import BoardList from '../components/BoardList'
+import BoardPage from './BoardPage'
 
 function Home({ onUserLoggedOut }) {
     const [user, setUser] = useState(null)
@@ -79,6 +80,7 @@ function Home({ onUserLoggedOut }) {
             <Routes>
                 <Route path="/" element={<BoardList stamp={stamp} onEditBoardClick={handleEditBoardClick} />} />
                 <Route path="/profile/:username" element={<Profile />} />
+                <Route path="/board/:boardId" element={<BoardPage />}></Route>
             </Routes>
 
             {view === 'create-board' && <CreateBoard onCancelClick={handleCreateBoardCancelClick} onBoardCreated={handleBoardCreated} />}

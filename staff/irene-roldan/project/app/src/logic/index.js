@@ -7,6 +7,7 @@ import isUserLoggedIn from './isUserLoggedIn'
 import cleanUpLoggedInUserId from './cleanUpLoggedInUserId'
 import CreateBoard from './CreateBoard'
 import retrieveBoards from './retrieveBoards'
+import retrieveOneBoard from './retrieveOneBoard'
 
 const logic = {
     registerUser,
@@ -18,7 +19,9 @@ const logic = {
     cleanUpLoggedInUserId,
 
     CreateBoard,
-    retrieveBoards
+    retrieveBoards,
+    retrieveOneBoard
+
 }
 
 export default logic

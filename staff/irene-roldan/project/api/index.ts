@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-import mongoose from 'mongoose'
+import mongoose, { ObjectId } from 'mongoose'
 import express from 'express'
 import logic from './logic/index.ts' 
 import { errors } from 'com'
@@ -157,8 +157,9 @@ mongoose.connect(MONGODB_URL)
                 const token = authorization.slice(7)
 
                 const { sub: userId } = jwt.verify(token, JWT_SECRET)
-
-                logic.retrieveBoard(userId as string)
+                
+                //@ts-ignore
+                logic.retrieveBoard(userId as ObjectId)
                     .then(boards => res.json(boards))
                     .catch(error => {
                         if (error instanceof SystemError) {
@@ -236,7 +237,7 @@ mongoose.connect(MONGODB_URL)
 
                 const { boardId } = req.params
 
-                logic.retrieveBoard(boardId as string)
+                logic.retrieveOneBoard(boardId as string)
                     .then(board => res.json(board))
                     .catch(error => {
                         if (error instanceof SystemError) {
@@ -266,6 +267,43 @@ mongoose.connect(MONGODB_URL)
             }
         })
 
+       /* api.get('/board', (req, res) => {
+            try {
+                const { authorization } = req.headers
+
+                //@ts-ignore
+                logic.retrieveBoard(boardId as ObjectId)
+                    .then(boards => res.json(boards))
+                    .catch(error => {
+                        if (error instanceof SystemError) {
+                            logger.error(error.message)
+    
+                            res.status(500).json({ error: error.constructor.name, message: error.message })
+                        } else if (error instanceof NotFoundError) {
+                            logger.warn(error.message)
+    
+                            res.status(404).json({ error: error.constructor.name, message: error.message })
+                        }
+                    })
+            } catch (error) {
+                if (error instanceof TypeError || error instanceof ContentError) {
+                    logger.warn(error.message)
+    
+                    res.status(406).json({ error: error.constructor.name, message: error.message })
+                } else if (error instanceof TokenExpiredError) {
+                    logger.warn(error.message)
+    
+                    res.status(498).json({ error: UnauthorizedError.name, message: 'session expired' })
+                } else {
+                    logger.warn(error.message)
+    
+                    res.status(500).json({ error: SystemError.name, message: error.message })
+                }
+            }
+        })*/
+
         api.listen(PORT, () => logger.info(`API listening on port ${PORT}`))
     })
     .catch(error => logger.error(error))
+
+    

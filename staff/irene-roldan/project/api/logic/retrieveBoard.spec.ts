@@ -1,65 +1,46 @@
-import dotenv from 'dotenv'
-import mongoose from 'mongoose'
-import logic from './index.ts'
-import { expect } from 'chai'
-import { errors } from 'com'
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+import { expect } from 'chai';
+import { errors } from 'com';
+import logic from './index.ts';
+import { User, Board } from '../data/index.ts';
 
-import { User, Board, BoardType } from '../data/index.ts'
+dotenv.config();
 
-dotenv.config()
+const { CredentialsError, NotFoundError } = errors;
 
-const { CredentialsError, NotFoundError } = errors
+describe('retrieveBoards', () => {
+    before(async () => {
+        await mongoose.connect(process.env.MONGODB_TEST_URL);
+    });
 
-describe('retrieveBoard', () => {
-    before(() => mongoose.connect(process.env.MONGODB_TEST_URL))
-
-    it('retrieves all boards for existing user', () => 
-        Promise.all([
+    it('retrieves all boards for existing user', async () => {
+        await Promise.all([
             User.deleteMany(),
             Board.deleteMany()
-        ])
+        ]);
 
-            .then(() => 
-                User.create({ name: 'Isdi', surname: 'Coders', email: 'isdi@coders.com', password: '123qwe123'})
-                    .then(user =>
-                        Promise.all([
-                            Board.create({author: user.id, text: 'project1', date: new Date, assignedUsers: []}),
-                            Board.create({author: user.id, text: 'project2', date: new Date, assignedUsers: []}),
-                            Board.create({author: user.id, text: 'project3', date: new Date, assignedUsers: []})
-                        ])
-                            .then(([board1, board2, board3])=> 
-                                logic.retrieveBoard(user.id)
-                                    .then(boards => {
-                                        expect(boards => {
-                                            expect(boards).to.have.lengthOf(3)
+        const user = await User.create({ name: 'Isdi', surname: 'Coders', email: 'isdi@coders.com', password: '123qwe123' });
 
-                                            const board1b = boards.find(board => board.id === board1.id)
+        const board1 = await Board.create({ author: user.id, text: 'hello board 1', date: new Date() });
+        const board2 = await Board.create({ author: user.id, text: 'hello board 2', date: new Date() });
+        const board3 = await Board.create({ author: user.id, text: 'hello board 3', date: new Date() });
 
-                                            expect(board1b.author.email).to.equal('isdi@coders.com')
-                                            expect(board1b.author.id).to.equal(user.id)
-                                            expect(board1b.text).to.equal(board1.text)
-                                            expect(board1b.date).to.deep.equal('board1.date')
+        const boards = await logic.retrieveBoard(user.id);
 
-                                            const board2b = boards.find(board => board.id === board2.id)
+        expect(boards).to.have.lengthOf(3);
 
-                                            expect(board2b.author.email).to.equal('isdi@coders.com')
-                                            expect(board2b.author.id).to.equal(user.id)
-                                            expect(board2b.text).to.equal(board2.text)
-                                            expect(board1b.date).to.deep.equal('board2.date')
+        const board1b = boards.find(board => board.id.toString() === board1.id.toString());
+        expect(board1b.text).to.equal(board1.text);
 
-                                            const board3b = boards.find(board => board.id === board3.id)
+        const board2b = boards.find(board => board.id.toString() === board2.id.toString());
+        expect(board2b.text).to.equal(board2.text);
 
-                                            expect(board3b.author.email).to.equal('isdi@coders.com')
-                                            expect(board3b.author.id).to.equal(user.id)
-                                            expect(board3b.text).to.equal(board3.text)
-                                            expect(board3b.date).to.deep.equal('board3.date')
+        const board3b = boards.find(board => board.id.toString() === board3.id.toString());
+        expect(board3b.text).to.equal(board3.text);
+    });
 
-                                        })
-                                    })
-                            )
-                    )
-            )
-    )
-
-    after(mongoose.disconnect)
-})
+    after(async () => {
+        await mongoose.disconnect();
+    });
+});

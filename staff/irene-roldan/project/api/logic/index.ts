@@ -4,6 +4,7 @@ import retrieveUser from './retrieveUser.ts'
 
 import retrieveBoard from './retrieveBoard.ts'
 import createBoard from './createBoard.ts'
+import retrieveOneBoard from './retrieveOneBoard.ts'
 
 const logic = {
     registerUser,
@@ -11,7 +12,8 @@ const logic = {
     retrieveUser,
 
     retrieveBoard,
-    createBoard
+    createBoard,
+    retrieveOneBoard
 }
 
 export default logic

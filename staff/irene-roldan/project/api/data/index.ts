@@ -47,6 +47,7 @@ const board = new Schema ({ 
     },
     text: {
         type: String,
+        required: true
     },
     date: {
         type: Date,
@@ -59,14 +60,60 @@ const board = new Schema ({ 
     }]
 })
 
+type TaskType = {
+    author: ObjectId
+    text: string
+    date: Date
+    assignedUsers: ObjectId[]
+}
+
+const task = new Schema ({ 
+    author: {
+        type: ObjectId,
+        ref: 'User', 
+        required: true
+    },
+    title: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
+    date: {
+        type: Date,
+        default: Date.now, 
+        required: true
+    },
+    columnType: {
+        type: String,
+        enum: ['todo', 'doing', 'review', 'done'],
+        default: 'todo',
+        required: true
+    },
+    assignedBoard: {
+        type: ObjectId,
+        ref: 'Board', 
+        required: true
+    },
+    assignedUsers: [{
+        type: ObjectId,
+        ref: 'User' 
+    }]
+})
 
 const User = model<UserType>('User', user)
 const Board = model<BoardType>('Board', board)
+const Task = model<TaskType>('Task', task)
 
 export {
     UserType,
     User,
 
     BoardType,
-    Board
+    Board,
+
+    TaskType,
+    Task
 }

@@ -32,6 +32,8 @@ function App() {
 
   const handleFeedbackAcceptClick = () => setFeedback(null)
 
+  const handleBackHome = () => navigate('/')
+
 
   const handleFeedback = (error, level = 'warn') => {
     console.log(error)
@@ -66,7 +68,7 @@ function App() {
   return <>
     <Context.Provider value={{ showFeedback: handleFeedback, showConfirm: handleConfirm }}>
       <Routes>
-      <Route path="/BoardPage/:boardId" element={<BoardPage />} />
+        <Route path="/BoardPage/:boardId" element={<BoardPage />} />
         <Route path="/login" element={logic.isUserLoggedIn() ? <Navigate to="/" /> : <Login onRegisterClick={handleRegisterClick} onUserLoggedIn={handleUserLoggedIn} />} />
         <Route path="/register" element={logic.isUserLoggedIn() ? <Navigate to="/" /> : <Register onLoginClick={handleLoginClick} onUserRegistered={handleLoginClick} />} />
         <Route path="/*" element={logic.isUserLoggedIn() ? <Home onUserLoggedOut={handleUserLoggedOut} /> : <Navigate to="/login" />} />
@@ -80,3 +82,4 @@ function App() {
 }
 
 export default App
+

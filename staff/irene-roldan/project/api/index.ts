@@ -267,40 +267,75 @@ mongoose.connect(MONGODB_URL)
             }
         })
 
-       /* api.get('/board', (req, res) => {
+        api.get('/Task', (req, res) => {
             try {
-                const { authorization } = req.headers
-
-                //@ts-ignore
-                logic.retrieveBoard(boardId as ObjectId)
-                    .then(boards => res.json(boards))
+                const { authorization } = req.headers;
+        
+                const token = authorization.slice(7);
+        
+                const { sub: userId } = jwt.verify(token, JWT_SECRET);
+        
+                logic.retrieveTask(userId)
+                    .then(tasks => res.json(tasks))
                     .catch(error => {
                         if (error instanceof SystemError) {
-                            logger.error(error.message)
-    
-                            res.status(500).json({ error: error.constructor.name, message: error.message })
+                            logger.error(error.message);
+                            res.status(500).json({ error: error.constructor.name, message: error.message });
                         } else if (error instanceof NotFoundError) {
-                            logger.warn(error.message)
-    
-                            res.status(404).json({ error: error.constructor.name, message: error.message })
+                            logger.warn(error.message);
+                            res.status(404).json({ error: error.constructor.name, message: error.message });
                         }
-                    })
+                    });
             } catch (error) {
                 if (error instanceof TypeError || error instanceof ContentError) {
-                    logger.warn(error.message)
-    
-                    res.status(406).json({ error: error.constructor.name, message: error.message })
+                    logger.warn(error.message);
+                    res.status(406).json({ error: error.constructor.name, message: error.message });
                 } else if (error instanceof TokenExpiredError) {
-                    logger.warn(error.message)
-    
-                    res.status(498).json({ error: UnauthorizedError.name, message: 'session expired' })
+                    logger.warn(error.message);
+                    res.status(498).json({ error: UnauthorizedError.name, message: 'session expired' });
                 } else {
-                    logger.warn(error.message)
-    
-                    res.status(500).json({ error: SystemError.name, message: error.message })
+                    logger.warn(error.message);
+                    res.status(500).json({ error: SystemError.name, message: error.message });
                 }
             }
-        })*/
+        });
+        
+        api.post('/task', jsonBodyParser, (req, res) => {
+            try {
+                const { authorization } = req.headers;
+        
+                const token = authorization.slice(7);
+        
+                const { sub: userId } = jwt.verify(token, JWT_SECRET);
+        
+                const { title, description } = req.body;
+        
+                logic.createTask(userId, title, description)
+                    .then(() => res.status(201).send())
+                    .catch(error => {
+                        if (error instanceof SystemError) {
+                            logger.error(error.message);
+                            res.status(500).json({ error: error.constructor.name, message: error.message });
+                        } else if (error instanceof NotFoundError) {
+                            logger.warn(error.message);
+                            res.status(404).json({ error: error.constructor.name, message: error.message });
+                        }
+                    });
+            } catch (error) {
+                if (error instanceof TypeError || error instanceof ContentError) {
+                    logger.warn(error.message);
+                    res.status(406).json({ error: error.constructor.name, message: error.message });
+                } else if (error instanceof TokenExpiredError) {
+                    logger.warn(error.message);
+                    res.status(498).json({ error: UnauthorizedError.name, message: 'session expired' });
+                } else {
+                    logger.warn(error.message);
+                    res.status(500).json({ error: SystemError.name, message: error.message });
+                }
+            }
+        })
+        
+
 
         api.listen(PORT, () => logger.info(`API listening on port ${PORT}`))
     })

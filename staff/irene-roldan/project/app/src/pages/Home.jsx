@@ -11,6 +11,7 @@ import { useContext } from '../context'
 import CreateBoard from '../components/createBoard'
 import BoardList from '../components/BoardList'
 import BoardPage from './BoardPage'
+import EditBoard from '../components/EditBoard'
 
 function Home({ onUserLoggedOut }) {
     const [user, setUser] = useState(null)

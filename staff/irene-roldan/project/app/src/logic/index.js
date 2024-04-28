@@ -8,6 +8,7 @@ import cleanUpLoggedInUserId from './cleanUpLoggedInUserId'
 import CreateBoard from './CreateBoard'
 import retrieveBoards from './retrieveBoards'
 import retrieveOneBoard from './retrieveOneBoard'
+import createTask from './createTask'
 
 const logic = {
     registerUser,
@@ -20,7 +21,9 @@ const logic = {
 
     CreateBoard,
     retrieveBoards,
-    retrieveOneBoard
+    retrieveOneBoard,
+
+    createTask
 
 }
 

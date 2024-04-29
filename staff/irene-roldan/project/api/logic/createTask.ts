@@ -4,7 +4,7 @@ import { ObjectId } from 'mongoose'
 
 const { SystemError, NotFoundError } = errors
 
-async function createTask(userId: string, title: string, description: string, boardId: string): Promise<void> {
+async function createTask(userId: string, title: string, description: string, boardId: string, columnType: string): Promise<void> {
     try {
         validate.text(userId, 'userId', true)
         validate.text(title, 'title')
@@ -26,7 +26,9 @@ async function createTask(userId: string, title: string, description: string, bo
             title,
             description,
             date: new Date(),
+            columnType,
             assignedBoard: boardId
+
         })
     } catch (error) {
         throw new SystemError(error.message)

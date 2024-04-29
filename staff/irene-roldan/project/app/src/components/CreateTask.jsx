@@ -8,7 +8,7 @@ import CancelButton from './library/CancelButton'
 function CreateTask(props) {
     const { showFeedback } = useContext()
 
-    const handleSubmit = event => {
+    const handleSubmit = (event) => {
         event.preventDefault()
 
         const form = event.target
@@ -16,13 +16,13 @@ function CreateTask(props) {
         const title = form.text.value
         const description = form.description.value
 
-        const { boardId } = props 
+        const { boardId, columnType } = props 
         
         try {
-            logic.createTask(title, description, boardId)
+            logic.createTask(title, description, boardId, columnType)
                 .then(() => {
                     form.reset()
-
+                    
                     props.onTaskCreated()
                 })
                 .catch(error => showFeedback(error, 'error'))

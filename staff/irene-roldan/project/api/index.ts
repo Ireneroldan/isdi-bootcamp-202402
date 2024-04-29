@@ -273,9 +273,9 @@ mongoose.connect(MONGODB_URL)
                 const token = authorization.slice(7)
                 const { sub: userId } = jwt.verify(token, JWT_SECRET)
                 
-                const { title, description, boardId } = req.body
+                const { title, description, boardId, columnType } = req.body
                 
-                logic.createTask(userId as string, title, description, boardId)
+                logic.createTask(userId as string, title, description, boardId, columnType)
                     .then(() => {
                         res.status(201).send()
                     })

@@ -10,6 +10,7 @@ function BoardPage() {
     const { showFeedback } = useContext()
     const [view, setView] = useState(null)
     const [board, setBoard] = useState(null)
+    const [stamp, setStamp] = useState(null)
     const { boardId } = useParams() 
 
     useEffect(() => {
@@ -21,6 +22,8 @@ function BoardPage() {
             showFeedback(error)
         }
     }, [boardId]) 
+
+    const clearView = () => setView(null)
 
 
     const handleTaskCreated = () => {
@@ -41,34 +44,36 @@ function BoardPage() {
             <main>
                 <div>
                     <h3>TODO</h3>
-                    <AddTaskButton columnType="TODO" onAddTask={handleCreateTaskClick} />
+                    <AddTaskButton columnType='todo' onAddTask={handleCreateTaskClick} />
                 </div>
 
                 <div>
                     <h3>DOING</h3>
-                    <AddTaskButton columnType="DOING" onAddTask={handleCreateTaskClick} />
+                    <AddTaskButton columnType='doing' onAddTask={handleCreateTaskClick} />
                 </div>
 
                 <div>
                     <h3>REVIEW</h3>
-                    <AddTaskButton columnType="REVIEW" onAddTask={handleCreateTaskClick} />
+                    <AddTaskButton columnType='review' onAddTask={handleCreateTaskClick} />
                 </div>
 
                 <div>
                     <h3>DONE</h3>
-                    <AddTaskButton columnType="DONE" onAddTask={(columnType) => handleCreateTaskClick(columnType)} />
+                    <AddTaskButton columnType='done' onAddTask={handleCreateTaskClick} />
                 </div>
 
                 <Link to="/">❌</Link>
             </main>
-
+      
             {view && view.view === 'create-task' && (
-        <CreateTask
-            onCancelClick={handleCreateTaskCancelClick}
-            onTaskCreated={() => (setView({ view: null, stamp: null }), handleTaskCreated())}
-            boardId={boardId}
-        />
-        )}
+            <CreateTask
+                onCancelClick={handleCreateTaskCancelClick}
+                onTaskCreated={() => (setView({ view: null, stamp: null }), handleTaskCreated())}
+                boardId={boardId}
+                columnType = {view.columnType}
+            />
+            )}
+         
 
         </>
     )

@@ -1,12 +1,13 @@
 import { validate, errors } from 'com'
 
-function createTask(title, description, boardId){
+function createTask(title, description, boardId, columnType){
     validate.text(title, 'title')
     validate.text(description, 'description')
+    validate.text(columnType, 'columnType')
     validate.token(sessionStorage.token)
 
 
-    const task = { title, description, boardId }
+    const task = { title, description, boardId, columnType }
 
     const json = JSON.stringify(task)
 

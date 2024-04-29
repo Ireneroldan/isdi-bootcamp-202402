@@ -63,8 +63,9 @@ const board = new Schema ({ 
 type TaskType = {
     author: ObjectId
     text: string
-    description: string 
+    description: string
     date: Date
+    columnType: string
     assignedUsers: ObjectId[]
 }
 
@@ -90,7 +91,6 @@ const task = new Schema ({ 
     columnType: {
         type: String,
         enum: ['todo', 'doing', 'review', 'done'],
-        default: 'todo',
         required: true
     },
     assignedBoard: {

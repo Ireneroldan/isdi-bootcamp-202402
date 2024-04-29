@@ -6,7 +6,7 @@ function AddTaskButton({ columnType, onAddTask }) {
   }
 
   return (
-    <button onClick={handleClick}>Add new task to {columnType}</button>
+    <button onClick={handleClick}>Add new task</button>
   )
 }
 

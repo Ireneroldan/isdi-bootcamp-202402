@@ -22,7 +22,13 @@ function BoardPage() {
         }
     }, [boardId]) 
 
-    const handleCreateTaskClick = () => setView({ view: 'create-task', stamp: Date.now() })
+
+    const handleTaskCreated = () => {
+        clearView()
+        setStamp(Date.now())
+    }
+
+    const handleCreateTaskClick = (columnType) => setView({ view: 'create-task', stamp: Date.now(), columnType: columnType })
     const handleCreateTaskCancelClick = () => setView({ view: null, stamp: null })
 
     logger.debug('BoardPage -> render')
@@ -50,13 +56,20 @@ function BoardPage() {
 
                 <div>
                     <h3>DONE</h3>
-                    <AddTaskButton columnType="DONE" onAddTask={handleCreateTaskClick} />
+                    <AddTaskButton columnType="DONE" onAddTask={(columnType) => handleCreateTaskClick(columnType)} />
                 </div>
 
                 <Link to="/">❌</Link>
             </main>
 
-            {view && view.view === 'create-task' && <CreateTask onCancelClick={handleCreateTaskCancelClick} onTaskCreated={() => setView({ view: null, stamp: null })} />}
+            {view && view.view === 'create-task' && (
+        <CreateTask
+            onCancelClick={handleCreateTaskCancelClick}
+            onTaskCreated={() => (setView({ view: null, stamp: null }), handleTaskCreated())}
+            boardId={boardId}
+        />
+        )}
+
         </>
     )
 }

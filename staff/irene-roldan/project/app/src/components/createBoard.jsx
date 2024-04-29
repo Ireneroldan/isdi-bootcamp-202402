@@ -42,6 +42,6 @@ function createBoard(props) {
 
         <CancelButton onClick={handleCancelClick}>Cancel</CancelButton>
     </section>
-
+    
 }
 export default createBoard

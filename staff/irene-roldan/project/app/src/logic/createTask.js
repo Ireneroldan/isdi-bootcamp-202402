@@ -6,11 +6,11 @@ function createTask(title, description, boardId){
     validate.token(sessionStorage.token)
 
 
-    const task = { title, description, assignedBoard: boardId }
+    const task = { title, description, boardId }
 
     const json = JSON.stringify(task)
 
-    return fetch(`${import.meta.env.VITE_API_URL}/Task`, {
+    return fetch(`${import.meta.env.VITE_API_URL}/tasks`, {
         method: 'POST',
         headers: {
             Authorization: `Bearer ${sessionStorage.token}`,

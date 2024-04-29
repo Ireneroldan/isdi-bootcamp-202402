@@ -63,6 +63,7 @@ const board = new Schema ({ 
 type TaskType = {
     author: ObjectId
     text: string
+    description: string 
     date: Date
     assignedUsers: ObjectId[]
 }
@@ -109,7 +110,7 @@ const Task = model<TaskType>('Task', task)
 
 export {
     UserType,
-    User,
+    User,  
 
     BoardType,
     Board,

@@ -62,7 +62,7 @@ const board = new Schema ({ 
 
 type TaskType = {
     author: ObjectId
-    text: string
+    title: string
     description: string
     date: Date
     columnType: string

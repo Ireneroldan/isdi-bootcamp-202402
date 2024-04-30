@@ -11,7 +11,7 @@ function createTask(title, description, boardId, columnType){
 
     const json = JSON.stringify(task)
 
-    return fetch(`${import.meta.env.VITE_API_URL}/tasks`, {
+    return fetch(`${import.meta.env.VITE_API_URL}/boards/${boardId}/tasks`, {
         method: 'POST',
         headers: {
             Authorization: `Bearer ${sessionStorage.token}`,

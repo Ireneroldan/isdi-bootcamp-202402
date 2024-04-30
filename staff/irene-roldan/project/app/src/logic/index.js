@@ -9,6 +9,7 @@ import CreateBoard from './CreateBoard'
 import retrieveBoards from './retrieveBoards'
 import retrieveOneBoard from './retrieveOneBoard'
 import createTask from './createTask'
+import retrieveTasks from './retrieveTasks'
 
 const logic = {
     registerUser,
@@ -23,7 +24,8 @@ const logic = {
     retrieveBoards,
     retrieveOneBoard,
 
-    createTask
+    createTask,
+    retrieveTasks
 
 }
 

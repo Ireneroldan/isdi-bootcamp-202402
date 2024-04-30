@@ -5,23 +5,34 @@ import { useContext } from '../context'
 import AddTaskButton from '../components/library/AddTaskButton'
 import CreateTask from '../components/CreateTask' 
 import { logger } from '../utils'
+import TaskList from "../components/TaskList"
 
 function BoardPage() {
     const { showFeedback } = useContext()
     const [view, setView] = useState(null)
     const [board, setBoard] = useState(null)
     const [stamp, setStamp] = useState(null)
-    const { boardId } = useParams() 
+    const { userId, taskId, boardId } = useParams() 
+    const [tasks, setTasks] = useState([])
 
     useEffect(() => {
         try {
             logic.retrieveOneBoard(boardId)
                 .then(boardText => setBoard({ text: boardText })) 
                 .catch(error => showFeedback(error, 'error'))
+                
+                logic.retrieveTasks(userId, taskId)
+                .then(tasks => {
+                    console.log(tasks)
+                    setTasks(tasks)
+    
+                })
+                .catch(error => showFeedback(error, 'error'))
+
         } catch (error) {
             showFeedback(error)
         }
-    }, [boardId]) 
+    }, [boardId, userId, taskId]) 
 
     const clearView = () => setView(null)
 
@@ -29,6 +40,7 @@ function BoardPage() {
     const handleTaskCreated = () => {
         clearView()
         setStamp(Date.now())
+        setTasks([])
     }
 
     const handleCreateTaskClick = (columnType) => setView({ view: 'create-task', stamp: Date.now(), columnType: columnType })
@@ -45,26 +57,31 @@ function BoardPage() {
                 <div>
                     <h3>TODO</h3>
                     <AddTaskButton columnType='todo' onAddTask={handleCreateTaskClick} />
+                    <TaskList userId={userId} taskId={taskId} />
+                    
                 </div>
 
                 <div>
                     <h3>DOING</h3>
                     <AddTaskButton columnType='doing' onAddTask={handleCreateTaskClick} />
+                    <TaskList userId={userId} taskId={taskId} />
                 </div>
 
                 <div>
                     <h3>REVIEW</h3>
                     <AddTaskButton columnType='review' onAddTask={handleCreateTaskClick} />
+                    <TaskList userId={userId} taskId={taskId} />
                 </div>
 
                 <div>
                     <h3>DONE</h3>
                     <AddTaskButton columnType='done' onAddTask={handleCreateTaskClick} />
+                    <TaskList userId={userId} taskId={taskId} />
                 </div>
 
                 <Link to="/">❌</Link>
             </main>
-      
+
             {view && view.view === 'create-task' && (
             <CreateTask
                 onCancelClick={handleCreateTaskCancelClick}
@@ -73,7 +90,7 @@ function BoardPage() {
                 columnType = {view.columnType}
             />
             )}
-         
+
 
         </>
     )

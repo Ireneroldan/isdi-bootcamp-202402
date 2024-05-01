@@ -267,14 +267,11 @@ mongoose.connect(MONGODB_URL)
             }
         })
 
-        api.get('/boards/:boardId/tasks', (req, res) => {
+        api.get('/boards/:boardId/tasks/:columnType', (req, res) => {
             try {
-                const { authorization } = req.headers
-                const token = authorization.slice(7)
-                const { sub: userId } = jwt.verify(token, JWT_SECRET)
-                const { BoardId } = req.params
-                //@ts-ignore
-                logic.retrieveTask(userId as string, BoardId)
+                const { boardId, columnType } = req.params
+        
+                logic.retrieveTask(boardId, columnType)
                     .then(tasks => {
                         res.json(tasks)
                     })

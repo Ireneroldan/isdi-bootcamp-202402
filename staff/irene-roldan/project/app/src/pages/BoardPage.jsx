@@ -12,7 +12,7 @@ function BoardPage() {
     const [view, setView] = useState(null)
     const [board, setBoard] = useState(null)
     const [stamp, setStamp] = useState(null)
-    const { userId, taskId, boardId } = useParams() 
+    const { taskId, boardId, columnType } = useParams() 
     const [tasks, setTasks] = useState([])
 
     useEffect(() => {
@@ -21,7 +21,7 @@ function BoardPage() {
                 .then(boardText => setBoard({ text: boardText })) 
                 .catch(error => showFeedback(error, 'error'))
                 
-                logic.retrieveTasks(userId, taskId)
+                logic.retrieveTasks(boardId, columnType)
                 .then(tasks => {
                     console.log(tasks)
                     setTasks(tasks)
@@ -32,7 +32,7 @@ function BoardPage() {
         } catch (error) {
             showFeedback(error)
         }
-    }, [boardId, userId, taskId]) 
+    }, [boardId, taskId, columnType]) 
 
     const clearView = () => setView(null)
 
@@ -57,26 +57,26 @@ function BoardPage() {
                 <div>
                     <h3>TODO</h3>
                     <AddTaskButton columnType='todo' onAddTask={handleCreateTaskClick} />
-                    <TaskList userId={userId} taskId={taskId} />
+                    <TaskList boardId = {boardId} columnType = 'todo' tasks={tasks}/>
                     
                 </div>
 
                 <div>
                     <h3>DOING</h3>
                     <AddTaskButton columnType='doing' onAddTask={handleCreateTaskClick} />
-                    <TaskList userId={userId} taskId={taskId} />
+                    <TaskList boardId = {boardId} columnType='doing'tasks={tasks}/>
                 </div>
 
                 <div>
                     <h3>REVIEW</h3>
                     <AddTaskButton columnType='review' onAddTask={handleCreateTaskClick} />
-                    <TaskList userId={userId} taskId={taskId} />
+                    <TaskList boardId = {boardId} columnType='review'tasks={tasks}/>
                 </div>
 
                 <div>
                     <h3>DONE</h3>
                     <AddTaskButton columnType='done' onAddTask={handleCreateTaskClick} />
-                    <TaskList userId={userId} taskId={taskId} />
+                    <TaskList boardId = {boardId} columnType='done'tasks={tasks}/>
                 </div>
 
                 <Link to="/">❌</Link>

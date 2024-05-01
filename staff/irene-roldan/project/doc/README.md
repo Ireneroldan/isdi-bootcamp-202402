@@ -15,7 +15,7 @@ Tasking is a project management tool that uses virtual boards to organize tasks 
 
 ## Use Cases
 - List boards (created by, or assigned to)
-- Create new board a
+- Create new board 
 - Delete a board (only if no asigned users)
 - Share a board with other user
 - Create a task (in board) 

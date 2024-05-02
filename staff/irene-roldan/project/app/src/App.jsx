@@ -57,7 +57,7 @@ function App() {
     setConfirm(null)
   }
 
-  const handleConfirmAcceptClick = () => {
+  const handleDeleteTask = () => {
     confirm.callback(true)
 
     setConfirm(null)
@@ -78,7 +78,7 @@ function App() {
 
     {feedback && <Feedback message={feedback.message} level={feedback.level} onAcceptClick={handleFeedbackAcceptClick} />}
 
-    {confirm && <Confirm message="hola confirm" onCancelClick={handleConfirmCancelClick} onAcceptClick={handleConfirmAcceptClick} />}
+    {confirm && <Confirm message="Do you want delete the task?" onCancelClick={handleConfirmCancelClick} onAcceptClick={handleDeleteTask} />}
   </>
 }
 

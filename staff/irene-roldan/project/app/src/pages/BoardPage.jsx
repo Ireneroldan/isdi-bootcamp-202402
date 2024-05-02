@@ -23,7 +23,6 @@ function BoardPage() {
                 
                 logic.retrieveTasks(boardId, columnType)
                 .then(tasks => {
-                    console.log(tasks)
                     setTasks(tasks)
     
                 })

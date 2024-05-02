@@ -7,6 +7,7 @@ import jwt  from 'jsonwebtoken'
 import cors from 'cors'
 import tracer from 'tracer'
 import colors from 'colors'
+import { User } from './data/index.ts'
 
 
 dotenv.config()
@@ -332,8 +333,20 @@ mongoose.connect(MONGODB_URL)
                 }
             }
         })
+
+        api.delete('/tasks/:taskId', async (req, res) => {
+            try {
+                const { taskId} = req.params
+                
+                await logic.deleteTask(taskId); 
         
-       
+                res.status(204).json({ message: 'The task was successfully deleted' })
+            } catch (error) {
+                console.error('error deleting task', error)
+                res.status(500).json({ error: SystemError.name, message: error.message })
+            }
+        })        
+        
         api.listen(PORT, () => logger.info(`API listening on port ${PORT}`))
     })
     .catch(error => logger.error(error))

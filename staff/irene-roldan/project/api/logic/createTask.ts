@@ -1,6 +1,5 @@
 import { validate, errors } from 'com'
 import { User, Board, Task } from '../data/index.ts'
-import { ObjectId } from 'mongoose'
 
 const { SystemError, NotFoundError } = errors
 

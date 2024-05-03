@@ -4,9 +4,10 @@ import { useState, useEffect } from 'react'
 import { useContext } from '../context'
 
 
-function TaskList({ boardId, columnType }) {
+function TaskList({ boardId, columnType}) {
     const [tasks, setTasks] = useState([])
     const { showFeedback, showConfirm } = useContext()
+    const [editingTask, setEditingTask] = useState(null)
 
     const loadTasks = () => {
         logger.debug('TaskList -> loadTasks')
@@ -19,8 +20,7 @@ function TaskList({ boardId, columnType }) {
             showFeedback(error)
         }
     }
-    
-    
+
     const handleDeleteTask = (taskId) =>
         showConfirm('Do you want delete the task?', confirmed => {
             if (confirmed)
@@ -35,24 +35,13 @@ function TaskList({ boardId, columnType }) {
                 }
         })
 
-    
-    const handleEditTask = (taskId) => {
-        showConfirm('Do you want edit the task?', confirmed => {
-            if(confirmed)
-                try {
-                    logic.editTask(taskId)
-                        .then(() => {
-                            
-                        })
-                } catch (error) {
-                    showFeedback(error)
-                }
-        })
+
+    const onEditButtonClick = (taskId) => {
+        setEditingTask(taskId)
     }
-    
 
 
-    useEffect(() => {
+    useEffect(() => { 
         loadTasks()
     }, [boardId, columnType])
 
@@ -67,7 +56,7 @@ function TaskList({ boardId, columnType }) {
                         <h4></h4>
                         <p>{task.title} - {task.description}</p>
                         <button onClick={() => handleDeleteTask(task.id)}>🗑️</button>
-                        <button onClick={() => handleEditTask(task.id)}>🪄</button>
+                        <button onClick={() => onEditButtonClick(task.id)}>🪄</button>
                     </li>
                 ))}
             </ul>

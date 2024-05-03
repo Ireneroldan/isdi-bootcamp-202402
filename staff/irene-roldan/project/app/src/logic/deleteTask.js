@@ -23,5 +23,4 @@ function deleteTask(taskId) {
     });
     
   }
-  
   export default deleteTask

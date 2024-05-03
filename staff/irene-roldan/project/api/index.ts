@@ -42,6 +42,40 @@ mongoose.connect(MONGODB_URL)
 
         api.use(cors())
 
+        
+        api.get('/users', (req, res) => {
+            res.status(200)
+            try {
+                logic.retrieveUsers()
+                    .then(users => res.json(users))
+                    .catch(error => {
+                        if (error instanceof SystemError) {
+                            logger.error(error.message)
+
+                            res.status(500).json({ error: error.constructor.name, message: error.message })
+                        } else if (error instanceof NotFoundError) {
+                            logger.warn(error.message)
+
+                            res.status(404).json({ error: error.constructor.name, message: error.message })
+                        }
+                    })
+            } catch (error) {
+                if (error instanceof TypeError || error instanceof ContentError) {
+                    logger.warn(error.message)
+
+                    res.status(406).json({ error: error.constructor.name, message: error.message })
+                } else if (error instanceof TokenExpiredError) {
+                    logger.warn(error.message)
+
+                    res.status(498).json({ error: UnauthorizedError.name, message: 'session expired' })
+                } else {
+                    logger.warn(error.message)
+
+                    res.status(500).json({ error: SystemError.name, message: error.message })
+                }
+            }
+        })
+
         api.post('/users', jsonBodyParser, (req, res) => {
             try {
                 const { name, surname, email, password } = req.body
@@ -334,18 +368,33 @@ mongoose.connect(MONGODB_URL)
             }
         })
 
-        api.delete('/tasks/:taskId', async (req, res) => {
+        api.delete('/tasks/:taskId', async (req, res) => { 
             try {
-                const { taskId} = req.params
-                
-                await logic.deleteTask(taskId); 
-        
-                res.status(204).json({ message: 'The task was successfully deleted' })
+              const { taskId } = req.params
+          
+              await logic.deleteTask(taskId) 
+          
+              res.status(204).json({ message: 'La tarea fue eliminada exitosamente' })
             } catch (error) {
-                console.error('error deleting task', error)
+              console.error('Error eliminando la tarea', error)
+              res.status(500).json({ error: SystemError.name, message: error.message })
+            }
+          })
+        
+        api.put('/tasks/:taskId', (req, res) => {
+            try {
+                const { taskId } = req.params
+                const { title, description, columnType } = req.body 
+        
+                logic.editTask(taskId, title, description, columnType) 
+                res.status(204).json({ message: 'La tarea fue editada exitosamente' })
+            } catch (error) {
+                console.error('Error editando la tarea', error)
                 res.status(500).json({ error: SystemError.name, message: error.message })
             }
-        })        
+        })
+
+
         
         api.listen(PORT, () => logger.info(`API listening on port ${PORT}`))
     })

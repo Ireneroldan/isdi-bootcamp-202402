@@ -4,7 +4,7 @@ import { Task } from '../data/index.ts'
 
 const { SystemError, NotFoundError } = errors
 
-function retrieveTask(boardId: ObjectId, columnType: string) {
+function retrieveTask(boardId: string, columnType: string) {
     return Task.find({'assignedBoard': boardId, 'columnType': columnType}) 
                 .lean()
                 .catch(error => { throw new SystemError(error.message); })

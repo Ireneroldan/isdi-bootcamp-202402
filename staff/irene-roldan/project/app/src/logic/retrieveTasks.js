@@ -1,6 +1,10 @@
 import { validate, errors } from 'com'
 
 function retrieveTasks(boardId, columnType) {
+    if (typeof boardId === 'undefined' || typeof columnType === 'undefined') {
+        throw new Error('boardId or columnType is undefined');
+    }
+
     validate.token(sessionStorage.token)
     
     return fetch(`${import.meta.env.VITE_API_URL}/boards/${boardId}/tasks/${columnType}`, {

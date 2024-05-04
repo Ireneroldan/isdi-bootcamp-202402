@@ -44,9 +44,14 @@ mongoose.connect(MONGODB_URL)
 
         
         api.get('/users', (req, res) => {
-            res.status(200)
+            const { authorization } = req.headers
+
+            const token = authorization.slice(7)
+
+            const { sub: userId } = jwt.verify(token, JWT_SECRET)
+
             try {
-                logic.retrieveUsers()
+                logic.retrieveUsers(userId)
                     .then(users => res.json(users))
                     .catch(error => {
                         if (error instanceof SystemError) {
@@ -370,30 +375,77 @@ mongoose.connect(MONGODB_URL)
 
         api.delete('/tasks/:taskId', async (req, res) => { 
             try {
-              const { taskId } = req.params
-          
-              await logic.deleteTask(taskId) 
-          
-              res.status(204).json({ message: 'La tarea fue eliminada exitosamente' })
-            } catch (error) {
-              console.error('Error eliminando la tarea', error)
-              res.status(500).json({ error: SystemError.name, message: error.message })
-            }
-          })
-        
-        api.put('/tasks/:taskId', (req, res) => {
-            try {
                 const { taskId } = req.params
-                const { title, description, columnType } = req.body 
-        
-                logic.editTask(taskId, title, description, columnType) 
-                res.status(204).json({ message: 'La tarea fue editada exitosamente' })
+                await logic.deleteTask(taskId) 
+                res.status(204).json({ message: 'La tarea fue eliminada exitosamente' })
             } catch (error) {
-                console.error('Error editando la tarea', error)
+                console.error('Error eliminando la tarea', error)
                 res.status(500).json({ error: SystemError.name, message: error.message })
             }
         })
+        
+        api.post('/tasks/:taskId', (req, res) => {
+            const { taskId } = req.params
+            const { title, description, columnType } = req.body 
 
+            logic.editTask(taskId, title, description, columnType)
+                .then(updatedTask => {
+                    if (!updatedTask) {
+                        return res.status(404).json({ error: 'TaskNotFound', message: 'La tarea no fue encontrada' })
+                    }
+
+                    res.status(200).json(updatedTask)
+                })
+                .catch(error => {
+                    console.error('Error editando la tarea', error)
+                    res.status(500).json({ error: 'SystemError', message: error.message })
+                })       
+        })
+
+        api.post('/shareBoard', jsonBodyParser, (req, res) => {
+            try {            
+                const {  userId, boardId} = req.body
+                logic.shareBoardWithUsers(boardId, userId)
+                    .then(() => {
+                        res.status(201).send()
+                    })
+                    .catch(error => {
+                        if (error instanceof SystemError) {
+                            logger.error(error.message)
+                            res.status(500).json({ error: error.constructor.name, message: error.message })
+                        } else if (error instanceof NotFoundError) {
+                            logger.warn(error.message)
+                            res.status(404).json({ error: error.constructor.name, message: error.message })
+                        }
+                    })
+            } catch (error) {
+                if (error instanceof TypeError || error instanceof ContentError) {
+                    logger.warn(error.message)
+                    res.status(406).json({ error: error.constructor.name, message: error.message })
+                } else if (error instanceof TokenExpiredError) {
+                    logger.warn(error.message)
+                    res.status(498).json({ error: UnauthorizedError.name, message: 'session expired' })
+                } else {
+                    logger.warn(error.message)
+                    res.status(500).json({ error: SystemError.name, message: error.message })
+                }
+            }
+        })
+
+        api.get('/sharedBoards', (req, res) => {
+            try {
+                const { authorization } = req.headers
+                const token = authorization.slice(7)
+                const { sub: userId } = jwt.verify(token, JWT_SECRET)
+                const sharedBoards = logic.getShareBoards(userId)
+                
+                // Devolvemos los tableros compartidos como respuesta
+                res.status(200).json(sharedBoards);
+            } catch (error) {
+                logger.error(error.message);
+                res.status(500).json({ error: 'Internal Server Error', message: 'Ha ocurrido un error interno.' });
+            }
+        })
 
         
         api.listen(PORT, () => logger.info(`API listening on port ${PORT}`))

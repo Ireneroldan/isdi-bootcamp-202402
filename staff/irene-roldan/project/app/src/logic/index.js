@@ -13,6 +13,8 @@ import retrieveTasks from './retrieveTasks'
 import deleteTask from './deleteTask'
 import editTask from './editTask'
 import retrieveUsers from './retrieveUsers'
+import shareBoardWithUsers from './shareBoardWithUsers'
+import getSharedBoards from './getSharedBoards'
 
 const logic = {
     registerUser,
@@ -31,8 +33,10 @@ const logic = {
     createTask,
     retrieveTasks,
     deleteTask,
-    editTask
+    editTask,
 
+    shareBoardWithUsers,
+    getSharedBoards
 }
 
 export default logic

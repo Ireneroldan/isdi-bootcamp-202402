@@ -2,7 +2,7 @@ import { logger } from '../utils'
 import logic from '../logic'
 import { useState, useEffect } from 'react'
 import { useContext } from '../context'
-
+import EditTask from './EditTask' 
 
 function TaskList({ boardId, columnType}) {
     const [tasks, setTasks] = useState([])
@@ -35,11 +35,9 @@ function TaskList({ boardId, columnType}) {
                 }
         })
 
-
-    const onEditButtonClick = (taskId) => {
-        setEditingTask(taskId)
+    const onEditButtonClick = (task) => { 
+        setEditingTask(task) 
     }
-
 
     useEffect(() => { 
         loadTasks()
@@ -51,16 +49,15 @@ function TaskList({ boardId, columnType}) {
         <div>
             <ul>
                 {tasks.map(task => (
-                    
                     <li key={task.id}>
                         <h4></h4>
                         <p>{task.title} - {task.description}</p>
                         <button onClick={() => handleDeleteTask(task.id)}>🗑️</button>
-                        <button onClick={() => onEditButtonClick(task.id)}>🪄</button>
+                        <button onClick={() => onEditButtonClick(task)}>🪄</button> 
                     </li>
                 ))}
             </ul>
-            {console.log(tasks)}
+            {editingTask && <EditTask task={editingTask} />} 
         </div>
     )
 }

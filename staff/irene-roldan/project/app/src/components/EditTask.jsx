@@ -1,10 +1,10 @@
 import logic from "../logic"
 import { useState } from "react"
 
-function EditTask(task){
+function EditTask({ task }) { 
     const [view, setView] = useState(null)
 
-    const handleSubmit = (event) =>{
+    const handleSubmit = (event) => {
         event.preventDefault()
 
         const form = event.target
@@ -13,9 +13,9 @@ function EditTask(task){
         const columnType = form.columnType.value
         
         try {
-           logic.editTask(title, description, columnType)
+            logic.editTask(task.id, title, description, columnType) 
 
-           .then(() => {
+            .then(() => {
             form.reset()
         })
 
@@ -26,14 +26,14 @@ function EditTask(task){
 
     const handleCancelClick = () => setView({ view: null, stamp: null })
 
-
-    return <section>
+    return (
+        <section>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="title">Title</label>
-                <input type="text" id="title" defaultValue={task.title}/>
+                <input type="text" id="title" defaultValue={task.title} /> {}
 
                 <label htmlFor="description">Description</label>
-                <input type="text" id="description" defaultValue={task.description}/>
+                <input type="text" id="description" defaultValue={task.description} /> {}
 
                 <label htmlFor="columnType">Column Type</label>
                 <select name="columnType" id="columnType" defaultValue={task.columnType}>
@@ -48,6 +48,7 @@ function EditTask(task){
                 <button onClick={handleCancelClick}>Cancel</button> 
             </form>
         </section>
+    )
 }
 
 export default EditTask

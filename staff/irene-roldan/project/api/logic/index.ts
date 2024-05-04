@@ -12,6 +12,9 @@ import retrieveTask from './retrieveTask.ts'
 import deleteTask from './deleteTask.ts'
 import editTask from './editTask.ts'
 
+import shareBoardWithUsers from './shareBoardWithUsers.ts'
+import getShareBoards from './getShareBoards.ts'
+
 const logic = {
     registerUser,
     authenticateUser,
@@ -25,7 +28,10 @@ const logic = {
     createTask,
     retrieveTask,
     deleteTask,
-    editTask
+    editTask,
+
+    shareBoardWithUsers,
+    getShareBoards
 }
 
 export default logic

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-import { User, Board } from '.'
+import { User, Board, Task } from '.'
 
 
 mongoose.connect('mongodb://localhost:27017/tasking')

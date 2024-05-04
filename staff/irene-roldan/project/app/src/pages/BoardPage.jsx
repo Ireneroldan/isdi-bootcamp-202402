@@ -16,11 +16,15 @@ function BoardPage() {
     const [stamp, setStamp] = useState(null)
     const { taskId, boardId, columnType } = useParams()
     const [tasks, setTasks] = useState([])
+    const [editTaskView, setEditTaskView] = useState(null);
+    const [shareBoardView, setShareBoardView] = useState(false)
+
 
     const loadTasks = () => {
         logic.retrieveTasks(boardId, columnType)
             .then(loadedTasks => {
                 setTasks(loadedTasks)
+                loadTasks()
             })
             .catch(error => {
                 showFeedback(error, 'error')
@@ -42,14 +46,12 @@ function BoardPage() {
         fetchData()
     }, [boardId, columnType])
 
-    const clearView = () => setView(null)
-
     const handleShareBoardClick = () => {
-        setView(true)
+        setShareBoardView(true)
     }
 
     const handleShareBoardClose = () => {
-        setView(false)
+        setShareBoardView(false)
     }
 
     const handleTaskCreated = () => {
@@ -112,18 +114,15 @@ function BoardPage() {
             </main>
 
             {view && view.view === 'create-task' && (
-                <CreateTask
-                    onCancelClick={handleCancelClick}
-                    onTaskCreated={() => (setView({ view: null, stamp: null }), handleTaskCreated())}
-                    boardId={boardId}
-                    columnType={view.columnType}
-                    loadTasks={this.loadTasks}
-                />
-            )}
-            {view && <EditTask task={view} />}
-            {view && <ShareBoard closeShareBoard={handleShareBoardClose}/>}
-
-
+        <CreateTask
+            onCancelClick={handleCancelClick}
+            onTaskCreated={() => (setView({ view: null, stamp: null }), handleTaskCreated())}
+            boardId={boardId}
+            columnType={view.columnType}
+        />
+        )}
+        {editTaskView && <EditTask task={editTaskView} />}
+        {shareBoardView && <ShareBoard boardId={boardId} closeShareBoard={handleShareBoardClose}/>}
         </>
     )
 }

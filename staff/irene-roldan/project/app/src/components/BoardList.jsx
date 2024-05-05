@@ -60,6 +60,7 @@ function BoardList({ stamp, onEditBoardClick }) {
                 {boards.map(board => (
                     <Board key={board.id} item={board} onEditClick={handleEditClick} onDeleted={handleBoardDeleted} />
                 ))}
+                
             </section>
     
             <section>

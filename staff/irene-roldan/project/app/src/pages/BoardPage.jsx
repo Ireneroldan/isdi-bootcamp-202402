@@ -9,6 +9,7 @@ import EditTask from '../components/EditTask'
 import TaskList from '../components/TaskList'
 import ShareBoard from '../components/ShareBoard'
 
+
 function BoardPage() {
     const { showFeedback } = useContext()
     const [view, setView] = useState(null)
@@ -18,6 +19,8 @@ function BoardPage() {
     const [tasks, setTasks] = useState([])
     const [editTaskView, setEditTaskView] = useState(null);
     const [shareBoardView, setShareBoardView] = useState(false)
+    const [taskListKey, setTaskListKey] = useState(Date.now());
+
 
 
     const loadTasks = () => {
@@ -65,9 +68,16 @@ function BoardPage() {
     }
     
     const handleEditTask = (taskId) => {
-        const taskToEdit = tasks.find(task => task.id === taskId)
-        setEditingTask(taskToEdit)
-        setView({ view: 'edit-task', stamp: Date.now() })
+        const taskToEdit = tasks.find(task => task.id === taskId);
+        setEditTaskView(taskToEdit);
+        setView({ view: 'edit-task', stamp: Date.now() });
+        logic.retrieveTasks(boardId, columnType)
+            .then(loadedTasks => {
+                setTasks(loadedTasks);
+            })
+            .catch(error => {
+                showFeedback(error, 'error');
+            });
     }
 
     const handleCreateTaskClick = (columnType) => setView({ view: 'create-task', stamp: Date.now(), columnType: columnType })
@@ -88,7 +98,7 @@ function BoardPage() {
                 <div>
                     <h3>TODO</h3>
                     <AddTaskButton columnType='todo' onAddTask={handleCreateTaskClick} />
-                    <TaskList boardId={boardId} columnType='todo' tasks={tasks} handleEditTask={handleEditTask} />
+                    <TaskList key={taskListKey} boardId={boardId} columnType='todo' tasks={tasks} handleEditTask={handleEditTask} />
                 </div>
 
                 <div>
@@ -114,15 +124,15 @@ function BoardPage() {
             </main>
 
             {view && view.view === 'create-task' && (
-        <CreateTask
-            onCancelClick={handleCancelClick}
-            onTaskCreated={() => (setView({ view: null, stamp: null }), handleTaskCreated())}
-            boardId={boardId}
-            columnType={view.columnType}
-        />
-        )}
-        {editTaskView && <EditTask task={editTaskView} />}
-        {shareBoardView && <ShareBoard boardId={boardId} closeShareBoard={handleShareBoardClose}/>}
+                <CreateTask
+                    onCancelClick={handleCancelClick}
+                    onTaskCreated={() => (setView({ view: null, stamp: null }), handleTaskCreated())}
+                    boardId={boardId}
+                    columnType={view.columnType}
+                />
+            )}
+            {editTaskView && <EditTask task={editTaskView} />}
+            {shareBoardView && <ShareBoard boardId={boardId} closeShareBoard={handleShareBoardClose}/>}
         </>
     )
 }

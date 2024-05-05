@@ -384,8 +384,9 @@ mongoose.connect(MONGODB_URL)
             }
         })
         
-        api.post('/tasks/:taskId', (req, res) => {
+        api.post('/tasks/:taskId', async (req, res) => {
             const { taskId } = req.params
+            console.log(req.body)
             const { title, description, columnType } = req.body 
 
             logic.editTask(taskId, title, description, columnType)
@@ -401,7 +402,23 @@ mongoose.connect(MONGODB_URL)
                     res.status(500).json({ error: 'SystemError', message: error.message })
                 })       
         })
+        api.put('/tasks/:taskId',jsonBodyParser, async (req, res) => {
+            const taskId = req.params.taskId
+            const { title, description, columnType } = req.body 
+            
+            logic.editTask(taskId, title, description, columnType)
+                .then(updatedTask => {
+                    if (!updatedTask) {
+                        return res.status(404).json({ error: 'TaskNotFound', message: 'La tarea no fue encontrada' })
+                    }
 
+                    res.status(200).json(updatedTask)
+                })
+                .catch(error => {
+                    console.error('Error editando la tarea', error)
+                    res.status(500).json({ error: 'SystemError', message: error.message })
+                })       
+        })
         api.post('/shareBoard', jsonBodyParser, (req, res) => {
             try {            
                 const {  userId, boardId} = req.body
@@ -446,6 +463,18 @@ mongoose.connect(MONGODB_URL)
                 res.status(500).json({ error: 'Internal Server Error', message: 'Ha ocurrido un error interno.' });
             }
         })
+
+        api.delete('/board/:boardId', async (req, res) => {
+            try {
+                const { taskId } = req.params
+                await logic.deleteBoard(taskId) 
+                res.status(204).json({ message: 'el tablero fue eliminada exitosamente' })
+            } catch (error) {
+                console.error('Error eliminando el tablero', error)
+                res.status(500).json({ error: SystemError.name, message: error.message })
+            }
+        })
+        
 
         
         api.listen(PORT, () => logger.info(`API listening on port ${PORT}`))

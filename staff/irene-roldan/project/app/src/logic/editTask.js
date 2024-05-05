@@ -1,17 +1,15 @@
 import { validate, errors } from 'com'
 
 function editTask(taskId, title, description, columnType) {
+
+    const task =  JSON.stringify({ title, description, columnType })
     return fetch(`${import.meta.env.VITE_API_URL}/tasks/${taskId}`, {
-        method: 'POST',
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${sessionStorage.token}`,
         },
-        body: JSON.stringify({
-            title: title,
-            description: description,
-            columnType: columnType
-        }),
+        body:task,
     })
     .then(response => {
         if (response.status === 204) {

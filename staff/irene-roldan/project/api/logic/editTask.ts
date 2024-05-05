@@ -1,12 +1,13 @@
 import { validate, errors } from 'com'
 import { Task } from '../data/index.ts'
+import { ObjectId } from 'mongoose';
 
 const { SystemError, NotFoundError } = errors
 
-async function editTask(taskId: string, title: string, description: string, columnType: string) {
+async function editTask(taskId: ObjectId, title: string, description: string, columnType: string) {
+    
     
     try {
-        console.log('entra')
         const task = await Task.findById(taskId)
         if (!task) {
             throw new NotFoundError('Task not found')

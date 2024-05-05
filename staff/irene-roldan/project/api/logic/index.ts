@@ -14,6 +14,7 @@ import editTask from './editTask.ts'
 
 import shareBoardWithUsers from './shareBoardWithUsers.ts'
 import getShareBoards from './getShareBoards.ts'
+import deleteBoard from './deleteBoard.ts'
 
 const logic = {
     registerUser,
@@ -24,6 +25,7 @@ const logic = {
     retrieveBoard,
     createBoard,
     retrieveOneBoard,
+    deleteBoard,
 
     createTask,
     retrieveTask,

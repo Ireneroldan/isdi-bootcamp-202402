@@ -33,7 +33,21 @@ function TaskList({ boardId, columnType}) {
                 } catch (error) {
                     showFeedback(error)
                 }
+    })
+    const handleCancelEdit = () => {
+        setEditingTask(null);
+    };
+
+const handleEditTask = (updatedTask) => {
+    logic.editTask(updatedTask)
+        .then(() => {
+            loadTasks();
+            setEditingTask(null);
         })
+        .catch(error => {
+            showFeedback(error, 'error');
+        });
+}
 
     const onEditButtonClick = (task) => { 
         setEditingTask(task) 
@@ -57,7 +71,14 @@ function TaskList({ boardId, columnType}) {
                     </li>
                 ))}
             </ul>
-            {editingTask && <EditTask task={editingTask} />} 
+            {editingTask && (
+            <EditTask
+                task={editingTask}
+                onEditTask={handleEditTask}
+                onCancel={handleCancelEdit}
+                onUpdateTasks={loadTasks} 
+            />
+            )}
         </div>
     )
 }

@@ -474,6 +474,19 @@ mongoose.connect(MONGODB_URL)
                 res.status(500).json({ error: SystemError.name, message: error.message })
             }
         })
+
+        api.get('/archived', async (req, res) => {
+            try {
+                const { board } = req.params;
+        
+                const selectedArchivedTasks = await logic.getSelectedArchivedTasks(board.id);
+        
+                res.status(200).json(selectedArchivedTasks);
+            } catch (error) {
+                console.error(error);
+                res.status(500).json({ error: 'Internal Server Error', message: 'Ha ocurrido un error interno.' });
+            }
+        })
         
 
         

@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react'
 import logic from '../logic/index'
 import { useParams, Link } from 'react-router-dom'
 import { useContext } from '../context'
-import AddTaskButton from '../components/library/AddTaskButton'
-import CreateTask from '../components/CreateTask' 
 import { logger } from '../utils'
 import EditTask from '../components/EditTask'
 import TaskList from '../components/TaskList'
 import ShareBoard from '../components/ShareBoard'
+//import { useArchived } from '../components/useArchived'
 
 
 function BoardPage() {
@@ -19,7 +18,8 @@ function BoardPage() {
     const [tasks, setTasks] = useState([])
     const [editTaskView, setEditTaskView] = useState(null);
     const [shareBoardView, setShareBoardView] = useState(false)
-    const [taskListKey, setTaskListKey] = useState(Date.now());
+    const [taskListKey, setTaskListKey] = useState(Date.now())
+    //const archived= useArchived()
 
 
 
@@ -56,14 +56,8 @@ function BoardPage() {
         setShareBoardView(false)
     }
 
-    const handleTaskCreated = () => {
-        logic.createTask(boardId, columnType)
-        .then(() => {
-            loadTasks()
-        })
-        .catch(error => {
-            showFeedback(error, 'error')
-        })
+    const handleArchivedClick = () => {
+        archived.push('/archived')
     }
     
     const handleEditTask = (taskId) => {
@@ -79,10 +73,6 @@ function BoardPage() {
             });
     }
 
-    const handleCreateTaskClick = (columnType) => setView({ view: 'create-task', stamp: Date.now(), columnType: columnType })
-
-    const handleCancelClick = () => setView({ view: null, stamp: null })
-
     logger.debug('BoardPage -> render')
 
     return (
@@ -93,44 +83,33 @@ function BoardPage() {
 
             <main>
                 <button onClick={handleShareBoardClick}>Share Board</button>
+                <button onClick={handleArchivedClick}>Archived</button>
 
                 <div>
                     <h3>TODO</h3>
-                    <AddTaskButton columnType='todo' onAddTask={handleCreateTaskClick} />
                     <TaskList key={taskListKey} boardId={boardId} columnType='todo' tasks={tasks} handleEditTask={handleEditTask} />
                 </div>
 
                 <div>
                     <h3>DOING</h3>
-                    <AddTaskButton columnType='doing' onAddTask={handleCreateTaskClick} />
                     <TaskList boardId={boardId} columnType='doing' tasks={tasks} handleEditTask={handleEditTask} />
                 </div>
 
                 <div>
                     <h3>REVIEW</h3>
-                    <AddTaskButton columnType='review' onAddTask={handleCreateTaskClick} />
                     <TaskList boardId={boardId} columnType='review' tasks={tasks} handleEditTask={handleEditTask} />
                 </div>
 
                 <div>
                     <h3>DONE</h3>
-                    <AddTaskButton columnType='done' onAddTask={handleCreateTaskClick} />
                     <TaskList boardId={boardId} columnType='done' tasks={tasks} handleEditTask={handleEditTask} />
                 </div>
 
-                <Link to="/">❌</Link>
+                <Link to="/">Back</Link>
                 
             </main>
 
-            {view && view.view === 'create-task' && (
-                <CreateTask
-                    onCancelClick={handleCancelClick}
-                    onTaskCreated={() => (setView({ view: null, stamp: null }), handleTaskCreated())}
-                    boardId={boardId}
-                    columnType={view.columnType}
-                    loadTasks={loadTasks}
-                />
-            )}
+            
             {editTaskView && <EditTask task={editTaskView} />}
             {shareBoardView && <ShareBoard boardId={boardId} closeShareBoard={handleShareBoardClose}/>}
         </>

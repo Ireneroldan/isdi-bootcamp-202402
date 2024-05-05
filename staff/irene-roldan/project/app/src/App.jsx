@@ -4,6 +4,7 @@ import logic from './logic'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import BoardPage from './pages/BoardPage'
+import Archived from './pages/Archived'
 import Home from './pages/Home'
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import Feedback from './components/Feedback'
@@ -68,6 +69,7 @@ function App() {
   return <>
     <Context.Provider value={{ showFeedback: handleFeedback, showConfirm: handleConfirm }}>
       <Routes>
+        <Route path="/archived" element={<Archived />} />
         <Route path="/board/:userId/:taskId" element={<BoardPage />} />
         <Route path="/BoardPage/:boardId" element={<BoardPage />} />
         <Route path="/login" element={logic.isUserLoggedIn() ? <Navigate to="/" /> : <Login onRegisterClick={handleRegisterClick} onUserLoggedIn={handleUserLoggedIn} />} />

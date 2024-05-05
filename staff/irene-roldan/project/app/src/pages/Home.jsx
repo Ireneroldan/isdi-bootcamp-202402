@@ -18,6 +18,7 @@ function Home({ onUserLoggedOut }) {
     const [view, setView] = useState(null)
     const [stamp, setStamp] = useState(null)
     const [board, setBoard] = useState(null)
+    const [sharedBoards, setSharedBoards] = useState([])
 
     const { showFeedback } = useContext()
 
@@ -26,6 +27,13 @@ function Home({ onUserLoggedOut }) {
             logic.retrieveUser()
                 .then(setUser)
                 .catch(error => showFeedback(error, 'error'))
+                .then(user => {
+                    if (user) {
+                        getSharedBoards(user.id)
+                            .then(setSharedBoards)
+                            .catch(error => showFeedback(error, 'error'))
+                    }
+                })
         } catch (error) {
             showFeedback(error)
         }
@@ -79,7 +87,7 @@ function Home({ onUserLoggedOut }) {
         <main>
         
             <Routes>
-                <Route path="/" element={<BoardList stamp={stamp} onEditBoardClick={handleEditBoardClick} />} />
+                <Route path="/" element={<BoardList stamp={stamp} onEditBoardClick={handleEditBoardClick} sharedBoards={sharedBoards}/>} />
                 <Route path="/profile/:username" element={<Profile />} />
                 <Route path="/board/:boardId" element={<BoardPage />}></Route>
             </Routes>

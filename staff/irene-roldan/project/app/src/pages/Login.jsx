@@ -35,28 +35,28 @@ function Login ({ onUserLoggedIn, onRegisterClick}) {
     }
 
     return (
-        <div className="main-container">
+      <div className="bg-red-100 min-h-screen flex justify-center items-center">
           <main>
-            <h1>Log In</h1>
-            
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="email"> E-mail </label>
-                <input id="email"/>
-      
-                <label htmlFor="password"> Password </label>
-                <input type="password" id="password" />
-      
-                <button type="submit"> Log In </button>
-            </form>
-      
-            <a onClick={handleRegisterClick}>You don't have an account? Click to go to Register</a>
+              <h1>Log In</h1>
+              
+              <form onSubmit={handleSubmit}>
+                  <label htmlFor="email"> E-mail </label>
+                  <input id="email"/>
+        
+                  <label htmlFor="password"> Password </label>
+                  <input type="password" id="password" />
+        
+                  <button type="submit"> Log In </button>
+              </form>
+        
+              <a onClick={handleRegisterClick}>You don't have an account? Click to go to Register</a>
           </main>
           
           <section className="photo-section">
-            <img src="tu-foto.jpg" />
+              <img src="tu-foto.jpg" alt="your_photo" />
           </section>
-        </div>
-      )
+      </div>
+  )
 }
 
 export default Login

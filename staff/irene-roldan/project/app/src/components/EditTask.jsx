@@ -1,8 +1,10 @@
 import logic from '../logic'
 import { useState } from 'react'
+//import { useArchived } from '../components/useArchived'
 
 function EditTask({ task, onCancel, onUpdateTasks }) {
   const [view, setView] = useState(null)
+  //const archived= useArchived()
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -19,6 +21,9 @@ function EditTask({ task, onCancel, onUpdateTasks }) {
           onUpdateTasks() 
           form.reset()
           onCancel() 
+          if (columnType === 'archived') {
+            archived.push('/archived')
+          }
         })
         .catch((error) => {
           console.error("Error updating task", error)

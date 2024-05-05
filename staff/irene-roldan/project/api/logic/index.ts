@@ -11,6 +11,7 @@ import createTask from './createTask'
 import retrieveTask from './retrieveTask.ts'
 import deleteTask from './deleteTask.ts'
 import editTask from './editTask.ts'
+import { getSelectedArchivedTasks } from './getSelectedArchivedTasks.ts'
 
 import shareBoardWithUsers from './shareBoardWithUsers.ts'
 import getShareBoards from './getShareBoards.ts'
@@ -31,6 +32,7 @@ const logic = {
     retrieveTask,
     deleteTask,
     editTask,
+    getSelectedArchivedTasks,
 
     shareBoardWithUsers,
     getShareBoards

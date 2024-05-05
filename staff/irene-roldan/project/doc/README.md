@@ -21,10 +21,10 @@ Tasking is a project management tool that uses virtual boards to organize tasks 
 - Create a task (in board) 
 - Delete a task (from board)
 - Change task status (todo, doing, review, done)
-- Archive task (only if in status done)
+- Archive task 
 
 v0.1
-- Assign team members to tasks(via email)
+- Assign team members to tasks(via id)
 - Chat with team users 
 - Design in Dark mode and Light mode
 - Search and filtering tasks

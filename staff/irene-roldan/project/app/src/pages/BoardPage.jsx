@@ -24,10 +24,9 @@ function BoardPage() {
 
 
     const loadTasks = () => {
-        logic.retrieveTasks(boardId, columnType)
+        logic.retrieveTasks(boardId, view?.columnType || null)
             .then(loadedTasks => {
                 setTasks(loadedTasks)
-                loadTasks()
             })
             .catch(error => {
                 showFeedback(error, 'error')
@@ -129,6 +128,7 @@ function BoardPage() {
                     onTaskCreated={() => (setView({ view: null, stamp: null }), handleTaskCreated())}
                     boardId={boardId}
                     columnType={view.columnType}
+                    loadTasks={loadTasks}
                 />
             )}
             {editTaskView && <EditTask task={editTaskView} />}

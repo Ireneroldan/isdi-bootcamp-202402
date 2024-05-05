@@ -18,4 +18,4 @@ function retrieveTask(boardId: string, columnType: string) {
         
 }
 
-export default retrieveTask
+export default retrieveTask 

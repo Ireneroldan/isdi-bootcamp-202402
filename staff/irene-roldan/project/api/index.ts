@@ -449,12 +449,12 @@ mongoose.connect(MONGODB_URL)
             }
         })
 
-        api.get('/sharedBoards', (req, res) => {
+        api.get('/sharedBoards', async (req, res) => {
             try {
                 const { authorization } = req.headers
                 const token = authorization.slice(7)
                 const { sub: userId } = jwt.verify(token, JWT_SECRET)
-                const sharedBoards = logic.getShareBoards(userId)
+                const sharedBoards = await logic.getShareBoards(userId)
                 
                 // Devolvemos los tableros compartidos como respuesta
                 res.status(200).json(sharedBoards);

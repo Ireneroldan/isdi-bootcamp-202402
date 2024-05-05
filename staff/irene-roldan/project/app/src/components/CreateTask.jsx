@@ -1,29 +1,26 @@
-import { logger } from '../utils'
-import SubmitButton from './library/SubmitButton'
-import logic from '../logic'
-import { useContext } from '../context'
-import CancelButton from './library/CancelButton'
-
+import { logger } from '../utils';
+import logic from '../logic';
+import { useContext } from '../context';
 
 function CreateTask(props) {
-    const { showFeedback } = useContext()
-    
+    const { showFeedback } = useContext();
 
     const handleSubmit = (event) => {
         event.preventDefault()
-
+    
         const form = event.target
-
+    
         const title = form.text.value
         const description = form.description.value
-
-        const { boardId, columnType, loadTasks } = props 
+    
+        const { boardId, columnType, loadTasks, onCancelClick } = props 
         
         try {
             logic.createTask(title, description, boardId, columnType)
                 .then(() => {
                     form.reset()
-                    loadTasks()
+                    loadTasks() 
+                    onCancelClick() 
                 })
                 .catch(error => showFeedback(error, 'error'))
         } catch (error) {
@@ -31,11 +28,12 @@ function CreateTask(props) {
         }
     }
 
-    const handleCancelClick = () => props.onCancelClick()
+    const handleCancelClick = () => props.onCancelClick();
 
-    logger.debug('CreateTask -> render')
+    logger.debug('CreateTask -> render');
 
-    return <section>
+    return (
+        <section>
             <form action="" onSubmit={handleSubmit}>
                 <label htmlFor="text">Task name</label>
                 <input type="text" id="text"/>
@@ -43,12 +41,12 @@ function CreateTask(props) {
                 <label htmlFor="description">Task description</label>
                 <input type="text" id="description" />
 
-                <SubmitButton type="submit">Ok</SubmitButton>
+                <button type="submit">Ok</button>
             </form>
 
-            <CancelButton onClick={handleCancelClick}>Cancel</CancelButton>
+            <button onClick={handleCancelClick}>Cancel</button>
         </section>
-    
+    )
 }
 
-export default CreateTask
+export default CreateTask;

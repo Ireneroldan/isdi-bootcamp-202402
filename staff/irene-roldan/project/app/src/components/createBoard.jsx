@@ -35,7 +35,7 @@ function createBoard(props) {
     return <section>
         <form action="" onSubmit={handleSubmit}>
             <label htmlFor="text">Project name</label>
-            <input type="text" id="name"/>
+            <input className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"type="text" id="name"/>
 
             <SubmitButton type="submit">Ok</SubmitButton>
         </form>

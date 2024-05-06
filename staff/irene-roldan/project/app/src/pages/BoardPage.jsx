@@ -6,7 +6,6 @@ import { logger } from '../utils'
 import EditTask from '../components/EditTask'
 import TaskList from '../components/TaskList'
 import ShareBoard from '../components/ShareBoard'
-//import { useArchived } from '../components/useArchived'
 
 
 function BoardPage() {
@@ -19,7 +18,6 @@ function BoardPage() {
     const [editTaskView, setEditTaskView] = useState(null);
     const [shareBoardView, setShareBoardView] = useState(false)
     const [taskListKey, setTaskListKey] = useState(Date.now())
-    //const archived= useArchived()
 
 
 
@@ -56,9 +54,6 @@ function BoardPage() {
         setShareBoardView(false)
     }
 
-    const handleArchivedClick = () => {
-        archived.push('/archived')
-    }
     
     const handleEditTask = (taskId) => {
         const taskToEdit = tasks.find(task => task.id === taskId);
@@ -78,40 +73,47 @@ function BoardPage() {
     return (
         <>
             <header>
-                {board && <h1>{board.text}</h1>} 
+                {board && <h1 className="text-2xl text-gray-800 font-bold mb-4">{board.text}</h1>} 
             </header>
 
-            <main>
-                <button onClick={handleShareBoardClick}>Share Board</button>
-                <button onClick={handleArchivedClick}>Archived</button>
+            <main className="flex flex-col items-center">
+    <div className="flex justify-start space-x-4 mb-4">
+        <button onClick={handleShareBoardClick}>Share Board</button>
+        <Link to={`/Archived/${boardId}`}>Archived</Link> 
+    </div>
 
-                <div>
-                    <h3>TODO</h3>
-                    <TaskList key={taskListKey} boardId={boardId} columnType='todo' tasks={tasks} handleEditTask={handleEditTask} />
-                </div>
+    <div className="flex flex-wrap justify-center space-x-4">
+        <div className="flex flex-col w-1/4 border border-gray-300 rounded p-4">
+            <h3>TODO</h3>
+            <TaskList key={taskListKey} boardId={boardId} columnType='todo' tasks={tasks} handleEditTask={handleEditTask} />
+        </div>
 
-                <div>
-                    <h3>DOING</h3>
-                    <TaskList boardId={boardId} columnType='doing' tasks={tasks} handleEditTask={handleEditTask} />
-                </div>
+        <div className="flex flex-col w-1/4 border border-gray-300 rounded p-4">
+            <h3>DOING</h3>
+            <TaskList boardId={boardId} columnType='doing' tasks={tasks} handleEditTask={handleEditTask} />
+        </div>
 
-                <div>
-                    <h3>REVIEW</h3>
-                    <TaskList boardId={boardId} columnType='review' tasks={tasks} handleEditTask={handleEditTask} />
-                </div>
+        <div className="flex flex-col w-1/4 border border-gray-300 rounded p-4">
+            <h3>REVIEW</h3>
+            <TaskList boardId={boardId} columnType='review' tasks={tasks} handleEditTask={handleEditTask} />
+        </div>
 
-                <div>
-                    <h3>DONE</h3>
-                    <TaskList boardId={boardId} columnType='done' tasks={tasks} handleEditTask={handleEditTask} />
-                </div>
+        <div className="flex flex-col w-1/4 border border-gray-300 rounded p-4">
+            <h3>DONE</h3>
+            <TaskList boardId={boardId} columnType='done' tasks={tasks} handleEditTask={handleEditTask} />
+        </div>
+    </div>
 
-                <Link to="/">Back</Link>
-                
-            </main>
+    <Link to="/" className="mt-4">Back</Link>
+</main>
+
+
+
+
 
             
             {editTaskView && <EditTask task={editTaskView} />}
-            {shareBoardView && <ShareBoard boardId={boardId} closeShareBoard={handleShareBoardClose}/>}
+            {shareBoardView && <ShareBoard boardId={boardId} closeShareBoard={handleShareBoardClose}/>} 
         </>
     )
 }

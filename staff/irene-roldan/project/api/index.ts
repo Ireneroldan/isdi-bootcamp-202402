@@ -50,7 +50,9 @@ mongoose.connect(MONGODB_URL)
 
             const { sub: userId } = jwt.verify(token, JWT_SECRET)
 
+            
             try {
+                //@ts-ignore
                 logic.retrieveUsers(userId)
                     .then(users => res.json(users))
                     .catch(error => {
@@ -402,22 +404,22 @@ mongoose.connect(MONGODB_URL)
                     res.status(500).json({ error: 'SystemError', message: error.message })
                 })       
         })
-        api.put('/tasks/:taskId',jsonBodyParser, async (req, res) => {
-            const taskId = req.params.taskId
-            const { title, description, columnType } = req.body 
-            
-            logic.editTask(taskId, title, description, columnType)
-                .then(updatedTask => {
-                    if (!updatedTask) {
-                        return res.status(404).json({ error: 'TaskNotFound', message: 'La tarea no fue encontrada' })
-                    }
-
-                    res.status(200).json(updatedTask)
-                })
-                .catch(error => {
-                    console.error('Error editando la tarea', error)
-                    res.status(500).json({ error: 'SystemError', message: error.message })
-                })       
+        api.put('/tasks/:taskId', jsonBodyParser, async (req, res) => {
+            try {
+                const taskId = req.params.taskId;
+                const { title, description, columnType } = req.body;
+        
+                const updatedTask = await logic.editTask(taskId, title, description, columnType);
+        
+                if (!updatedTask) {
+                    return res.status(404).json({ error: 'TaskNotFound', message: 'La tarea no fue encontrada' });
+                }
+        
+                res.status(200).json(updatedTask);
+            } catch (error) {
+                console.error('Error editando la tarea', error);
+                res.status(500).json({ error: 'SystemError', message: error.message });
+            }
         })
         api.post('/shareBoard', jsonBodyParser, (req, res) => {
             try {            
@@ -474,20 +476,6 @@ mongoose.connect(MONGODB_URL)
                 res.status(500).json({ error: SystemError.name, message: error.message })
             }
         })
-
-        api.get('/archived', async (req, res) => {
-            try {
-                const { board } = req.params;
-        
-                const selectedArchivedTasks = await logic.getSelectedArchivedTasks(board.id);
-        
-                res.status(200).json(selectedArchivedTasks);
-            } catch (error) {
-                console.error(error);
-                res.status(500).json({ error: 'Internal Server Error', message: 'Ha ocurrido un error interno.' });
-            }
-        })
-        
 
         
         api.listen(PORT, () => logger.info(`API listening on port ${PORT}`))

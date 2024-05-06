@@ -90,7 +90,7 @@ const task = new Schema ({ 
     },
     columnType: {
         type: String,
-        enum: ['todo', 'doing', 'review', 'done'],
+        enum: ['todo', 'doing', 'review', 'done', 'archived'],
         required: true
     },
     assignedBoard: {

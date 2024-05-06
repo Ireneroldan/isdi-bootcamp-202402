@@ -70,7 +70,7 @@ function App() {
   return <>
     <Context.Provider value={{ showFeedback: handleFeedback, showConfirm: handleConfirm }}>
       <Routes>
-        <Route path="/archived" element={<Archived />} />
+        <Route path="/archived/:boardId" element={<Archived />} />
         <Route path="/board/:userId/:taskId" element={<BoardPage />} />
         <Route path="/BoardPage/:boardId" element={<BoardPage />} />
         <Route path="/login" element={logic.isUserLoggedIn() ? <Navigate to="/" /> : <Login onRegisterClick={handleRegisterClick} onUserLoggedIn={handleUserLoggedIn} />} />

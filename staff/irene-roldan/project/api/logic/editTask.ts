@@ -14,7 +14,7 @@ async function editTask(taskId: ObjectId, title: string, description: string, co
         }
 
         task.title = title
-        task.description = description
+        task.description = description 
         task.columnType = columnType
         await task.save() 
 

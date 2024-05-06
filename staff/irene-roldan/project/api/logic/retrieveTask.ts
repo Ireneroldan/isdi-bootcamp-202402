@@ -9,10 +9,11 @@ function retrieveTask(boardId: string, columnType: string) {
                 .lean()
                 .catch(error => { throw new SystemError(error.message); })
                 .then(tasks => {
-                    return tasks.map(({ _id, description, title }) => ({ 
+                    return tasks.map(({ _id, description, title, columnType}) => ({ 
                         id: _id,
                         title,
-                        description
+                        description,
+                        columnType
                     })).reverse()
                 })
         

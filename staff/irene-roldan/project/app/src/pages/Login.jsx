@@ -37,13 +37,13 @@ function Login ({ onUserLoggedIn, onRegisterClick}) {
     }
 
     return (
+        <main className="background-color"> 
         <div className="relative flex flex-col justify-center items-center h-screen">
         <img src={Logo} alt="logo tasking" 
-        className="absolute top-0 left-0 m-4 w-10 h-10"/>
-        
-        <div className="w-96 h-96 bg-gray-800 shadow-lg rounded-lg overflow-hidden">
+        className="absolute top-0 left-1/2 transform -translate-x-1/2 m-4 w-14 h-14"/>
+        <div className="w-96 h-96 bg-gray-100 bg-opacity-95 shadow-lg rounded-lg overflow-hidden">
             <main className="bg-gray-100 flex flex-col justify-center items-center h-full">
-                <h1 className="text-3xl text-gray-500 font-bold mb-4">Log In</h1>
+                <h1 className="text-2xl text-gray-500 font-bold mb-4">Log In</h1>
                 
                 <form onSubmit={handleSubmit} className="w-full max-w-xs flex flex-col items-center">
                     <label htmlFor="email" className="block text-gray-500 font-bold mb-1 md:mb-0 pr-4 self-start"> E-mail </label>
@@ -56,8 +56,9 @@ function Login ({ onUserLoggedIn, onRegisterClick}) {
                 </form>
             </main>
         </div>
-        <a onClick={handleRegisterClick} className="md:w-2/3 block text-gray-500 font-bold mt-4 cursor-pointer">You don't have an account? Click to go to Register</a>
+        <a onClick={handleRegisterClick} className="block text-center text-gray-500 font-bold mt-4 cursor-pointer">You don't have an account? Click to go to Register</a>
     </div>
+    </main>
   )
 }
 

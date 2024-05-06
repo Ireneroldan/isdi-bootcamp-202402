@@ -1,6 +1,6 @@
 import { validate, errors } from 'com'
 
-function editTask(taskId, title, description, columnType) {
+function editTask(taskId, title, description, columnType) { 
 
     const task =  JSON.stringify({ title, description, columnType })
     return fetch(`${import.meta.env.VITE_API_URL}/tasks/${taskId}`, {

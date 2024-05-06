@@ -77,7 +77,7 @@ function Home({ onUserLoggedOut }) {
 
     return <>
         <header>
-            {user && <h1>Welcome, {user.name}</h1>}
+            {user && <h1 className="text-2xl text-gray-800 font-bold mb-4" >Welcome, {user.name}</h1>}
 
             <nav>
                 <button onClick={handleLogoutClick}>❌</button>

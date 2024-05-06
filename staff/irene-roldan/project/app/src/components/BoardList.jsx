@@ -1,7 +1,8 @@
-import { logger } from '../utils';
-import logic from '../logic';
-import { useState, useEffect } from 'react';
-import Board from './Board';
+import { logger } from '../utils'
+import logic from '../logic'
+import { useState, useEffect } from 'react'
+import Board from './Board'
+import '../index.css'
 
 import { useContext } from '../context';
 
@@ -48,14 +49,14 @@ function BoardList({ stamp, onEditBoardClick }) {
     return (
         <div>
             <section>
-                <h3>My boards</h3>
+                <h3 className="text-xl text-gray-800 font-bold mb-4">My boards</h3>
                 {boards.map(board => (
                     <Board key={board.id} item={{...board, userId: null}} onEditClick={handleEditClick} onDeleted={handleBoardDeleted} />
                 ))}
             </section>
     
             <section>
-                <h3>Boards shared with me</h3>
+                <h3 className="text-xl text-gray-800 font-bold mb-4">Boards shared with me</h3>
                 {sharedBoards.map(board => (
                     <Board key={board.id} item={{...board, userId: null}} />
                 ))}

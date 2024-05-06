@@ -13,8 +13,8 @@ const { Types: { ObjectId } } = mongoose
 const { NotFoundError } = errors
 
 
-describe('createTask', function() {
-    it('should create a new task', function(done) {
+describe('deleteTask', function() {
+    it('delete a task successfully', function(done) {
         const title = 'Test Task';
         const description = 'Test Description'
         const columnType = 'Test Column'
@@ -22,11 +22,16 @@ describe('createTask', function() {
         Task.create(title, description, columnType)
             .then(task => {
                 try {
-                    expect(task).to.be.a('object')
-                    expect(task).to.have.property('title', title)
-                    expect(task).to.have.property('description', description)
-                    expect(task).to.have.property('columnType', columnType)
-                    done()
+                    logic.deleteTask(task._id)
+                        .then(() => {
+                            Task.findById(task._id)
+                                .then(task => {
+                                    expect(task).to.be.null
+                                    done()
+                                })
+                                .catch(done)
+                        })
+                        .catch(done)
                 } catch (error) {
                     done(error)
                 }

@@ -11,4 +11,4 @@ async function getSelectedArchivedTasks(boardId) {
     }
 }
 
-export { getSelectedArchivedTasks };
+export default getSelectedArchivedTasks

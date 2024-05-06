@@ -12,6 +12,7 @@ import { useState } from 'react'
 import { Context } from './context'
 import Confirm from './components/Confirm'
 import { errors } from 'com'
+import './index.css'
 
 const { UnauthorizedError } = errors
 

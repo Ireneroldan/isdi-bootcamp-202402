@@ -7,11 +7,11 @@ import retrieveBoard from './retrieveBoard.ts'
 import createBoard from './createBoard.ts'
 import retrieveOneBoard from './retrieveOneBoard.ts'
 
-import createTask from './createTask'
+import createTask from './createTask.ts'
 import retrieveTask from './retrieveTask.ts'
 import deleteTask from './deleteTask.ts'
 import editTask from './editTask.ts'
-import { getSelectedArchivedTasks } from './getSelectedArchivedTasks.ts'
+import getSelectedArchivedTasks from './getSelectedArchivedTasks.ts'
 
 import shareBoardWithUsers from './shareBoardWithUsers.ts'
 import getShareBoards from './getShareBoards.ts'

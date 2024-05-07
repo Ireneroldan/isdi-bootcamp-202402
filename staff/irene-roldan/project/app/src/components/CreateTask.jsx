@@ -33,19 +33,23 @@ function CreateTask(props) {
     logger.debug('CreateTask -> render');
 
     return (
-        <section>
-            <form action="" onSubmit={handleSubmit}>
-                <label htmlFor="text">Task name</label>
-                <input type="text" id="text"/>
+        <main className="flex flex-col items-center h-screen w-full">
+    <section className="max-w-xl">
+        <form action="" className="flex items-center border-b border-teal-500 py-2" onSubmit={handleSubmit}>
+            <label htmlFor="text">Task name</label>
+            <input className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" id="text"/>
 
-                <label htmlFor="description">Task description</label>
-                <input type="text" id="description" />
+            <label htmlFor="description">Task description</label>
+            <input className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" id="description" />
 
-                <button type="submit">Ok</button>
-            </form>
+            <button className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded" type="submit">Send</button>
+            <button className="flex-shrink-0 border-transparent border-4 text-teal-500 hover:text-teal-800 text-sm py-1 px-2 rounded" onClick={handleCancelClick}>Cancel</button>
 
-            <button onClick={handleCancelClick}>Cancel</button>
-        </section>
+        </form>
+
+    </section>
+</main>
+        
     )
 }
 

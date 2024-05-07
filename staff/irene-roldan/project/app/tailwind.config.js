@@ -7,7 +7,12 @@ module.exports = {
     extend: {
       fontFamily: {
         'major-mono': ['Major Mono Display', 'monospace']
-      }
+      },
+      colors: {
+        'custom-black': '#222222',
+        'custom-orange': '#FF9F6B',
+        'custom-yellow': '#ffee99',
+      },
     },
   },
   plugins: [],

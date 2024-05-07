@@ -62,23 +62,27 @@ function BoardList({ stamp}) {
     logger.debug('BoardList -> render');
 
    return (
-    <div className="bg-white min-h-screen flex flex-col items-center text-2xl font-semibold text-gray-800">
-        <section className="w-full max-w-xl mb-8 p-4 border border-3B3B3F rounded bg-gray-200 shadow-lg">
-            <h1 className="text-2xl text-orange-600 font-bold mb-4 text-center">MY BOARDS</h1>
+    <div className="bg-gray-100 min-h-screen flex flex-col items-center text-xl font-semibold text-white">
+        <section className="w-full max-w-xl mb-8 p-4 border-4 border-orange-200 rounded bg-gray-800 shadow-lg">
+            <h1 className="text-xl text-white font-bold mb-4 text-center">MY BOARDS</h1>
             {boards.map(board => (
                 <div key={board.id} className="flex justify-between items-center">
                     <Board item={{...board, userId: null}} />
-                    <button onClick={() => handleDeleteBoard(board)}><svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"><path fill="#dc2626" fill-rule="evenodd" d="M12 22c-4.714 0-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12s0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22M8.97 8.97a.75.75 0 0 1 1.06 0L12 10.94l1.97-1.97a.75.75 0 0 1 1.06 1.06L13.06 12l1.97 1.97a.75.75 0 1 1-1.06 1.06L12 13.06l-1.97 1.97a.75.75 0 1 1-1.06-1.06L10.94 12l-1.97-1.97a.75.75 0 0 1 0-1.06" clip-rule="evenodd"/></svg></button>
+                    <button onClick={() => handleDeleteBoard(board)}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"><path fill="#dc2626" fillRule="evenodd" d="M12 22c-4.714 0-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12s0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22M8.97 8.97a.75.75 0 0 1 1.06 0L12 10.94l1.97-1.97a.75.75 0 0 1 1.06 1.06L13.06 12l1.97 1.97a.75.75 0 1 1-1.06 1.06L12 13.06l-1.97 1.97a.75.75 0 1 1-1.06-1.06L10.94 12l-1.97-1.97a.75.75 0 0 1 0-1.06" clipRule="evenodd"/>
+                        </svg>
+                        </button>
                 </div>
             ))}
         </section>
 
-        <section className="w-full max-w-xl p-4 border border-gray-300 rounded bg-gray-200 shadow-lg">
-            <h1 className="text-2xl text-orange-600 font-bold mb-4 text-center">BOARDS SHARED WITH ME</h1>
+        <section className="w-full max-w-xl p-4 border-4 border-orange-200 rounded bg-gray-800 shadow-lg">
+            <h1 className="text-xl text-white font-bold mb-4 text-center">BOARDS SHARED WITH ME</h1>
             {sharedBoards.map(board => (
                 <Board key={board.id} item={{...board, userId: null}} />
             ))}
         </section>
+
     </div>
 )
     

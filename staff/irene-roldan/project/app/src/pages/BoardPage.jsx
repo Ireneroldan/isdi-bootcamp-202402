@@ -73,40 +73,40 @@ function BoardPage() {
 
     return (
         <>
+            <main className="flex flex-col items-center bg-gray-100 h-screen w-full">
             <header>
-                {board && <h1 className="text-2xl text-gray-800 font-bold mb-4">{board.text}</h1>} 
+                {board && <h1 className="text-4xl text-gray-800 font-bold mb-4 mt-8 text-center">{board.text}</h1>} 
             </header>
 
-            <main className="flex flex-col items-center">
-    <div className="flex justify-start space-x-4 mb-4">
-        <button onClick={handleShareBoardClick}>Share Board</button> 
-        <Link to={`/Archived/${boardId}`}>Archived</Link>  
+
+    <div className="flex justify-start  mb-4">
+        <button className="bg-orange-300 text-lg hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l" onClick={handleShareBoardClick}>Share Board</button> 
+        <Link class="bg-orange-300 text-lg hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r" to={`/Archived/${boardId}`}>Archived</Link>  
+    
+    </div>
+     <div className="flex flex-col justify-center items-center w-full space-y-4">
+    <div className="flex flex-col w-full h-60 border-4 border-gray-300 bg-white rounded p-4">
+        <h3 className="block text-xl text-gray-800 font-bold mb-1 md:mb-0 pr-4 self-start break-words">Todo</h3>
+        <TaskList key={taskListKey} boardId={boardId} columnType='todo' tasks={tasks} handleEditTask={handleEditTask} />
     </div>
 
-    <div className="flex flex-wrap justify-center space-x-4">
-        <div className="flex flex-col w-1/4 border border-gray-300 rounded p-4">
-            <h3>TODO</h3>
-            <TaskList key={taskListKey} boardId={boardId} columnType='todo' tasks={tasks} handleEditTask={handleEditTask} />
-        </div>
-
-        <div className="flex flex-col w-1/4 border border-gray-300 rounded p-4">
-            <h3>DOING</h3>
-            <TaskList boardId={boardId} columnType='doing' tasks={tasks} handleEditTask={handleEditTask} />
-        </div>
-
-        <div className="flex flex-col w-1/4 border border-gray-300 rounded p-4">
-            <h3>REVIEW</h3>
-            <TaskList boardId={boardId} columnType='review' tasks={tasks} handleEditTask={handleEditTask} />
-        </div>
-
-        <div className="flex flex-col w-1/4 border border-gray-300 rounded p-4">
-            <h3>DONE</h3>
-            <TaskList boardId={boardId} columnType='done' tasks={tasks} handleEditTask={handleEditTask} />
-        </div>
+    <div className="flex flex-col w-full h-60 border-4 border-gray-300 bg-white rounded p-4">
+        <h3 className="block text-xl text-gray-800 font-bold mb-1 md:mb-0 pr-4 self-start">Doing</h3>
+        <TaskList boardId={boardId} columnType='doing' tasks={tasks} handleEditTask={handleEditTask} />
     </div>
 
+    <div className="flex flex-col w-full h-60 border-4 border-gray-300 bg-white rounded p-4">
+        <h3 className="block text-xl text-gray-800 font-bold mb-1 md:mb-0 pr-4 self-start">Review</h3>
+        <TaskList boardId={boardId} columnType='review' tasks={tasks} handleEditTask={handleEditTask} />
+    </div>
+
+    <div className="flex flex-col w-full h-60 border-4 border-gray-300 bg-white rounded p-4">
+        <h3 className="block text-xl text-gray-800 font-bold mb-1 md:mb-0 pr-4 self-start">Done</h3>
+        <TaskList boardId={boardId} columnType='done' tasks={tasks} handleEditTask={handleEditTask} />
+    </div>
+</div>
     <Link to="/" className="mt-4">
-    <button>Back</button>
+    <button><svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 14 14"><g fill="none" stroke="#333333" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 1.5l-3 3l3 3"/><path d="M.5 4.5h9a4 4 0 0 1 0 8h-5"/></g></svg></button>
         
     </Link>
 </main>

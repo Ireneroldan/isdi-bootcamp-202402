@@ -32,16 +32,18 @@ function createBoard(props) {
 
     logger.debug('CreatePost -> render')
 
-    return <section>
-        <form action="" onSubmit={handleSubmit}>
+   return (
+    <section className="flex items-center justify-center h-1/2">
+        <form action="" onSubmit={handleSubmit} className="flex flex-col items-center ">
             <label htmlFor="text">Project name</label>
-            <input className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"type="text" id="name"/>
+            <input className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" id="name"/>
 
             <SubmitButton type="submit">Ok</SubmitButton>
         </form>
 
         <CancelButton onClick={handleCancelClick}>Cancel</CancelButton>
     </section>
+)
     
 }
 export default createBoard

@@ -42,9 +42,10 @@ function BoardPage() {
                     showFeedback(error)
                 })
         }
-        
-        fetchData()
+    
+        fetchData();
     }, [boardId, columnType])
+    
 
     const handleShareBoardClick = () => {
         setShareBoardView(true)
@@ -78,9 +79,15 @@ function BoardPage() {
 
             <main className="flex flex-col items-center">
     <div className="flex justify-start space-x-4 mb-4">
-        <button onClick={handleShareBoardClick}>Share Board</button>
-        <Link to={`/Archived/${boardId}`}>Archived</Link> 
+        <button onClick={handleShareBoardClick}>Share Board</button> 
+        <Link to={`/Archived/${boardId}`}>Archived</Link>  
     </div>
+
+    <div>
+        <h2>Board users</h2>
+        
+    </div>
+    
 
     <div className="flex flex-wrap justify-center space-x-4">
         <div className="flex flex-col w-1/4 border border-gray-300 rounded p-4">
@@ -104,7 +111,10 @@ function BoardPage() {
         </div>
     </div>
 
-    <Link to="/" className="mt-4">Back</Link>
+    <Link to="/" className="mt-4">
+    <button>Back</button>
+        
+    </Link>
 </main>
 
 

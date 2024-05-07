@@ -37,7 +37,7 @@ function Login ({ onUserLoggedIn, onRegisterClick}) {
     }
 
     return (
-        <main className="background-color"> 
+        <main className="background-image"> 
         <div className="relative flex flex-col justify-center items-center h-screen">
         <img src={Logo} alt="logo tasking" 
         className="absolute top-0 left-1/2 transform -translate-x-1/2 m-4 w-14 h-14"/>
@@ -56,7 +56,7 @@ function Login ({ onUserLoggedIn, onRegisterClick}) {
                 </form>
             </main>
         </div>
-        <a onClick={handleRegisterClick} className="block text-center text-gray-500 font-bold mt-4 cursor-pointer">You don't have an account? Click to go to Register</a>
+        <a onClick={handleRegisterClick} className="block text-center text-white font-bold mt-4 cursor-pointer">You don't have an account? Click to go to Register</a>
     </div>
     </main>
   )

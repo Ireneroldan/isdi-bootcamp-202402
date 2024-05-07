@@ -7,7 +7,6 @@ const { SystemError, NotFoundError } = errors
 function retrieveOneBoard(boardId: string): Promise<{ text: string }> {
     validate.text(boardId, 'boardId', true)
     //@ts-ignore
-   // boardId = ObjectId("662bbb01a22f94d9b95ecd3a")
 
     return Board.findById(boardId)
         .select('text')

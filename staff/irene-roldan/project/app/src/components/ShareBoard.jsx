@@ -33,7 +33,7 @@ function ShareBoard({ boardId, closeShareBoard }) {
     }
 
     return (
-        <form onSubmit={handleShareConfirm}>
+        <form onSubmit={handleShareConfirm}> 
             <div>
                 <h2>Share Board</h2>
                 <select value={selectedUser} onChange={handleUserChange}>

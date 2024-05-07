@@ -90,7 +90,9 @@ const handleEditTask = (updatedTask) => {
             />
             
             )}
-            <AddTaskButton columnType={columnType} onAddTask={handleCreateTaskClick} />
+            {columnType !== 'archived' && (
+                <AddTaskButton columnType={columnType} onAddTask={handleCreateTaskClick} />
+            )}
             {view && view.view === 'create-task' && (
                 <CreateTask
                     onCancelClick={handleCancelClick}

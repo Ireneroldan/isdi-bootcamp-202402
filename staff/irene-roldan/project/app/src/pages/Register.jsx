@@ -74,7 +74,7 @@ function Register ({onUserRegistered, onLoginClick}) {
                 </form>
             </div>
         </div>
-        <div className="md:block md:w-1/2 p-4 flex flex-col items-center justify-center">
+        <div className="md:block md:w-1/2 p-4 flex flex-col items-center justify-center mb-4">
             <div className="w-full flex justify-center">
             <img src={Logo} alt="logo tasking" className="w-12 h-12"/>
         </div>

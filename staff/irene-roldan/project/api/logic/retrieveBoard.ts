@@ -14,13 +14,14 @@ function retrieveBoards(userId: ObjectId): Promise<{ id: ObjectId; author: { _id
                 throw new NotFoundError('user not found');
 
             return Board.find({ "author" : userId })
-                .populate<{ author: { _id: ObjectId; email: string } }>('author', 'email')
+                .populate<{ author: { _id: ObjectId; email: string}}>('author', 'email')
                 .lean()
                 .catch(error => { throw new SystemError(error.message) })
                 .then(boards =>
-                    boards.map(({ text, _id }) => ({
+                    boards.map(({ text, _id, assignedUsers}) => ({
                         text,
-                        _id
+                        _id,
+                        assignedUsers
                     })).reverse()
                 ) as Promise<{ id: ObjectId; author: { _id: ObjectId; email: string }; text: string }[]>
         })

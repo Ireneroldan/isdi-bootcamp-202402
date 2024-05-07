@@ -4,7 +4,7 @@ import { ObjectId } from 'mongoose'
 
 const { SystemError, NotFoundError } = errors
 
-function deleteBoard(boardId: ObjectId) {
+function deleteBoard(boardId: string | ObjectId) {
     return Board.findByIdAndDelete(boardId)
         .then(board => {
             if (!board) {

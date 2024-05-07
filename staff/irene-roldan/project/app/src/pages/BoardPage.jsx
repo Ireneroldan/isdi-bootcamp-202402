@@ -83,12 +83,6 @@ function BoardPage() {
         <Link to={`/Archived/${boardId}`}>Archived</Link>  
     </div>
 
-    <div>
-        <h2>Board users</h2>
-        
-    </div>
-    
-
     <div className="flex flex-wrap justify-center space-x-4">
         <div className="flex flex-col w-1/4 border border-gray-300 rounded p-4">
             <h3>TODO</h3>

@@ -468,8 +468,8 @@ mongoose.connect(MONGODB_URL)
 
         api.delete('/board/:boardId', async (req, res) => {
             try {
-                const { taskId } = req.params
-                await logic.deleteBoard(taskId) 
+                const { boardId } = req.params
+                await logic.deleteBoard(boardId) 
                 res.status(204).json({ message: 'el tablero fue eliminada exitosamente' })
             } catch (error) {
                 console.error('Error eliminando el tablero', error)

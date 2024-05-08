@@ -81,7 +81,7 @@ function BoardPage() {
 
     <div className="flex justify-start  mb-4">
         <button className="bg-orange-300 text-lg hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l" onClick={handleShareBoardClick}>Share Board</button> 
-        <Link class="bg-orange-300 text-lg hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r" to={`/Archived/${boardId}`}>Archived</Link>  
+        <Link className="bg-orange-300 text-lg hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r" to={`/Archived/${boardId}`}>Archived</Link>  
     
     </div>
      <div className="flex flex-col justify-center items-center w-full space-y-4">
@@ -106,7 +106,7 @@ function BoardPage() {
     </div>
 </div>
     <Link to="/" className="mt-4">
-    <button><svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 14 14"><g fill="none" stroke="#333333" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 1.5l-3 3l3 3"/><path d="M.5 4.5h9a4 4 0 0 1 0 8h-5"/></g></svg></button>
+    <button><svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 14 14"><g fill="none" stroke="#333333" strokeLinecap="round" strokeLinejoin="round"><path d="m3.5 1.5l-3 3l3 3"/><path d="M.5 4.5h9a4 4 0 0 1 0 8h-5"/></g></svg></button>
         
     </Link>
 </main>

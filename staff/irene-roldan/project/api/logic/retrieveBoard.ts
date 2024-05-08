@@ -4,7 +4,7 @@ import { User, Board } from '../data/index.ts'
 
 const { SystemError, NotFoundError } = errors
 
-function retrieveBoards(userId: ObjectId): Promise<{ id: ObjectId; author: { _id: ObjectId; email: string }; text: string }[]> {
+function retrieveBoards(userId: ObjectId): Promise<{ id: string; author: { id: string; email: string }; text: string }[]> {
     validate.text(userId, 'userId', true)
     
     return User.findById(userId)
@@ -18,9 +18,9 @@ function retrieveBoards(userId: ObjectId): Promise<{ id: ObjectId; author: { _id
                 .lean()
                 .catch(error => { throw new SystemError(error.message) })
                 .then(boards =>
-                    boards.map(({ text, _id, assignedUsers}) => ({
+                    boards.map<{id: string, text: string, assignedUsers: ObjectId[]}>(({ _id, text, assignedUsers}) => ({
                         text,
-                        _id,
+                        id: _id.toString(),
                         assignedUsers
                     })).reverse()
                 ) as Promise<{ id: ObjectId; author: { _id: ObjectId; email: string }; text: string }[]>

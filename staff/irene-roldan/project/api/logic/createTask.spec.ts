@@ -28,7 +28,7 @@ describe('createTask', function() {
         const user = new User({ email: 'test@test.com', password: 'test' })
         await user.save()
 
-        const userId = user._id.toString()
+        const userId = user.id
         const title = 'Test title'
         const description = 'Test description'
         const boardId = new mongoose.Types.ObjectId().toString()

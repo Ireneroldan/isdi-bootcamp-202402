@@ -79,7 +79,7 @@ function Register ({onUserRegistered, onLoginClick}) {
             <img src={Logo} alt="logo tasking" className="w-12 h-12"/>
         </div>
             <h2 className="text-3xl text-gray-700 mb-4 text-center font-bold">Hello! Welcome to Tasking</h2>
-            <p className="text-2xl text-gray-700 text-center" > We focus on making organization accessible to everyone, helping you keep your tasks in order and collaborate with others seamlessly. Join us and simplify the way you work.</p>
+            <p className="text-xl text-gray-700 text-center" > We focus on making organization accessible to everyone, helping you keep your tasks in order and collaborate with others seamlessly. Join us and simplify the way you work.</p>
         </div>
     </div>
     <a className="text-white font-bold mt-6 cursor-pointer text-center" onClick={handleLoginClick}>Do you have an account? Click to go to Log In</a>

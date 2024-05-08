@@ -1,0 +1,1 @@
+curl -X POST -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjNiMjI0YWZlZWMwN2QzOGUxNmFhMDciLCJpYXQiOjE3MTUxNzc1MTQsImV4cCI6MTcxNjE3NzUxNH0.a75_X64cEUljymxKWu8z19836mztqIazz-O7XFeTWTY" -H "Content-Type: application/json" -d '{"text":"Project", "description":"First Project"}' http://localhost:9000/boards -v

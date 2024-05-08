@@ -50,7 +50,6 @@ mongoose.connect(MONGODB_URL)
 
             const { sub: userId } = jwt.verify(token, JWT_SECRET)
 
-            
             try {
                 //@ts-ignore
                 logic.retrieveUsers(userId)

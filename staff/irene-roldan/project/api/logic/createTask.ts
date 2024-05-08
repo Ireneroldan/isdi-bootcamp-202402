@@ -21,7 +21,7 @@ async function createTask(userId: string, title: string, description: string, bo
         }
 
         await Task.create({
-            author: user._id,
+            author: user.id,
             title,
             description,
             date: new Date(),

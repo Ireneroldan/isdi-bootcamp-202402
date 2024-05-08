@@ -1,7 +1,5 @@
 import { validate, errors } from 'com'
 
-
-
 function retrieveBoards() {
     validate.token(sessionStorage.token)
     

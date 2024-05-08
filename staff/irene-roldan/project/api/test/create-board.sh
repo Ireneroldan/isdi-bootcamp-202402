@@ -1,1 +1,1 @@
-curl -X POST -H "Authorization: Bearer <token>" -H "Content-Type: application/json" -d '{"text":"am here, am here"}' http://localhost:9000/boards -v
+curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjNiMjI0YWZlZWMwN2QzOGUxNmFhMDciLCJpYXQiOjE3MTUxNzc1MTQsImV4cCI6MTcxNjE3NzUxNH0.a75_X64cEUljymxKWu8z19836mztqIazz-O7XFeTWTY" -H "Content-Type: application/json" -d '{"text":"CURL"}' http://localhost:9000/boards -v

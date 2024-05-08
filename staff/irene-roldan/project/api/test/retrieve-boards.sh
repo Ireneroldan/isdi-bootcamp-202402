@@ -1,1 +1,1 @@
-curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjFkMDc4ODIwYjJmZTZlNWM3ZDZkM2IiLCJpYXQiOjE3MTMzNDMxMTJ9.up9e4LniysVqoLT0Zuu033haJSnn4KVNXQoRduMNwhE" http://localhost:9000/boards -v
+curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjNiMjI0YWZlZWMwN2QzOGUxNmFhMDciLCJpYXQiOjE3MTUxNzc1MTQsImV4cCI6MTcxNjE3NzUxNH0.a75_X64cEUljymxKWu8z19836mztqIazz-O7XFeTWTY" http://localhost:9000/boards -v

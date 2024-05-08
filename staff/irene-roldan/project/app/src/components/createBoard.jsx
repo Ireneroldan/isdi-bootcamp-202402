@@ -4,12 +4,19 @@ import logic from '../logic'
 import { useContext } from '../context'
 import CancelButton from './library/CancelButton'
 
+import React from 'react'
+import Modal from 'react-modal'
+
+Modal.setAppElement('#root')
 
 function createBoard(props) {
     const { showFeedback } = useContext()
+    const [modalIsOpen, setModalIsOpen] = React.useState(false);
+
 
     const handleSubmit = event => {
         event.preventDefault()
+        setModalIsOpen(false)
 
         const form = event.target
 
@@ -33,17 +40,33 @@ function createBoard(props) {
     logger.debug('CreatePost -> render')
 
    return (
-    <section className="flex items-center justify-center h-1/2">
-        <form action="" onSubmit={handleSubmit} className="flex flex-col items-center ">
-            <label htmlFor="text">Project name</label>
-            <input className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" id="name"/>
+    <div>
+    <Modal
+        isOpen={true}
+        onRequestClose={handleCancelClick}
+        contentLabel="Create Board Modal"
+        style={{
+            content: {
+                width: '50%', 
+                height: '50%', 
+                display: 'flex', // add this
+                justifyContent: 'center', // add this
+                alignItems: 'center', // add this
+                margin: 'auto',
+            },
+        }}
+    >
+        <section className="flex items-center justify-center h-1/2">
+            <form style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} action="" onSubmit={handleSubmit}>
+                <label style={{ fontSize: '1.5em' }} htmlFor="text">Project name</label>
+                <input className="appearance-none block w-full bg-gray-200 text-gray-700 border-2 border-gray-700 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" id="name"/>
 
-            <SubmitButton type="submit">Ok</SubmitButton>
-        </form>
-
-        <CancelButton onClick={handleCancelClick}>Cancel</CancelButton>
-    </section>
-)
-    
+                <SubmitButton type="submit">Ok</SubmitButton><br/>
+                <CancelButton onClick={handleCancelClick}>Cancel</CancelButton>
+            </form>
+        </section>
+    </Modal>
+</div>
+);
 }
 export default createBoard

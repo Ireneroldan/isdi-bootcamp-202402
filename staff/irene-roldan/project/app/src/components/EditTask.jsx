@@ -56,7 +56,7 @@ function EditTask({ task, onCancel, onUpdateTasks }) {
           <option value="archived">Archived</option>
         </select>
 
-        <button class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded"type="submit">Save</button>
+        <button class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded" type="submit">Save</button>
         <button class="flex-shrink-0 border-transparent border-4 text-teal-500 hover:text-teal-800 text-sm py-1 px-2 rounded" onClick={handleCancelClick}>Cancel</button>
       </form>
     </section>

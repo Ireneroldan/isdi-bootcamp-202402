@@ -1,7 +1,7 @@
 import { validate, errors } from 'com'
 import { User, Board, Task } from '../data/index.ts'
 
-const { SystemError, NotFoundError } = errors
+const { SystemError, NotFoundError } = errors 
 
 async function createTask(userId: string, title: string, description: string, boardId: string, columnType: string): Promise<void> {
     try {

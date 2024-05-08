@@ -49,9 +49,9 @@ function createBoard(props) {
             content: {
                 width: '50%', 
                 height: '50%', 
-                display: 'flex', // add this
-                justifyContent: 'center', // add this
-                alignItems: 'center', // add this
+                display: 'flex', 
+                justifyContent: 'center', 
+                alignItems: 'center', 
                 margin: 'auto',
             },
         }}

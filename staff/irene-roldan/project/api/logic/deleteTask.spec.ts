@@ -15,14 +15,12 @@ describe('deleteTask', function() {
   let taskId;
 
   beforeEach(async () => {
-      // Crear una tarea de prueba y guardar su ID
       const task = new Task({ title: 'Test Task', description: 'Test Description' });
       await task.save();
-      taskId = task._id;
+      taskId = task.id;
   });
 
   afterEach(async () => {
-      // Limpiar la base de datos después de cada prueba
       await Task.deleteMany({});
   });
 

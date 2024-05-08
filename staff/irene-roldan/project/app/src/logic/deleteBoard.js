@@ -1,8 +1,8 @@
 function deleteBoard(board) {
-    if (typeof board._id !== 'string') throw new TypeError(`${board._id} is not a string`)
+    if (typeof board.id !== 'string') throw new TypeError(`${board.id} is not a string`)
     
     if(board.assignedUsers.length === 0){
-        return fetch(`${import.meta.env.VITE_API_URL}/board/${board._id}`, {
+        return fetch(`${import.meta.env.VITE_API_URL}/board/${board.id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

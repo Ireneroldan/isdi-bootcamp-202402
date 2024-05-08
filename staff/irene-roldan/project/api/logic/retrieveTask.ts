@@ -8,14 +8,14 @@ function retrieveTask(boardId: string, columnType: string) {
     return Task.find({'assignedBoard': boardId, 'columnType': columnType}) 
                 .lean()
                 .catch(error => { throw new SystemError(error.message); })
-                .then(tasks => {
-                    return tasks.map(({ _id, description, title, columnType}) => ({ 
-                        id: _id,
-                        title,
-                        description,
-                        columnType
-                    })).reverse()
-                })
+                .then((tasks: { _id: ObjectId, title: string, description: string, columnType: string }[]) => {
+    return tasks.map(({ _id, title, description, columnType }) => ({ 
+        id: _id.toString(),
+        title,
+        description,
+        columnType
+        })).reverse()
+    })
         
 }
 

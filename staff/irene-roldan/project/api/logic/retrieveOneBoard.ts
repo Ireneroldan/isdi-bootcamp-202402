@@ -11,9 +11,9 @@ function retrieveOneBoard(boardId: string): Promise<{ text: string }> {
         .lean()
         .then((board: any) => {
             if (!board) {
-                throw new NotFoundError(`Board with id ${boardId} not found`)
+                throw new NotFoundError(`Board not found`)
             }
-            return { text: board.text }
+            return {text: board.text}
         })
         .catch(error => { throw new SystemError(error.message) })
 }

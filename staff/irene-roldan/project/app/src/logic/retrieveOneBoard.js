@@ -1,10 +1,10 @@
 import { validate, errors } from 'com'
 
 
-function retrieveOneBoard(BoardId) {
+function retrieveOneBoard(boardId) {
     validate.token(sessionStorage.token)
     
-    return fetch(`${import.meta.env.VITE_API_URL}/board/${BoardId}`, {
+    return fetch(`${import.meta.env.VITE_API_URL}/board/${boardId}`, {
         headers: {
             'Authorization': `Bearer ${sessionStorage.token}`
         }

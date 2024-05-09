@@ -62,7 +62,7 @@ function ShareBoard({ boardId, closeShareBoard }) {
             <form onSubmit={handleShareConfirm}> 
                 <div style={{ textAlign: 'center' }}>
                     <h2 style={{ fontSize: '1.5em', fontWeight: 'bold', marginBottom: '30px' }}>Share Board</h2>
-                    <select style={{ marginBottom: '20px' }} value={selectedUser} onChange={handleUserChange} class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                    <select style={{ marginBottom: '20px' }} value={selectedUser} onChange={handleUserChange} className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                         <option value="">Select User</option>
                         {users.map(user => (
                             <option key={user.id} value={user.id}>{user.email}</option>

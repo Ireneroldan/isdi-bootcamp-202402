@@ -33,9 +33,9 @@ function BoardPage() {
 
     useEffect(() => {
         const fetchData = () => {
-            logic.retrieveOneBoard(board)
+            logic.retrieveOneBoard(boardId)
                 .then(boardText => {
-                    setBoard({ text: boardText })
+                    setBoard({ text: boardText})
                     loadTasks()
                 })
                 .catch(error => {
@@ -75,7 +75,7 @@ function BoardPage() {
         <>
             <main className="flex flex-col items-center bg-gray-100 h-screen w-full">
             <header>
-                {board && <h1 className="text-4xl text-gray-800 font-bold mb-4 mt-8 text-center">{board.text}</h1>} 
+                {board && <h1 className="text-4xl text-gray-800 font-bold mb-4 mt-8 text-center">{board.text.text}</h1>} 
             </header>
 
 

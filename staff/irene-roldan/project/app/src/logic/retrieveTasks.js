@@ -2,7 +2,7 @@ import { validate, errors } from 'com'
 
 function retrieveTasks(boardId, columnType) {
     if (typeof boardId === 'undefined' || typeof columnType === 'undefined') {
-        throw new Error('boardId or columnType is undefined');
+        return Promise.reject(new Error('boardId or columnType is undefined'))
     }
 
     validate.token(sessionStorage.token)

@@ -43,40 +43,33 @@ mongoose.connect(MONGODB_URL)
         api.use(cors())
 
         
-        api.get('/users', (req, res) => {
+        api.get('/users', async (req, res) => {
             const { authorization } = req.headers
 
             const token = authorization.slice(7)
 
             const { sub: userId } = jwt.verify(token, JWT_SECRET)
 
+            
             try {
                 //@ts-ignore
-                logic.retrieveUsers(userId)
-                    .then(users => res.json(users))
-                    .catch(error => {
-                        if (error instanceof SystemError) {
-                            logger.error(error.message)
-
-                            res.status(500).json({ error: error.constructor.name, message: error.message })
-                        } else if (error instanceof NotFoundError) {
-                            logger.warn(error.message)
-
-                            res.status(404).json({ error: error.constructor.name, message: error.message })
-                        }
-                    })
+                const users = await logic.retrieveUsers(userId)
+                res.json(users)
             } catch (error) {
-                if (error instanceof TypeError || error instanceof ContentError) {
+                if (error instanceof SystemError) {
+                    logger.error(error.message)
+                    res.status(500).json({ error: error.constructor.name, message: error.message })
+                } else if (error instanceof NotFoundError) {
                     logger.warn(error.message)
-
+                    res.status(404).json({ error: error.constructor.name, message: error.message })
+                } else if (error instanceof TypeError || error instanceof ContentError) {
+                    logger.warn(error.message)
                     res.status(406).json({ error: error.constructor.name, message: error.message })
                 } else if (error instanceof TokenExpiredError) {
                     logger.warn(error.message)
-
                     res.status(498).json({ error: UnauthorizedError.name, message: 'session expired' })
                 } else {
                     logger.warn(error.message)
-
                     res.status(500).json({ error: SystemError.name, message: error.message })
                 }
             }
@@ -457,11 +450,10 @@ mongoose.connect(MONGODB_URL)
                 const { sub: userId } = jwt.verify(token, JWT_SECRET)
                 const sharedBoards = await logic.getShareBoards(userId)
                 
-                // Devolvemos los tableros compartidos como respuesta
-                res.status(200).json(sharedBoards);
+                res.status(200).json(sharedBoards)
             } catch (error) {
-                logger.error(error.message);
-                res.status(500).json({ error: 'Internal Server Error', message: 'Ha ocurrido un error interno.' });
+                logger.error(error.message)
+                res.status(500).json({ error: 'Internal Server Error', message: 'Ha ocurrido un error interno.' })
             }
         })
 

@@ -1,14 +1,10 @@
 import { logger } from '../utils'
-
 import { Link } from 'react-router-dom'
-
 import logic from '../logic'
-
 import { useContext } from '../context'
 
-function Board({ item: board, onEditClick, onDeleted }) {
+function Board({ item: board, onDeleted }) {
     const { showFeedback, showConfirm } = useContext()
-    const { title } = board
 
     const handleDeleteClick = boardId =>
         showConfirm('delete board?', confirmed => {
@@ -26,7 +22,7 @@ function Board({ item: board, onEditClick, onDeleted }) {
     logger.debug('Board -> render')
 
     return <article>
-        <Link to={`/BoardPage/${board._id}`}>{board.text}</Link>        {logic.getLoggedInUserId() === board.author && <>
+        <Link to={`/BoardPage/${board.id}`}>{board.text}</Link>        {logic.getLoggedInUserId() === board.author && <>
             <button onClick={() => handleDeleteClick(board.id)}>Delete</button>
         </>}
     </article>

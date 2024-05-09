@@ -26,7 +26,7 @@ async function createTask(userId: string, title: string, description: string, bo
             description,
             date: new Date(),
             columnType,
-            assignedBoard: board._id 
+            assignedBoard: board.id 
         })
     } catch (error) {
         throw new SystemError(error.message)

@@ -33,7 +33,7 @@ function BoardPage() {
 
     useEffect(() => {
         const fetchData = () => {
-            logic.retrieveOneBoard(boardId)
+            logic.retrieveOneBoard(board)
                 .then(boardText => {
                     setBoard({ text: boardText })
                     loadTasks()

@@ -1,20 +1,32 @@
+import { ObjectId } from 'mongoose'
 import { errors, validate } from 'com'
 import { User, Board } from '../data/index.ts'
 
-const { NotFoundError } = errors
+const { SystemError, NotFoundError } = errors
 
-async function getSharedBoards(userId) {
+async function getSharedBoards(userId): Promise<{ id: string; author: { id: string; email: string }; text: string }[]>  {
     validate.text(userId, 'userId', true)
 
-    try {
-        const user = User.findById(userId) 
-        if (!user) throw new NotFoundError('User not found')
+    return User.findById(userId)
+    .catch(error => { throw new SystemError(error.message) })
+    .then(user => {
+        if (!user)
+            throw new NotFoundError('user not found');
 
-        return await Board.find({ assignedUsers: { $in: [userId] } }).exec()
-        
-    } catch (error) {
-        throw error
-    }
+        return  Board.find({ assignedUsers: { $in: [userId] } })
+            .populate<{ author: { _id: ObjectId; email: string}}>('author', 'email')
+            .lean()
+            .catch(error => { throw new SystemError(error.message) })
+            .then(boards =>
+                boards.map<{id: string, text: string, assignedUsers: ObjectId[]}>(({ _id, text, assignedUsers}) => ({
+                    text,
+                    id: _id.toString(),
+                    assignedUsers
+                })).reverse()
+            ) as Promise<{ id: string; author: { id: string; email: string }; text: string }[]>
+    })
 
 }
+       //return await Board.find({ assignedUsers: { $in: [userId] } }).exec()
+
 export default getSharedBoards

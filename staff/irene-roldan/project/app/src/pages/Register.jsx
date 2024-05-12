@@ -59,13 +59,13 @@ function Register ({onUserRegistered, onLoginClick}) {
 
                     <div className="flex flex-col border-b border-gray-700 py-2">
                         <label className="text-gray-500 font-bold mb-2 md:mb-0" htmlFor="email">E-mail</label>
-                        <input className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="email" id="email" /> 
+                        <input className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="email" id="email" autoComplete="email"/> 
                     </div>
 
                     <div className="flex flex-col border-b border-gray-700 py-2">
                         <label className="text-gray-500 font-bold mb-2 md:mb-0" htmlFor="password">Password</label>
                         <div className="flex items-center">
-                            <input className={showPassword ? "appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" : "appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"} type={showPassword ? "text" : "password"} id="password"/> 
+                            <input className={showPassword ? "appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" : "appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"} type={showPassword ? "text" : "password"} id="password" autoComplete="current-password"/> 
                             <button onClick={togglePasswordVisibility} type="button" className="text-gray-500">{showPassword ? 'Hide' : 'Show'} </button>
                         </div>
                     </div>

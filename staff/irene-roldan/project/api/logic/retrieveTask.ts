@@ -5,7 +5,7 @@ import { Task } from '../data/index.ts'
 const { SystemError } = errors
 
 function retrieveTask(boardId, columnType) {
-    return Task.find({ assignedBoard: boardId, columnType }) 
+    return Task.find({ assignedBoard: boardId.toString(), columnType }) 
         .populate('assignedBoard', 'title description columnType')
         .lean()
         .catch(error => { throw new SystemError(error.message); })

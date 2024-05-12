@@ -4,8 +4,8 @@ import { useParams, Link } from 'react-router-dom'
 import { useContext } from '../context'
 import { logger } from '../utils'
 import EditTask from '../components/EditTask'
-import TaskList from '../components/TaskList'
 import ShareBoard from '../components/ShareBoard'
+import ColumnList from '../components/ColumnList'
 
 
 function BoardPage() {
@@ -18,6 +18,8 @@ function BoardPage() {
     const [editTaskView, setEditTaskView] = useState(null);
     const [shareBoardView, setShareBoardView] = useState(false)
     const [taskListKey, setTaskListKey] = useState(Date.now())
+    const [tasksUpdated, setTasksUpdated] = useState(false);
+
 
 
 
@@ -68,6 +70,9 @@ function BoardPage() {
                 showFeedback(error, 'error');
             });
     }
+    const updateTasks = () => {
+        setTasksUpdated(!tasksUpdated);
+    }
 
     logger.debug('BoardPage -> render')
 
@@ -84,27 +89,9 @@ function BoardPage() {
         <Link className="bg-orange-300 text-lg hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r" to={`/Archived/${boardId}`}>Archived</Link>  
     
     </div>
-     <div className="flex flex-col justify-center items-center w-full space-y-4">
-    <div className="flex flex-col w-full h-60 border-4 border-gray-300 bg-white rounded p-4">
-        <h3 className="block text-xl text-gray-800 font-bold mb-1 md:mb-0 pr-4 self-start break-words">Todo</h3>
-        <TaskList key={taskListKey} boardId={boardId} columnType='todo' tasks={tasks} handleEditTask={handleEditTask} />
-    </div>
+    
 
-    <div className="flex flex-col w-full h-60 border-4 border-gray-300 bg-white rounded p-4">
-        <h3 className="block text-xl text-gray-800 font-bold mb-1 md:mb-0 pr-4 self-start">Doing</h3>
-        <TaskList boardId={boardId} columnType='doing' tasks={tasks} handleEditTask={handleEditTask} />
-    </div>
 
-    <div className="flex flex-col w-full h-60 border-4 border-gray-300 bg-white rounded p-4">
-        <h3 className="block text-xl text-gray-800 font-bold mb-1 md:mb-0 pr-4 self-start">Review</h3>
-        <TaskList boardId={boardId} columnType='review' tasks={tasks} handleEditTask={handleEditTask} />
-    </div>
-
-    <div className="flex flex-col w-full h-60 border-4 border-gray-300 bg-white rounded p-4">
-        <h3 className="block text-xl text-gray-800 font-bold mb-1 md:mb-0 pr-4 self-start">Done</h3>
-        <TaskList boardId={boardId} columnType='done' tasks={tasks} handleEditTask={handleEditTask} />
-    </div>
-</div>
     <Link to="/" className="mt-4">
     <button><svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 14 14"><g fill="none" stroke="#333333" strokeLinecap="round" strokeLinejoin="round"><path d="m3.5 1.5l-3 3l3 3"/><path d="M.5 4.5h9a4 4 0 0 1 0 8h-5"/></g></svg></button>
         
@@ -113,13 +100,24 @@ function BoardPage() {
 
 
 
-
+<ColumnList 
+    boardId={boardId} 
+    columnTypes={['todo', 'doing', 'review', 'done', 'archived']} 
+    updateTasks={updateTasks} 
+    tasksUpdated={tasksUpdated} 
+/>
 
             
-            {editTaskView && <EditTask task={editTaskView} />}
             {shareBoardView && <ShareBoard boardId={boardId} closeShareBoard={handleShareBoardClose}/>} 
         </>
     )
 }
 
+/*
+     <div className="flex flex-col justify-center items-center w-full space-y-4">
+    <div className="flex flex-col w-full h-60 border-4 border-gray-300 bg-white rounded p-4">
+        <h3 className="block text-xl text-gray-800 font-bold mb-1 md:mb-0 pr-4 self-start break-words">Todo</h3>
+        <TaskList key={taskListKey} boardId={boardId} columnType='todo' tasks={tasks} handleEditTask={handleEditTask} />
+    </div>
+*/
 export default BoardPage

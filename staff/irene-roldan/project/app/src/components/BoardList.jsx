@@ -78,9 +78,9 @@ function BoardList({ stamp}) {
 
         <section className="w-full max-w-xl p-4 border-4 border-orange-200 rounded bg-gray-800 shadow-lg">
             <h1 className="text-xl text-white font-bold mb-4 text-center">BOARDS SHARED WITH ME</h1>
-            {sharedBoards.map(board => (
-                console.log(board),
-                <Board key={board.id} item={{...board, userId: null}} />
+            {sharedBoards.map((board, index) => (
+                console.log("shared B "+ board._id),
+                <Board item={{...board, userId: null}} />
             ))}
         </section>
 

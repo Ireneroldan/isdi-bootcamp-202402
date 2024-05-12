@@ -20,7 +20,7 @@ describe('authenticateUser', () => {
             .then(user => 
                 logic.authenticateUser('pepe@martin.com', '123qwe123')
                     .then(userId => {
-                        expect(userId).to.be.a('String')
+                        expect(userId).to.be.a('string')
                         expect(userId).to.equal(user.id)
                     })
             )

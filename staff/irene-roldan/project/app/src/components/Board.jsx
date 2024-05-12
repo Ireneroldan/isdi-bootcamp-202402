@@ -14,7 +14,7 @@ function Board({ item: board, onDeleted }) {
                         .then(() => onDeleted())
                         .catch(error => showFeedback(error, 'error'))
                 } catch (error) {
-                    showFeedback(error)
+                    showFeedback('')
                 }
         })
 

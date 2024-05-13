@@ -27,6 +27,4 @@ async function getSharedBoards(userId): Promise<{ id: string; author: { id: stri
     })
 
 }
-       //return await Board.find({ assignedUsers: { $in: [userId] } }).exec()
-
 export default getSharedBoards

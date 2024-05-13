@@ -1,4 +1,3 @@
-import { ObjectId } from 'mongoose'
 import { errors } from 'com'
 import { Task } from '../data/index.ts'
 
@@ -17,6 +16,7 @@ function retrieveTask(boardId, columnType) {
                 columnType
             })).reverse()
         })
+        .catch(error => { throw new SystemError(error.message)})
 }
 
 export default retrieveTask

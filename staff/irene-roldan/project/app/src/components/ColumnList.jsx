@@ -1,33 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import TaskList from './TaskList';
+import React, { useEffect, useState } from 'react'
+import TaskList from './TaskList'
 
-function ColumnList({ boardId, columnTypes, updateTasks, tasksUpdated }) {
-    const [key, setKey] = useState(Date.now());
-
-    useEffect(() => {
-        console.log('tasksUpdated:', tasksUpdated);
-        if (tasksUpdated) {
-            setKey(Date.now());
-            // Llama a la función `updateTasks` para indicar que las tareas se han actualizado
-            updateTasks();
-        }
-    }, [tasksUpdated, updateTasks]);
-
+function ColumnList({ boardId, columnTypes }) {
     return (
-        <div>
-            {columnTypes.map((columnType, index) => (
-                <div key={index}>
-                    <h2>{columnType}</h2>
-                    <TaskList
-                        key={key}
-                        boardId={boardId}
-                        columnType={columnType}
-                        updateTasks={updateTasks}
-                    />
+        <div className="flex flex-col justify-center items-center w-full space-y-4">
+            {columnTypes.map(columnType => (
+                <div key={columnType} className="flex flex-col w-full h-60 border-4 border-gray-300 bg-white rounded p-4">
+                    <h3 className="block text-xl text-gray-800 font-bold mb-1 md:mb-0 pr-4 self-start break-words">{columnType}</h3>
+                    <TaskList boardId={boardId} columnType={columnType} />
                 </div>
             ))}
         </div>
     );
 }
 
-export default ColumnList;
+export default ColumnList

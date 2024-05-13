@@ -1,23 +1,34 @@
-import { validate, errors } from 'com'
+import { validate, errors } from 'com'
 import { User, Board } from '../data/index.ts'
 
 const { SystemError, NotFoundError } = errors
 
-function createBoard(userId: string, text: string): Promise<void>{
+import mongoose from 'mongoose'
+
+async function createBoard(userId: string, text: string): Promise<void> {
     validate.text(userId, 'userId', true)
-    if(text)
+    if (text) {
         validate.text(text, 'text')
+    }
 
-    return User.findById(userId)
-        .catch(error => { throw new SystemError(error.message)})
-        .then(user => {
-            if(!user)
-                throw new NotFoundError('user not found')
+    try {
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            throw new NotFoundError('User not found')
+        }
 
-            return Board.create({author: user._id, text, date: new Date})
+        const user = await User.findById(userId)
 
-                .catch(error => {throw new SystemError(error.message)})
-        })
-        .then(board => { })
+        if (!user) {
+            throw new NotFoundError('User not found')
+        }
+
+        const board = new Board({ author: user._id, text, date: new Date() })
+        await board.save()
+    } catch (error) {
+        throw new SystemError(error.message)
+    }
 }
+
+
+
 export default createBoard

@@ -58,7 +58,7 @@ function BoardPage() {
     }
 
     
-    const handleEditTask = (taskId) => {
+    /*const handleEditTask = (taskId) => {
         const taskToEdit = tasks.find(task => task.id === taskId);
         setEditTaskView(taskToEdit);
         setView({ view: 'edit-task', stamp: Date.now() });
@@ -69,7 +69,7 @@ function BoardPage() {
             .catch(error => {
                 showFeedback(error, 'error');
             });
-    }
+    }*/
     const updateTasks = () => {
         setTasksUpdated(!tasksUpdated);
     }
@@ -100,14 +100,11 @@ function BoardPage() {
 
 
 
-<ColumnList 
-    boardId={boardId} 
-    columnTypes={['todo', 'doing', 'review', 'done', 'archived']} 
-    updateTasks={updateTasks} 
-    tasksUpdated={tasksUpdated} 
-/>
+<ColumnList boardId={boardId} columnTypes={['todo', 'doing', 'review', 'done']} updateTasks={updateTasks} />
+
 
             
+            {editTaskView && <EditTask task={editTaskView} />}
             {shareBoardView && <ShareBoard boardId={boardId} closeShareBoard={handleShareBoardClose}/>} 
         </>
     )

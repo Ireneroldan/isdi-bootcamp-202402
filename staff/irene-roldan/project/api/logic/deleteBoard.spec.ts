@@ -7,7 +7,7 @@ import { errors } from 'com'
 
 dotenv.config()
 
-const { NotFoundError, SystemError } = errors
+const { NotFoundError } = errors
 
 describe('deleteBoard', () => {
     before(() => mongoose.connect(process.env.MONGODB_TEST_URL))

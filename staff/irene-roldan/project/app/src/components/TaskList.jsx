@@ -1,4 +1,3 @@
-// TaskList.js
 import { logger } from '../utils'
 import logic from '../logic'
 import { useState, useEffect } from 'react'
@@ -12,7 +11,7 @@ function TaskList({ boardId, columnType}) {
     const { showFeedback, showConfirm } = useContext()
     const [editingTask, setEditingTask] = useState(null)
     const [view, setView] = useState(null)
-    const [tasksUpdated, setTasksUpdated] = useState(false);
+    const [tasksUpdated, setTasksUpdated] = useState(false)
 
     const handleCreateTaskClick = (columnType) => setView({ view: 'create-task', stamp: Date.now(), columnType: columnType })
 
@@ -42,7 +41,7 @@ function TaskList({ boardId, columnType}) {
         })
 
     const handleCancelEdit = () => {
-        setEditingTask(null);
+        setEditingTask(null)
     };
 
     const onEditButtonClick = (task) => { 
@@ -56,12 +55,11 @@ function TaskList({ boardId, columnType}) {
     }, [boardId, columnType])
 
     useEffect(() => {
-        // Actualiza las tareas en la columna correspondiente después de que las tareas se actualizan en `EditTask`
         if (tasksUpdated) {
-            loadTasks();
-            setTasksUpdated(false); // Restablece el estado
+            loadTasks()
+            setTasksUpdated(false)
         }
-    }, [tasksUpdated]);
+    }, [tasksUpdated])
 
     logger.debug('TaskList -> render')
 
@@ -112,4 +110,4 @@ function TaskList({ boardId, columnType}) {
     )
 }
 
-export default TaskList;
+export default TaskList

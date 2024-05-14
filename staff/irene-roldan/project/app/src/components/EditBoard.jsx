@@ -3,7 +3,7 @@ import logic from '../logic'
 import { useContext } from '../context'
 import SubmitButton from './library/SubmitButton'
 import CancelButton from './library/CancelButton'
-import React from 'react';
+import React from 'react'
 import Modal from 'react-modal'
 
 Modal.setAppElement('#root')

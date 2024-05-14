@@ -7,7 +7,7 @@ import { User, Board } from '../data/index.ts'
 
 dotenv.config()
 
-const { CredentialsError, NotFoundError } = errors
+const { NotFoundError } = errors
 
 describe('retrieveBoards', () => {
     before(async () => {

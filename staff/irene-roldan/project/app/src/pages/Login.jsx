@@ -1,4 +1,3 @@
-import { logger } from '../utils'
 import logic from '../logic'
 import '../index.css'
 import Logo from '../images/logo1.png'

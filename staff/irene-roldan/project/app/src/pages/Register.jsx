@@ -1,4 +1,3 @@
-import { logger } from '../utils'
 import logic from '../logic'
 import { useContext } from '../context'
 import { useState } from 'react'

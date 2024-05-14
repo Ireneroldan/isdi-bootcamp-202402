@@ -1,4 +1,4 @@
-import { validate, errors } from 'com'
+import { errors } from 'com'
 
 function editTask(taskId, title, description, columnType) { 
 

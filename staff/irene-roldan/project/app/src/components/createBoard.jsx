@@ -11,7 +11,8 @@ Modal.setAppElement('#root')
 
 function createBoard(props) {
     const { showFeedback } = useContext()
-    const [modalIsOpen, setModalIsOpen] = React.useState(false);
+    const [modalIsOpen, setModalIsOpen] = React.useState(false)
+
 
 
     const handleSubmit = event => {
@@ -67,6 +68,6 @@ function createBoard(props) {
         </section>
     </Modal>
 </div>
-);
+)
 }
 export default createBoard

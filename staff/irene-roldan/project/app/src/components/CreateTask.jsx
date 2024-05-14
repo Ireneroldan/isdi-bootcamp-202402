@@ -1,19 +1,19 @@
-import { logger } from '../utils';
-import logic from '../logic';
-import { useContext } from '../context';
-import React from 'react';
-import Modal from 'react-modal';
+import { logger } from '../utils'
+import logic from '../logic'
+import { useContext } from '../context'
+import React from 'react'
+import Modal from 'react-modal'
 
 Modal.setAppElement('#root')
 
 function CreateTask(props) {
-    const { showFeedback } = useContext();
-    const [modalIsOpen, setModalIsOpen] = React.useState(true);
+    const { showFeedback } = useContext()
+    const [modalIsOpen, setModalIsOpen] = React.useState(true)
 
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        setModalIsOpen(false);
+        setModalIsOpen(false)
     
         const form = event.target
     
@@ -36,11 +36,11 @@ function CreateTask(props) {
     }
 
     const handleCancelClick = () => {
-        props.onCancelClick();
+        props.onCancelClick()
         setModalIsOpen(false)
     }
 
-    logger.debug('CreateTask -> render');
+    logger.debug('CreateTask -> render')
 
     return (
     <div>
@@ -79,7 +79,7 @@ function CreateTask(props) {
             </div>
         </Modal>
     </div>
-);
+)
 }
 
-export default CreateTask;
+export default CreateTask

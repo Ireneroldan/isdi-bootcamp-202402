@@ -7,7 +7,7 @@ import { errors } from 'com'
 
 dotenv.config()
 
-const { SystemError, NotFoundError } = errors
+const { SystemError } = errors
 
 describe('createBoard', () => {
     before(() => mongoose.connect(process.env.MONGODB_TEST_URL))

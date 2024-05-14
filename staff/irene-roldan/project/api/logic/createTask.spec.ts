@@ -67,7 +67,7 @@ describe('createTask', () => {
         const board = await Board.create({ text: 'Board Title', description: 'Board Description', date: new Date(), author: user._id })
         const boardId = board.id.toString()
 
-        await createTask(userId, 'Task Title', 'Task Description', boardId, 'todo') // Asegúrate de que 'todo' sea un valor válido para columnType
+        await createTask(userId, 'Task Title', 'Task Description', boardId, 'todo')
 
         const task = await Task.findOne({ title: 'Task Title' })
 

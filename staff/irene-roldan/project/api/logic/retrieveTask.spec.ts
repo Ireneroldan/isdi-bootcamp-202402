@@ -5,7 +5,6 @@ import { Task } from '../data/index.ts'
 import logic from './index.ts'
 import { expect } from 'chai'
 import { errors } from 'com'
-import { SystemError } from 'com/errors.ts'
 
 dotenv.config()
 const { NotFoundError } = errors

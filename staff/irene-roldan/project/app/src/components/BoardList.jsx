@@ -4,62 +4,62 @@ import { useState, useEffect } from 'react'
 import Board from './Board'
 import '../index.css'
 
-import { useContext } from '../context';
+import { useContext } from '../context'
 
 function BoardList({ stamp}) {
-    const [boards, setBoards] = useState([]);
-    const [sharedBoards, setSharedBoards] = useState([]);
+    const [boards, setBoards] = useState([])
+    const [sharedBoards, setSharedBoards] = useState([])
 
-    const { showFeedback, showConfirm} = useContext();
+    const { showFeedback, showConfirm} = useContext()
 
     const loadBoards = () => {
-        logger.debug('BoardList -> loadBoards');
+        logger.debug('BoardList -> loadBoards')
 
         try {
             logic.retrieveBoards()
                 .then(data => setBoards(data))
-                .catch(error => showFeedback(error, 'error'));
+                .catch(error => showFeedback(error, 'error'))
         } catch (error) {
-            showFeedback(error);
+            showFeedback(error)
         }
-    };
+    }
 
     const loadSharedBoards = () => {
-        logger.debug('BoardList -> loadSharedBoards');
+        logger.debug('BoardList -> loadSharedBoards')
 
         try {
             logic.getSharedBoards()
                 .then(data => setSharedBoards(data))
-                .catch(error => showFeedback(error, 'error'));
+                .catch(error => showFeedback(error, 'error'))
         } catch (error) {
-            showFeedback(error);
+            showFeedback(error)
         }
     }
 
     const handleDeleteBoard = (board) => {
-        logger.debug('BoardList -> handleDeleteBoard');
+        logger.debug('BoardList -> handleDeleteBoard')
         showConfirm('Are you sure you want to delete this board?', confirmed => {
             if (confirmed) {
             try {
             logic.deleteBoard(board)
                 .then(() => {
-                    loadBoards();
-                    loadSharedBoards();
+                    loadBoards()
+                    loadSharedBoards()
                 })
-                .catch(error => showFeedback(error, 'error'));
+                .catch(error => showFeedback(error, 'error'))
         } catch (error) {
-            showFeedback(error);
+            showFeedback(error)
         }
         }
         })
     }
 
     useEffect(() => {
-        loadBoards();
-        loadSharedBoards();
-    }, [stamp]); 
+        loadBoards()
+        loadSharedBoards()
+    }, [stamp]) 
 
-    logger.debug('BoardList -> render');
+    logger.debug('BoardList -> render')
 
    return (
     <div className="bg-gray-100 min-h-screen flex flex-col items-center text-xl font-semibold text-white">
@@ -89,4 +89,4 @@ function BoardList({ stamp}) {
     
 }
 
-export default BoardList;
+export default BoardList

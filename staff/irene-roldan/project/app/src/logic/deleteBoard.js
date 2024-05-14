@@ -19,7 +19,7 @@ function deleteBoard(board) {
             }
         })
     } else {
-        return Promise.resolve(showFeedback('hay usuarios en el tablero', 'error'))
+        return Promise.resolve(showFeedback('you can not delete the board with assigned users', 'error'))
     }
     
 }

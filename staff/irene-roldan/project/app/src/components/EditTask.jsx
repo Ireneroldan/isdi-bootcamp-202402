@@ -2,12 +2,12 @@ import logic from '../logic'
 
 function EditTask({ task, onCancel, onUpdateTasks }) {
     const handleSubmit = (event) => {
-        event.preventDefault();
+        event.preventDefault()
 
-        const form = event.target;
-        const title = form.title.value;
-        const description = form.description.value;
-        const columnType = form.columnType.value;
+        const form = event.target
+        const title = form.title.value
+        const description = form.description.value
+        const columnType = form.columnType.value
 
         try {
             logic
@@ -19,15 +19,15 @@ function EditTask({ task, onCancel, onUpdateTasks }) {
                 })
                 .catch((error) => {
                     console.error("Error updating task", error)
-                });
+                })
         } catch (error) {
             console.error("Error updating task", error)
         }
-    };
+    }
 
     const handleCancelClick = () => {
-        onCancel();
-    };
+        onCancel()
+    }
 
     return (
         <section>
@@ -57,7 +57,7 @@ function EditTask({ task, onCancel, onUpdateTasks }) {
                 <button className="flex-shrink-0 border-transparent border-4 text-teal-500 hover:text-teal-800 text-sm py-1 px-2 rounded" onClick={handleCancelClick}>Cancel</button>
             </form>
         </section>
-    );
+    )
 }
 
-export default EditTask;
+export default EditTask

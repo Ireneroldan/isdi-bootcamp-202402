@@ -1,6 +1,5 @@
 import logic from '../../logic/index.ts'
 import { errors } from 'com'
-import jwt from 'jsonwebtoken'
 import logger from '../../data/logger.ts'
 
 const { SystemError } = errors

@@ -1,5 +1,5 @@
 function getSharedBoards() {
-    return fetch('http://localhost:9000/sharedBoards', {
+    return fetch(`${import.meta.env.VITE_API_URL}/boards/shared`, {
         headers: {
             Authorization: `Bearer ${sessionStorage.token}`,
         },

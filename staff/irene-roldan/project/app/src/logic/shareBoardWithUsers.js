@@ -3,7 +3,7 @@ import { validate, errors } from 'com'
 function shareBoardWithUsers( boardId, userId ) {
     validate.token(sessionStorage.token)
 
-    return fetch(`${import.meta.env.VITE_API_URL}/shareBoard`, {
+    return fetch(`${import.meta.env.VITE_API_URL}/boards/shared`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${sessionStorage.token}`,

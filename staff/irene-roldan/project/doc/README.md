@@ -75,7 +75,7 @@ Task
 - id (auto, required)
 - board (Board.id, required)
 - author (User.id, required)
-- status (string, required, enum: todo|doing|review|done, default todo)
+- status (string, required, enum: todo|doing|review|done)
 - name (string, required)
 - description (string, required)
 - assignees ([User.id], optional)

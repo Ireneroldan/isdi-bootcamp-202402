@@ -68,8 +68,8 @@ function TaskList({ boardId, columnType}) {
             <ul>
                 {tasks.map(task => (
                     <li key={task.id} className="border-2 border-gray-300 p-4 rounded inline-block mx-auto w-64">
-                        <p className="text-center">{task.title}</p>
-                        <p className="text-center">{task.description}</p>
+                        <p className="text-center text-lg font-bold  overflow-hidden">{task.title}</p>
+                        <p className="text-center overflow-hidden">{task.description}</p>
                         
                         <div className="flex items-center justify-center">
                             <button onClick={() => handleDeleteTask(task.id)}>
@@ -86,7 +86,9 @@ function TaskList({ boardId, columnType}) {
                     </li>
                 ))}
             </ul>
-            
+            {columnType !== 'archived' && (
+                <AddTaskButton columnType={columnType} onAddTask={handleCreateTaskClick} />
+            )}
             {editingTask && (
                 <EditTask
                     task={editingTask}
@@ -94,9 +96,7 @@ function TaskList({ boardId, columnType}) {
                     onUpdateTasks={loadTasks}
                 />
             )}
-            {columnType !== 'archived' && (
-                <AddTaskButton columnType={columnType} onAddTask={handleCreateTaskClick} />
-            )}
+            
             {view && view.view === 'create-task' && (
                 <CreateTask
                     onCancelClick={handleCancelClick}
@@ -108,6 +108,7 @@ function TaskList({ boardId, columnType}) {
             )}
         </div>
     )
+    
 }
 
 export default TaskList

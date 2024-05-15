@@ -29,5 +29,4 @@ function createTask(title, description, boardId, columnType){
             })
     })
 }
-
 export default createTask

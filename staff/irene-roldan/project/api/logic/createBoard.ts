@@ -28,7 +28,4 @@ async function createBoard(userId: string, text: string): Promise<void> {
         throw new SystemError(error.message)
     }
 }
-
-
-
 export default createBoard

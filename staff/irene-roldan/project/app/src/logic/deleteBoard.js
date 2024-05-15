@@ -12,7 +12,7 @@ function deleteBoard(board) {
         .then(res => {
             if (res.status !== 204) {
                 return res.json().then(json => {
-                    throw new Error(json.message || 'Error desconocido')
+                    throw new Error(json.message || 'Error')
                 })
             } else {
                 return {}

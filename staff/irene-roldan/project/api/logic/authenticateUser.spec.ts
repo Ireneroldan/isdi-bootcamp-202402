@@ -6,7 +6,6 @@ import { User } from '../data/index.ts'
 import logic from './index.ts'
 import { expect } from 'chai'
 import { errors } from 'com'
-import { DuplicityError } from 'com/errors.ts'
 
 dotenv.config()
 const { CredentialsError, NotFoundError } = errors

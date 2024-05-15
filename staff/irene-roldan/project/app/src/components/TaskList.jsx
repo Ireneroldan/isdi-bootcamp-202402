@@ -18,8 +18,10 @@ function TaskList({ boardId, columnType, updateTasks}) {
     const loadTasks = () => {
         logger.debug('TaskList -> loadTasks')
         try {
-            updateTasks()
-            logic.retrieveTasks(boardId, columnType)
+            if (typeof updateTasks === 'function') {
+                updateTasks()
+            }
+                logic.retrieveTasks(boardId, columnType)
                 .then((data) => setTasks(data))
                 .catch(error => showFeedback(error, 'error'))
         } catch (error) {

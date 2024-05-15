@@ -25,7 +25,7 @@ const validate = {
     },
 
     password(password, explain = 'password') {
-        if (!PASSWORD_REGEX.test(password)) throw new ContentError(`${explain} is not acceptable`)
+        if (!PASSWORD_REGEX.test(password)) throw new ContentError(`${explain} is not acceptable, a valid password must be alphanumeric and contain at least one letter and at least one digit. `)
     },
 
     url(url, explain) {

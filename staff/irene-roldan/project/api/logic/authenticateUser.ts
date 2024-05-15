@@ -15,7 +15,7 @@ function authenticateUser(email: string, password: string): Promise<string> {
                 throw new NotFoundError('user not found')
 
             if (user.password !== password)
-                throw new CredentialsError('wrong password')
+                throw new CredentialsError('Wrong password')
 
             return user.id
         })

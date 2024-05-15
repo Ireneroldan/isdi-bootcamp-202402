@@ -62,7 +62,6 @@ User
 - surname (string, required)
 - email (string, required)
 - password (string, required)
-- avatar (string, required)
 
 Board
 - id (auto, required)

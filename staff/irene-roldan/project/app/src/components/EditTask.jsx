@@ -53,7 +53,7 @@ function EditTask({ task, onCancel, onUpdateTasks }) {
                     />
     
                     <label htmlFor="columnType" className="block">
-                        Column Type
+                        Status
                     </label>
                     <select
                         name="columnType"

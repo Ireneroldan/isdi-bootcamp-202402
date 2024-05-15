@@ -59,7 +59,7 @@ function createBoard(props) {
     >
         <section className="flex items-center justify-center h-1/2">
             <form style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} action="" onSubmit={handleSubmit}>
-                <label style={{ fontSize: '1.5em' }} htmlFor="text">Project name</label>
+                <label style={{ fontSize: '1.5em' }} htmlFor="text">Board name</label>
                 <input className="appearance-none block w-full bg-gray-200 text-gray-700 border-2 border-gray-700 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" id="name"/>
 
                 <SubmitButton type="submit">Ok</SubmitButton><br/>

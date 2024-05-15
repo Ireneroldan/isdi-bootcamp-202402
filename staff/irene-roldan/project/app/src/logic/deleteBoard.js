@@ -19,7 +19,8 @@ function deleteBoard(board) {
             }
         })
     } else {
-        return Promise.resolve(showFeedback('you can not delete the board with assigned users', 'error'))
+        const error = new Error('Cannot delete board with assigned users')
+        throw error
     }
     
 }

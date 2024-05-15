@@ -1,5 +1,5 @@
 function loginUser(email, password) {
-    const user = {email, password}
+    const user = { email, password }
 
     const json = JSON.stringify(user)
 
@@ -10,20 +10,27 @@ function loginUser(email, password) {
         },
         body: json
     })
-        .then(res => {
-            if(res.status === 200)
-                return res.json()
-                .then(token => {sessionStorage.token = token})
-
+    .then(res => {
+        if (res.status === 200) {
+            return res.json()
+                .then(token => {
+                    sessionStorage.token = token
+                })
+        } else {
             return res.json()
                 .then(body => {
                     const { error, message } = body
-                    const constructor = errors[error]
 
-                    throw new constructor(message)
+                    if (error === "Wrong password") {
+                        throw new Error("wrong password")
+                    } else if (error === "user not found") {
+                        throw new Error("Incorrect credentials")
+                    } else {
+                        throw new Error(message)
+                    }
                 })
-        })
-
+        }
+    })
 }
 
 export default loginUser

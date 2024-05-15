@@ -6,7 +6,7 @@ import EditTask from './EditTask'
 import AddTaskButton from '../components/library/AddTaskButton'
 import CreateTask from '../components/CreateTask' 
 
-function TaskList({ boardId, columnType}) {
+function TaskList({ boardId, columnType, updateTasks}) {
     const [tasks, setTasks] = useState([])
     const { showFeedback, showConfirm } = useContext()
     const [editingTask, setEditingTask] = useState(null)
@@ -18,6 +18,7 @@ function TaskList({ boardId, columnType}) {
     const loadTasks = () => {
         logger.debug('TaskList -> loadTasks')
         try {
+            updateTasks()
             logic.retrieveTasks(boardId, columnType)
                 .then((data) => setTasks(data))
                 .catch(error => showFeedback(error, 'error'))

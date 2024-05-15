@@ -15,10 +15,10 @@ function BoardPage() {
     const [stamp, setStamp] = useState(null)
     const { taskId, boardId, columnType } = useParams()
     const [tasks, setTasks] = useState([])
-    const [editTaskView, setEditTaskView] = useState(null);
+    const [editTaskView, setEditTaskView] = useState(null)
     const [shareBoardView, setShareBoardView] = useState(false)
     const [taskListKey, setTaskListKey] = useState(Date.now())
-    const [tasksUpdated, setTasksUpdated] = useState(false);
+    const [tasksUpdated, setTasksUpdated] = useState(false)
 
 
 
@@ -45,7 +45,7 @@ function BoardPage() {
                 })
         }
     
-        fetchData();
+        fetchData()
     }, [boardId, columnType])
     
 
@@ -57,8 +57,8 @@ function BoardPage() {
         setShareBoardView(false)
     }
 
-    const updateTasks = () => {
-        setTasksUpdated(!tasksUpdated);
+    const reloadComponent = () => {
+        setTaskListKey(Date.now())
     }
 
     logger.debug('BoardPage -> render')
@@ -77,7 +77,7 @@ function BoardPage() {
             
             </div>
         
-            <ColumnList boardId={boardId} columnTypes={['todo', 'doing', 'review', 'done']} updateTasks={updateTasks} />
+            <ColumnList key={taskListKey} boardId={boardId} columnTypes={['todo', 'doing', 'review', 'done']} reloadComponent={reloadComponent} />
                 {editTaskView && <EditTask task={editTaskView} />}
                 {shareBoardView && <ShareBoard boardId={boardId} closeShareBoard={handleShareBoardClose}/>} 
 

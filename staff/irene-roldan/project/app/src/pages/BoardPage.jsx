@@ -3,7 +3,6 @@ import logic from '../logic/index'
 import { useParams, Link } from 'react-router-dom'
 import { useContext } from '../context'
 import { logger } from '../utils'
-import EditTask from '../components/EditTask'
 import ShareBoard from '../components/ShareBoard'
 import ColumnList from '../components/ColumnList'
 
@@ -12,15 +11,10 @@ function BoardPage() {
     const { showFeedback } = useContext()
     const [view, setView] = useState(null)
     const [board, setBoard] = useState(null)
-    const [stamp, setStamp] = useState(null)
     const { taskId, boardId, columnType } = useParams()
     const [tasks, setTasks] = useState([])
-    const [editTaskView, setEditTaskView] = useState(null)
     const [shareBoardView, setShareBoardView] = useState(false)
     const [taskListKey, setTaskListKey] = useState(Date.now())
-    const [tasksUpdated, setTasksUpdated] = useState(false)
-
-
 
 
     const loadTasks = () => {
@@ -78,8 +72,7 @@ function BoardPage() {
             </div>
         
             <ColumnList key={taskListKey} boardId={boardId} columnTypes={['todo', 'doing', 'review', 'done']} reloadComponent={reloadComponent} />
-                {editTaskView && <EditTask task={editTaskView} />}
-                {shareBoardView && <ShareBoard boardId={boardId} closeShareBoard={handleShareBoardClose}/>} 
+            {shareBoardView && <ShareBoard boardId={boardId} closeShareBoard={handleShareBoardClose}/>} 
 
             <Link to="/" className="mt-4">
             <button><svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 14 14"><g fill="none" stroke="#333333" strokeLinecap="round" strokeLinejoin="round"><path d="m3.5 1.5l-3 3l3 3"/><path d="M.5 4.5h9a4 4 0 0 1 0 8h-5"/></g></svg></button>

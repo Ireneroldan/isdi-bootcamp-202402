@@ -5,19 +5,16 @@ import logic from '../logic'
 import { useState, useEffect } from 'react'
 
 import { Routes, Route } from 'react-router-dom'
-import Profile from '../components/Profile'
 
 import { useContext } from '../context'
 import CreateBoard from '../components/createBoard'
 import BoardList from '../components/BoardList'
 import BoardPage from './BoardPage'
-import EditBoard from '../components/EditBoard'
 
 function Home({ onUserLoggedOut }) {
     const [user, setUser] = useState(null)
     const [view, setView] = useState(null)
     const [stamp, setStamp] = useState(null)
-    const [board, setBoard] = useState(null)
     const [sharedBoards, setSharedBoards] = useState([])
 
     const { showFeedback } = useContext()
@@ -59,19 +56,6 @@ function Home({ onUserLoggedOut }) {
     }
 
     const handleCreateBoardClick = () => setView('create-board')
-        
-    const handleEditBoardCancelClick = () => clearView()
-
-    const handleEditBoardClick = board => {
-        setView('edit-board')
-        setBoard(board)
-    }
-
-    const handleBoardEdited = () => {
-        clearView()
-        setStamp(Date.now())
-        setBoard(null)
-    }
  
     logger.debug('Home -> render') 
 
@@ -98,18 +82,14 @@ function Home({ onUserLoggedOut }) {
         </div>
 
             <Routes>
-                <Route path="/" element={<BoardList stamp={stamp} onEditBoardClick={handleEditBoardClick} sharedBoards={sharedBoards}/>} />
-                <Route path="/profile/:username" element={<Profile />} />
+                <Route path="/" element={<BoardList stamp={stamp} sharedBoards={sharedBoards}/>} />
                 <Route path="/board/:boardId" element={<BoardPage />}></Route>
             </Routes>
 
 
-            {view === 'create-board' && <CreateBoard onCancelClick={handleCreateBoardCancelClick} onBoardCreated={handleBoardCreated} />}
-
-            {view === 'edit-board' && <EditBoard board={board} onCancelClick={handleEditBoardCancelClick} onBoardEdited={handleBoardEdited}/>} 
+            {view === 'create-board' && <CreateBoard onCancelClick={handleCreateBoardCancelClick} onBoardCreated={handleBoardCreated} />} 
             
         </main>
     </>
 }
-
 export default Home

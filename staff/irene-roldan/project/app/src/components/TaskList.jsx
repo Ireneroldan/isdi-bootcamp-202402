@@ -1,27 +1,21 @@
 import { logger } from '../utils'
 import logic from '../logic'
 import { useState, useEffect } from 'react'
-import { useContext } from '../context'
 import EditTask from './EditTask' 
 import AddTaskButton from '../components/library/AddTaskButton'
 import CreateTask from '../components/CreateTask' 
 
-function TaskList({ boardId, columnType, updateTasks}) {
+function TaskList({ boardId, columnType }) {
     const [tasks, setTasks] = useState([])
-    const { showFeedback, showConfirm } = useContext()
     const [editingTask, setEditingTask] = useState(null)
     const [view, setView] = useState(null)
-    const [tasksUpdated, setTasksUpdated] = useState(false)
 
     const handleCreateTaskClick = (columnType) => setView({ view: 'create-task', stamp: Date.now(), columnType: columnType })
 
     const loadTasks = () => {
         logger.debug('TaskList -> loadTasks')
         try {
-            if (typeof updateTasks === 'function') {
-                updateTasks()
-            }
-                logic.retrieveTasks(boardId, columnType)
+            logic.retrieveTasks(boardId, columnType)
                 .then((data) => setTasks(data))
                 .catch(error => showFeedback(error, 'error'))
         } catch (error) {
@@ -29,8 +23,16 @@ function TaskList({ boardId, columnType, updateTasks}) {
         }
     }
 
-    const handleDeleteTask = (taskId) =>
-        showConfirm('Do you want delete the task?', confirmed => {
+    const showConfirm = (message, callback) => {
+        if (window.confirm(message)) {
+            callback(true);
+        } else {
+            callback(false);
+        }
+    };
+
+    const handleDeleteTask = (taskId) => {
+        showConfirm('Do you want to delete the task?', confirmed => {
             if (confirmed)
                 try {
                     logic.deleteTask(taskId)
@@ -42,6 +44,7 @@ function TaskList({ boardId, columnType, updateTasks}) {
                     showFeedback(error)
                 }
         })
+    }
 
     const handleCancelEdit = () => {
         setEditingTask(null)
@@ -56,13 +59,6 @@ function TaskList({ boardId, columnType, updateTasks}) {
     useEffect(() => { 
         loadTasks()
     }, [boardId, columnType])
-
-    useEffect(() => {
-        if (tasksUpdated) {
-            loadTasks()
-            setTasksUpdated(false)
-        }
-    }, [tasksUpdated])
 
     logger.debug('TaskList -> render')
 
@@ -111,7 +107,6 @@ function TaskList({ boardId, columnType, updateTasks}) {
             )}
         </div>
     )
-    
 }
 
-export default TaskList
+export default TaskList;

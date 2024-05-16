@@ -5,7 +5,7 @@ import EditTask from './EditTask'
 import AddTaskButton from '../components/library/AddTaskButton'
 import CreateTask from '../components/CreateTask' 
 
-function TaskList({ boardId, columnType }) {
+function TaskList({ boardId, columnType, reloadTaskList, reloadStamp }) {
     const [tasks, setTasks] = useState([])
     const [editingTask, setEditingTask] = useState(null)
     const [view, setView] = useState(null)
@@ -21,6 +21,10 @@ function TaskList({ boardId, columnType }) {
         } catch (error) {
             showFeedback(error)
         }
+    }
+
+    const handleReloadTasks = () => {
+        reloadTaskList()
     }
 
     const showConfirm = (message, callback) => {
@@ -58,7 +62,7 @@ function TaskList({ boardId, columnType }) {
 
     useEffect(() => { 
         loadTasks()
-    }, [boardId, columnType])
+    }, [boardId, columnType, reloadStamp])
 
     logger.debug('TaskList -> render')
 
@@ -92,7 +96,7 @@ function TaskList({ boardId, columnType }) {
                 <EditTask
                     task={editingTask}
                     onCancel={handleCancelEdit}
-                    onUpdateTasks={loadTasks}
+                    onUpdateTasks={handleReloadTasks}
                 />
             )}
             

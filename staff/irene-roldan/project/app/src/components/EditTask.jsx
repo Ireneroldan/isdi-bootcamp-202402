@@ -42,7 +42,7 @@ function EditTask({ task, onCancel, onUpdateTasks }) {
                         defaultValue={task.title}
                         className="w-full border rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
                     />
-    
+
                     <label htmlFor="description" className="block">
                         Description
                     </label>
@@ -51,7 +51,7 @@ function EditTask({ task, onCancel, onUpdateTasks }) {
                         defaultValue={task.description}
                         className="w-full h-32 resize-y border rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
                     />
-    
+
                     <label htmlFor="columnType" className="block">
                         Status
                     </label>
@@ -67,7 +67,7 @@ function EditTask({ task, onCancel, onUpdateTasks }) {
                         <option value="done">Done</option>
                         <option value="archived">Archived</option>
                     </select>
-    
+
                     <div className="flex justify-center space-x-4">
                         <button type="submit" className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded">Save</button>
                         <button type="button" onClick={handleCancelClick} className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded">Cancel</button>
@@ -76,7 +76,7 @@ function EditTask({ task, onCancel, onUpdateTasks }) {
             </section>
         </div>
     )
-    
+
 }
 
 export default EditTask

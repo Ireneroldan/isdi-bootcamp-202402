@@ -1,6 +1,6 @@
 import { validate, errors } from 'com'
 
-function createTask(title, description, boardId, columnType){
+function createTask(title, description, boardId, columnType) {
     validate.text(title, 'title')
     validate.text(description, 'description')
     validate.text(columnType, 'columnType')
@@ -19,14 +19,14 @@ function createTask(title, description, boardId, columnType){
         },
         body: json
     })
-    .then(res => {
-        if(res.status === 201) return
-        return res.json()
-            .then(body => {
-                const { error, message } = body
-                const constructor = errors[error]
-                throw new constructor(message)
-            })
-    })
+        .then(res => {
+            if (res.status === 201) return
+            return res.json()
+                .then(body => {
+                    const { error, message } = body
+                    const constructor = errors[error]
+                    throw new constructor(message)
+                })
+        })
 }
 export default createTask

@@ -21,17 +21,17 @@ describe('deleteTask', () => {
     it('should delete a task associated with a board', async () => {
         const user = await User.create({ name: 'John', surname: 'smith', email: 'john@example.com', password: 'password' })
 
-        const board = await Board.create({ 
-            text: 'Test Board', 
-            description: 'Board Description', 
-            date: new Date(),  
-            author: new mongoose.Types.ObjectId(user._id)  
+        const board = await Board.create({
+            text: 'Test Board',
+            description: 'Board Description',
+            date: new Date(),
+            author: new mongoose.Types.ObjectId(user._id)
         })
         const boardId = board.id.toString()
 
         const taskTitle = 'Task Title'
         const taskDescription = 'Task Description'
-        const columnType = 'todo' 
+        const columnType = 'todo'
         const userId = user._id.toString()
 
         await createTask(userId, taskTitle, taskDescription, boardId, columnType)
@@ -47,7 +47,7 @@ describe('deleteTask', () => {
         const deletedTask = await Task.findById(createdTask!._id)
         expect(deletedTask).to.be.null
     })
-    
+
     it('should throw an error if board not found', async () => {
         const user = await User.create({ name: 'John', surname: 'smith', email: 'john@example.com', password: 'password' })
         const userId = user.id.toString()
@@ -70,7 +70,7 @@ describe('deleteTask', () => {
         const board = await Board.create({ text: 'Board Title', description: 'Board Description', date: new Date(), author: user._id })
         const boardId = board.id.toString()
 
-        await createTask(userId, 'Task Title', 'Task Description', boardId, 'todo') 
+        await createTask(userId, 'Task Title', 'Task Description', boardId, 'todo')
         const task = await Task.findOne({ title: 'Task Title' })
 
         expect(task).to.exist

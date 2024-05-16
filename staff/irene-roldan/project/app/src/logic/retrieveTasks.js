@@ -1,4 +1,4 @@
-import { validate, errors } from 'com'
+import { validate, errors } from 'com'
 
 function retrieveTasks(boardId, columnType) {
     if (typeof boardId === 'undefined' || typeof columnType === 'undefined') {
@@ -6,25 +6,25 @@ function retrieveTasks(boardId, columnType) {
     }
 
     validate.token(sessionStorage.token)
-    
+
     return fetch(`${import.meta.env.VITE_API_URL}/boards/${boardId}/tasks/${columnType}`, {
         headers: {
             'Authorization': `Bearer ${sessionStorage.token}`
         }
     })
-    .then(res => {
-        if (res.status === 200)
+        .then(res => {
+            if (res.status === 200)
+                return res.json()
+
             return res.json()
+                .then(body => {
+                    const { error, message } = body
 
-        return res.json()
-            .then(body => {
-                const { error, message } = body
+                    const constructor = errors[error]
 
-                const constructor = errors[error]
-
-                throw new constructor(message)
-            })
-    })
+                    throw new constructor(message)
+                })
+        })
 }
 
 export default retrieveTasks

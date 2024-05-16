@@ -18,7 +18,7 @@ function registerUser(name: string, surname: string, email: string, password: st
 
             user = {
                 name: name.trim(),
-                surname: surname, 
+                surname: surname,
                 email: email,
                 password: password
             }

@@ -27,16 +27,16 @@ describe('retrieveOneBoard', () => {
     })
 
     it('should throw an error if board not found', async () => {
-    const nonExistentBoardId = new mongoose.Types.ObjectId().toString();
+        const nonExistentBoardId = new mongoose.Types.ObjectId().toString();
 
-    try {
-        await retrieveOneBoard(nonExistentBoardId);
-        expect.fail('Expected retrieveOneBoard to throw NotFoundError');
-    } catch (error) {
-        expect(error).to.be.instanceOf(NotFoundError);
-        expect(error.message).to.include('Board not found');
-    }
-});
+        try {
+            await retrieveOneBoard(nonExistentBoardId);
+            expect.fail('Expected retrieveOneBoard to throw NotFoundError');
+        } catch (error) {
+            expect(error).to.be.instanceOf(NotFoundError);
+            expect(error.message).to.include('Board not found');
+        }
+    });
 
 
     after(() => mongoose.disconnect())

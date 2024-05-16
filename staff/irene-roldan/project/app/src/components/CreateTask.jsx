@@ -14,20 +14,20 @@ function CreateTask(props) {
     const handleSubmit = (event) => {
         event.preventDefault()
         setModalIsOpen(false)
-    
+
         const form = event.target
-    
+
         const title = form.text.value
         const description = form.description.value
-    
-        const { boardId, columnType, loadTasks, onCancelClick } = props 
-        
+
+        const { boardId, columnType, loadTasks, onCancelClick } = props
+
         try {
             logic.createTask(title, description, boardId, columnType)
                 .then(() => {
                     form.reset()
-                    loadTasks() 
-                    onCancelClick() 
+                    loadTasks()
+                    onCancelClick()
                 })
                 .catch(error => showFeedback(error, 'error'))
         } catch (error) {
@@ -50,9 +50,9 @@ function CreateTask(props) {
                 contentLabel="Create Task Modal"
                 style={{
                     content: {
-                        display: 'flex', 
-                        flexDirection: 'column', 
-                        alignItems: 'center', 
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
                         maxWidth: 'xl',
                         height: 'fit-content',
                         margin: 'auto',
@@ -63,14 +63,14 @@ function CreateTask(props) {
                     },
                 }}
             >
-                <div style={{ border: '1px solid black', padding: '20px', borderRadius: '10px', backgroundColor: 'white'}}>
+                <div style={{ border: '1px solid black', padding: '20px', borderRadius: '10px', backgroundColor: 'white' }}>
                     <form action="" className="flex flex-col items-center  py-2" onSubmit={handleSubmit}>
-                        <label htmlFor="text" style={{ fontSize: '1 em'}} >Task name</label>
-                        <input className="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-700 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" id="text"/>
-    
-                        <label htmlFor="description" style={{ fontSize: '1 em'}} >Task description</label>
+                        <label htmlFor="text" style={{ fontSize: '1 em' }} >Task name</label>
+                        <input className="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-700 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" id="text" />
+
+                        <label htmlFor="description" style={{ fontSize: '1 em' }} >Task description</label>
                         <textarea className="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-700 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="description" rows="4"></textarea>
-    
+
                         <div className="flex justify-center gap-4 mt-4">
                             <button className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded" type="submit">Send</button>
                             <button className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded" onClick={handleCancelClick}>Cancel</button>

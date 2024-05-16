@@ -42,7 +42,7 @@ describe('retrieveBoards', () => {
 
     it('throws an error if user does not exist', async () => {
         const nonExistentUserId = '6123456789abcdef01234567'
-    
+
         try {
             await logic.retrieveBoard(nonExistentUserId)
             expect.fail('Expected retrieveBoard to throw NotFoundError')
@@ -51,8 +51,8 @@ describe('retrieveBoards', () => {
             expect(error.message.toLowerCase()).to.equal('user not found')
         }
     })
-    
-    
+
+
 
     after(async () => {
         await mongoose.disconnect()

@@ -7,8 +7,8 @@ function ColumnList({ boardId, columnTypes }) {
 
 
     const reloadTaskList = () => {
-       // setReloadTasks(true)
-       setReloadStamp(Date.now())
+        // setReloadTasks(true)
+        setReloadStamp(Date.now())
     }
 
     return (

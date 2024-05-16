@@ -3,7 +3,7 @@ import { User, Board } from '../data/index.ts'
 
 const { NotFoundError } = errors
 
-function shareBoardWithUsers(boardId, userId){
+function shareBoardWithUsers(boardId, userId) {
     validate.text(userId, 'userId', true)
     validate.text(boardId, 'boardId', true)
 

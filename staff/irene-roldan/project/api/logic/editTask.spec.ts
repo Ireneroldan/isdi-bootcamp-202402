@@ -12,14 +12,14 @@ describe('editTask', () => {
     beforeEach(async () => {
         await Task.deleteMany({})
     })
-    
+
     it('should edit a task', async () => {
         const task = new Task({
             title: 'Task 1',
             description: 'Description 1',
             columnType: 'todo',
             assignedBoard: new mongoose.Types.ObjectId(),
-            author: new mongoose.Types.ObjectId() 
+            author: new mongoose.Types.ObjectId()
         })
 
         await task.save()

@@ -18,7 +18,7 @@ const { UnauthorizedError } = errors
 
 function App() {
   const [feedback, setFeedback] = useState(null)
-  const [confirm, setConfirm] = useState(null) 
+  const [confirm, setConfirm] = useState(null)
 
   const navigate = useNavigate()
 
@@ -49,7 +49,7 @@ function App() {
 
     setFeedback({ message: error.message, level })
   }
-  
+
 
   const handleConfirm = (message, callback) => setConfirm({ message, callback })
 

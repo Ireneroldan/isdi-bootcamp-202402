@@ -1,11 +1,11 @@
 import { validate, errors } from 'com'
 
-function CreateBoard(text){
+function CreateBoard(text) {
     if (text)
         validate.text(text, 'text')
     validate.token(sessionStorage.token)
 
-    const board = {text}
+    const board = { text }
 
     const json = JSON.stringify(board)
 
@@ -19,7 +19,7 @@ function CreateBoard(text){
     })
 
         .then(res => {
-            if(res.status === 201) return
+            if (res.status === 201) return
             return res.json()
                 .then(body => {
                     const { error, message } = body

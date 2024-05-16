@@ -14,9 +14,24 @@ function ShareBoard({ boardId, closeShareBoard }) {
 
 
     useEffect(() => {
+        let isMounted = true
+
+        logic.retrieveUsers()
+            .then(users => {
+                if (isMounted) setUsers(users)
+            });
+
+        return () => {
+            isMounted = false
+        };
+    }, [])
+    
+    /*
+    useEffect(() => {
         logic.retrieveUsers()
             .then(setUsers)
     }, [])
+    */
 
     const handleShareConfirm = (event) => {
         event.preventDefault()
@@ -44,38 +59,38 @@ function ShareBoard({ boardId, closeShareBoard }) {
 
     return (
         <div>
-        <Modal
-            isOpen={modalIsOpen}
-            onRequestClose={handleShareCancel}
-            contentLabel="Share Board Modal"
-            style={{
-                content: {
-                    width: '50%', 
-                    height: '50%', 
-                    display: 'flex', 
-                    justifyContent: 'center', 
-                    alignItems: 'center', 
-                    margin: 'auto',
-                },
-            }}
-        >
-            <form onSubmit={handleShareConfirm}> 
-                <div style={{ textAlign: 'center' }}>
-                    <h2 style={{ fontSize: '1.5em', fontWeight: 'bold', marginBottom: '30px' }}>Share Board</h2>
-                    <select style={{ marginBottom: '20px' }} value={selectedUser} onChange={handleUserChange} className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                        <option value="">Select User</option>
-                        {users.map(user => (
-                            <option key={user.id} value={user.id}>{user.email}</option>
-                        ))}
-                    </select>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                        <SubmitButton style={{ fontWeight: 'bold' }} type="submit">Confirm</SubmitButton>
-                        <CancelButton style={{ fontWeight: 'bold' }} onClick={handleShareCancel}>Cancel</CancelButton>
+            <Modal
+                isOpen={modalIsOpen}
+                onRequestClose={handleShareCancel}
+                contentLabel="Share Board Modal"
+                style={{
+                    content: {
+                        width: '50%',
+                        height: '50%',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        margin: 'auto',
+                    },
+                }}
+            >
+                <form onSubmit={handleShareConfirm}>
+                    <div style={{ textAlign: 'center' }}>
+                        <h2 style={{ fontSize: '1.5em', fontWeight: 'bold', marginBottom: '30px' }}>Share Board</h2>
+                        <select style={{ marginBottom: '20px' }} value={selectedUser} onChange={handleUserChange} className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                            <option value="">Select User</option>
+                            {users.map(user => (
+                                <option key={user.id} value={user.id}>{user.email}</option>
+                            ))}
+                        </select>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                            <SubmitButton style={{ fontWeight: 'bold' }} type="submit">Confirm</SubmitButton>
+                            <CancelButton style={{ fontWeight: 'bold' }} onClick={handleShareCancel}>Cancel</CancelButton>
+                        </div>
                     </div>
-                </div>
-            </form>
-        </Modal>
-</div>
+                </form>
+            </Modal>
+        </div>
     )
 }
 

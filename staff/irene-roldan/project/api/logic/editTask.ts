@@ -5,8 +5,8 @@ import { ObjectId } from 'mongoose';
 const { SystemError, NotFoundError } = errors
 
 async function editTask(taskId: ObjectId, title: string, description: string, columnType: string) {
-    
-    
+
+
     try {
         const task = await Task.findById(taskId)
         if (!task) {
@@ -14,9 +14,9 @@ async function editTask(taskId: ObjectId, title: string, description: string, co
         }
 
         task.title = title
-        task.description = description 
+        task.description = description
         task.columnType = columnType
-        await task.save() 
+        await task.save()
 
         return task
     } catch (error) {

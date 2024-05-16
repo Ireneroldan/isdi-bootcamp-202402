@@ -21,18 +21,18 @@ describe('createTask', () => {
     it('should create a new task associated with a board', async () => {
         const user = await User.create({ name: 'John', surname: 'smith', email: 'john@example.com', password: 'password' })
 
-        const board = await Board.create({ 
-            text: 'Test Board', 
-            description: 'Board Description', 
-            date: new Date(),  
-            author: new mongoose.Types.ObjectId(user._id)  
+        const board = await Board.create({
+            text: 'Test Board',
+            description: 'Board Description',
+            date: new Date(),
+            author: new mongoose.Types.ObjectId(user._id)
         })
         const boardId = board.id.toString()
 
         const taskTitle = 'Task Title'
         const taskDescription = 'Task Description'
-        const columnType = 'todo' 
-        const userId = user._id.toString() 
+        const columnType = 'todo'
+        const userId = user._id.toString()
 
         await createTask(userId, taskTitle, taskDescription, boardId, columnType)
 
@@ -43,7 +43,7 @@ describe('createTask', () => {
         expect(createdTask!.description).to.equal(taskDescription)
         expect(createdTask!.columnType).to.equal(columnType)
     })
-    
+
 
     it('should throw an error if board not found', async () => {
         const user = await User.create({ name: 'John', surname: 'smith', email: 'john@example.com', password: 'password' })

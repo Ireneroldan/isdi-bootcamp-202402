@@ -16,7 +16,7 @@ export default async (req, res) => {
         const token = authorization.slice(7)
         const { sub: userId } = jwt.verify(token, JWT_SECRET)
         const sharedBoards = await logic.getShareBoards(userId)
-        
+
         res.status(200).json(sharedBoards)
     } catch (error) {
         if (error instanceof SystemError) {

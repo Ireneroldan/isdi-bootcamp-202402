@@ -13,7 +13,7 @@ const {
 } = errors
 
 export default async (req, res) => {
-    try {            
+    try {
         const { userId, boardId } = req.body
 
         await logic.shareBoardWithUsers(boardId, userId)

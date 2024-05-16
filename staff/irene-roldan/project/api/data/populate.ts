@@ -20,7 +20,7 @@ mongoose.connect('mongodb://localhost:27017/tasking')
                 return Task.create([task1, task2, task3, task4, task5])
             })
     })
-   
+
     .then(() => {
         return User.create({ name: 'Katsu', surname: 'Don', email: 'katsu@don.com', password: '123qwe123' })
     })
@@ -35,7 +35,7 @@ mongoose.connect('mongodb://localhost:27017/tasking')
                 const task9 = { author: user3._id, title: 'Task 4', description: 'Description for Task 4: Class aptent aliquam id porta velit euismod hendrerit, est vulputate tempus auctor vivamus sagittis.', date: new Date(), columnType: 'review', assignedBoard: board._id }
                 const task10 = { author: user3._id, title: 'Task 5', description: 'Description for Task 5: Facilisis cursus viverra dis phasellus posuere vivamus quam purus, morbi tempus a sed eros tristique metus, pretium cubilia feugiat hac inceptos hendrerit nisl.', date: new Date(), columnType: 'archived', assignedBoard: board._id }
                 const task11 = { author: user3._id, title: 'Task 6', description: 'Description for Task 5: Dapibus dui nibh phasellus etiam justo cubilia aliquet enim habitant, sagittis placerat molestie tristique tellus tempus taciti dictum viverra massa,', date: new Date(), columnType: 'todo', assignedBoard: board._id }
-                const task12 =  { author: user3._id, title: 'Task 7', description: 'Description task 7', date: new Date(), columnType: 'todo', assignedBoard: board._id }
+                const task12 = { author: user3._id, title: 'Task 7', description: 'Description task 7', date: new Date(), columnType: 'todo', assignedBoard: board._id }
 
                 return Task.create([task6, task7, task8, task9, task10, task11, task12])
             })

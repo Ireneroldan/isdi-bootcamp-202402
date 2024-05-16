@@ -24,7 +24,7 @@ describe('deleteBoard', () => {
 
         await deleteBoard(boardId)
         const deletedBoard = await Board.findById(boardId)
-        
+
         expect(deletedBoard).to.be.null
     })
 

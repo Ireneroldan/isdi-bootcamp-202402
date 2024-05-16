@@ -25,9 +25,9 @@ export default async (req, res) => {
         const { sub: userId } = jwt.verify(token, JWT_SECRET)
         const { boardId } = req.params
         const { title, description, columnType } = req.body
-        
+
         await logic.createTask(userId as string, title, description, boardId, columnType)
-        
+
         res.status(201).send()
     } catch (error) {
         if (error instanceof ContentError || error instanceof TypeError) {

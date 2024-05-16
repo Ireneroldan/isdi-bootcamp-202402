@@ -18,7 +18,7 @@ export default async (req, res) => {
         if (!authorization) {
             throw new UnauthorizedError('Missing authorization header')
         }
-        
+
         const token = authorization.slice(7)
         const { sub: userId } = jwt.verify(token, JWT_SECRET)
         //@ts-ignore

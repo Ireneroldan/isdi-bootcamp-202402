@@ -39,8 +39,8 @@ type BoardType = {
     assignedUsers: ObjectId[]
 }
 
-const board = new Schema ({ 
-    author: {
+const board = new Schema({
+    author: {
         type: ObjectId,
         ref: 'Board',
         required: true
@@ -69,10 +69,10 @@ type TaskType = {
     assignedUsers: ObjectId[]
 }
 
-const task = new Schema ({ 
+const task = new Schema({
     author: {
         type: ObjectId,
-        ref: 'User', 
+        ref: 'User',
         required: true
     },
     title: {
@@ -85,7 +85,7 @@ const task = new Schema ({ 
     },
     date: {
         type: Date,
-        default: Date.now, 
+        default: Date.now,
         required: true
     },
     columnType: {
@@ -95,12 +95,12 @@ const task = new Schema ({ 
     },
     assignedBoard: {
         type: ObjectId,
-        ref: 'Board', 
+        ref: 'Board',
         required: true
     },
     assignedUsers: [{
         type: ObjectId,
-        ref: 'User' 
+        ref: 'User'
     }]
 })
 
@@ -110,7 +110,7 @@ const Task = model<TaskType>('Task', task)
 
 export {
     UserType,
-    User,  
+    User,
 
     BoardType,
     Board,

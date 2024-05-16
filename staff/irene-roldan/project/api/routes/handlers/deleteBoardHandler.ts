@@ -9,7 +9,7 @@ const {
 export default async (req, res) => {
     try {
         const { boardId } = req.params
-        await logic.deleteBoard(boardId) 
+        await logic.deleteBoard(boardId)
         res.status(204).json({ message: 'The board was successfully deleted' })
     } catch (error) {
         if (error instanceof SystemError) {

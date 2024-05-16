@@ -8,7 +8,7 @@ function authenticateUser(email: string, password: string): Promise<string> {
     validate.text(email, 'email', true)
     validate.password(password)
 
-    return User.findOne({email })
+    return User.findOne({ email })
         .catch(error => { throw new SystemError(error.message) })
         .then(user => {
             if (!user)

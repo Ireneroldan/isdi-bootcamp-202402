@@ -18,7 +18,7 @@ describe('createBoard', () => {
     })
 
     it('should create a new board with valid user and text', async () => {
-        const user = await User.create({ name: 'John', surname:'smith' ,email: 'john@example.com', password: 'password' })
+        const user = await User.create({ name: 'John', surname: 'smith', email: 'john@example.com', password: 'password' })
         const userId = user.id.toString()
 
         await createBoard(userId, 'Board Text')
@@ -30,7 +30,7 @@ describe('createBoard', () => {
 
     it('should throw an error if user not found', async () => {
         const userId = 'nonexistentUserID'
-    
+
         try {
             await createBoard(userId, 'Board Text')
             expect.fail('Expected createBoard to throw NotFoundError')
@@ -38,10 +38,10 @@ describe('createBoard', () => {
             expect(error.message).to.include('User not found')
         }
     })
-    
+
 
     it('should throw an error if text is empty', async () => {
-        const user = await User.create({ name: 'John', surname:'smith', email: 'john@example.com', password: 'password' })
+        const user = await User.create({ name: 'John', surname: 'smith', email: 'john@example.com', password: 'password' })
         const userId = user.id.toString()
 
         try {

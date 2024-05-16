@@ -1,6 +1,6 @@
 import { util, validate } from 'com'
 
-function getLoggedInUserId() { 
+function getLoggedInUserId() {
     validate.token(sessionStorage.token)
 
     const { sub: userId } = util.extractJwtPayload(sessionStorage.token)

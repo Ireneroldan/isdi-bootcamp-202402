@@ -1,6 +1,6 @@
 import { validate, errors } from 'com'
 
-function retrieveUsers(){
+function retrieveUsers() {
     validate.token(sessionStorage.token)
 
     return fetch(`${import.meta.env.VITE_API_URL}/users`, {
@@ -21,6 +21,6 @@ function retrieveUsers(){
                     throw new constructor(message)
                 })
         })
-    
+
 }
 export default retrieveUsers
